@@ -172,6 +172,7 @@ nav:
     - Troubleshooting: guides/troubleshooting.md
   - Reference:
     - Overview: reference/index.md
+    - AI Reference: reference/ai-reference.md
     - Configuration: reference/configuration.md
     - Environment Variables: reference/environment-variables.md
     - Glossary: reference/glossary.md
