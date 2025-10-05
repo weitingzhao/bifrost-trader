@@ -111,9 +111,9 @@ psql -h localhost -U postgres -d bifrost_trader -c "SELECT 1"
 - **Dependency Issues**: Ensure all dependencies are installed
 
 ### **Getting Help**
-- Check the [Troubleshooting Guide](../guides/troubleshooting.md)
+- Check the [AI Reference](../reference/ai-reference.md)
 - Create a [GitHub Issue](https://github.com/weitingzhao/bifrost-trader/issues)
-- Review the [Configuration Reference](../reference/configuration.md)
+- Review the [Architecture Overview](../architecture/overview.md)
 
 ---
 

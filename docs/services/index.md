@@ -15,47 +15,47 @@ Bifrost Trader consists of several specialized microservices, each handling spec
 
 ## 📚 **Service Documentation**
 
-### **📊 [Data Service](data-service.md)**
-Market data processing and management:
-- Real-time data ingestion
-- Historical data storage
-- Data validation and cleaning
-- API endpoints for data access
-
-### **💼 [Portfolio Service](portfolio-service.md)**
-Portfolio management and tracking:
-- Portfolio creation and management
-- Position tracking
-- P&L calculation
-- Cash balance management
-
-### **🧠 [Strategy Service](strategy-service.md)**
-Backtesting and strategy execution:
-- Backtrader integration
-- Strategy development
-- Backtesting execution
-- Performance analysis
-
-### **⚡ [Execution Service](execution-service.md)**
-Order execution and trade management:
-- Order placement and management
-- Trade execution
-- Broker integration
-- Execution reporting
-
-### **🛡️ [Risk Service](risk-service.md)**
-Risk management and compliance:
-- VaR calculation
-- Drawdown monitoring
-- Position limits
-- Compliance checking
-
 ### **🌐 [Web Portal](web-portal.md)**
 User interface and dashboard:
 - Modern web interface
 - Real-time data visualization
 - Portfolio management UI
 - Strategy configuration
+
+### **📊 Data Service** (Planned)
+Market data processing and management:
+- Real-time data ingestion
+- Historical data storage
+- Data validation and cleaning
+- API endpoints for data access
+
+### **💼 Portfolio Service** (Planned)
+Portfolio management and tracking:
+- Portfolio creation and management
+- Position tracking
+- P&L calculation
+- Cash balance management
+
+### **🧠 Strategy Service** (Planned)
+Backtesting and strategy execution:
+- Backtrader integration
+- Strategy development
+- Backtesting execution
+- Performance analysis
+
+### **⚡ Execution Service** (Planned)
+Order execution and trade management:
+- Order placement and management
+- Trade execution
+- Broker integration
+- Execution reporting
+
+### **🛡️ Risk Service** (Planned)
+Risk management and compliance:
+- VaR calculation
+- Drawdown monitoring
+- Position limits
+- Compliance checking
 
 ## 🔄 **Service Communication**
 

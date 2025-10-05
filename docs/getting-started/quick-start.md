@@ -121,8 +121,8 @@ def next(self):
 ### **Learning Resources**
 - **[Architecture Overview](../architecture/overview.md)**: Understand the system
 - **[Strategy Development](../development/backtrader-integration.md)**: Learn advanced strategies
-- **[API Documentation](../api/index.md)**: Integrate programmatically
-- **[Troubleshooting](../guides/troubleshooting.md)**: Common issues and solutions
+- **[AI Reference](../reference/ai-reference.md)**: AI assistant guidelines
+- **[AI Collaboration](../guides/ai-collaboration.md)**: AI-assisted development
 
 ## 🎉 **Congratulations!**
 
@@ -136,4 +136,4 @@ You've successfully:
 
 ---
 
-**Next**: Try the [Development Setup](development-setup.md) to configure your development environment for advanced strategy development.
+**Next**: Try the [Development Overview](../development/index.md) to learn about development processes and AI-assisted development.

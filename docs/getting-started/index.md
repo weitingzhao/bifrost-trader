@@ -25,36 +25,36 @@ Get up and running in minutes:
 - Exploring the web portal
 - Basic configuration
 
-### **💻 [Development Setup](development-setup.md)**
-Configure your development environment:
-- IDE configuration
-- Debugging setup
-- Testing environment
-- Code quality tools
+### **💻 Development Overview**
+Learn about development processes:
+- Development workflows and patterns
+- AI-assisted development
+- Code quality standards
+- Testing requirements
 
 ## 🎯 **Choose Your Path**
 
 ### **For Developers**
 1. Start with [Installation Guide](installation.md)
-2. Follow [Development Setup](development-setup.md)
+2. Follow [Development Overview](../development/index.md)
 3. Try the [Quick Start Tutorial](quick-start.md)
 4. Explore the [Architecture Overview](../architecture/overview.md)
 
 ### **For Traders**
 1. Follow [Installation Guide](installation.md)
 2. Complete [Quick Start Tutorial](quick-start.md)
-3. Learn about [Strategy Development](../development/backtrader-integration.md)
+3. Learn about [Backtrader Integration](../development/backtrader-integration.md)
 4. Explore [Web Portal](../services/web-portal.md)
 
 ### **For System Administrators**
 1. Review [Installation Guide](installation.md)
-2. Set up [Production Deployment](../deployment/index.md)
-3. Configure [Monitoring](../deployment/monitoring.md)
-4. Learn [Troubleshooting](../guides/troubleshooting.md)
+2. Study [Architecture Overview](../architecture/overview.md)
+3. Understand [Database Design](../architecture/database.md)
+4. Learn [AI Collaboration](../guides/ai-collaboration.md)
 
 ## 🆘 **Need Help?**
 
-- **Issues**: Check our [Troubleshooting Guide](../guides/troubleshooting.md)
+- **Issues**: Check our [AI Reference](../reference/ai-reference.md)
 - **Questions**: Create a [GitHub Issue](https://github.com/weitingzhao/bifrost-trader/issues)
 - **Community**: Join our development discussions
 

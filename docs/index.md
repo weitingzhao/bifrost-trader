@@ -18,92 +18,79 @@ Bifrost Trader is a professional-grade trading platform that provides:
 ### **For New Users**
 1. **[Installation Guide](getting-started/installation.md)** - Set up your environment
 2. **[Quick Start Tutorial](getting-started/quick-start.md)** - Get up and running in minutes
-3. **[Development Setup](getting-started/development-setup.md)** - Configure your development environment
+3. **[Getting Started Overview](getting-started/index.md)** - Learn the basics
 
 ### **For Developers**
 1. **[Architecture Overview](architecture/overview.md)** - Understand the system design
 2. **[Service Documentation](services/index.md)** - Explore individual services
-3. **[API Reference](api/index.md)** - Integrate with our APIs
+3. **[Migration Guide](development/migration-guide.md)** - Migrate from Smart Trader
 
 ### **For Operations**
-1. **[Deployment Guide](deployment/index.md)** - Deploy to production
-2. **[Monitoring Setup](deployment/monitoring.md)** - Set up observability
-3. **[Troubleshooting](guides/troubleshooting.md)** - Common issues and solutions
+1. **[AI Collaboration Guide](guides/ai-collaboration.md)** - AI-assisted development
+2. **[Database Design](architecture/database.md)** - Database architecture
+3. **[AI Reference](reference/ai-reference.md)** - AI assistant guidelines
 
 ## 📚 **Documentation Sections**
 
 ### **🏁 Getting Started**
 - **[Installation](getting-started/installation.md)** - Environment setup
 - **[Quick Start](getting-started/quick-start.md)** - First steps tutorial
-- **[Development Setup](getting-started/development-setup.md)** - Developer environment
+- **[Getting Started Overview](getting-started/index.md)** - Introduction and guides
 
 ### **🏗️ Architecture**
 - **[System Overview](architecture/overview.md)** - High-level architecture
-- **[Microservices Design](architecture/microservices.md)** - Service architecture
 - **[Database Design](architecture/database.md)** - Data architecture
-- **[API Design](architecture/api-design.md)** - API patterns and standards
 
 ### **⚙️ Services**
-- **[Data Service](services/data-service.md)** - Market data processing
-- **[Portfolio Service](services/portfolio-service.md)** - Portfolio management
-- **[Strategy Service](services/strategy-service.md)** - Backtesting and execution
-- **[Execution Service](services/execution-service.md)** - Order execution
-- **[Risk Service](services/risk-service.md)** - Risk management
-- **[Web Portal](services/web-portal.md)** - User interface
+- **[Services Overview](services/index.md)** - All services overview
+- **[Web Portal](services/web-portal.md)** - Web portal service
 
 ### **💻 Development**
-- **[Migration Guide](development/migration-guide.md)** - From Smart Trader
-- **[Refactoring Patterns](development/refactoring-guide.md)** - Code organization
-- **[Backtrader Integration](development/backtrader-integration.md)** - Strategy framework
-- **[Testing Strategies](development/testing.md)** - Testing approaches
-
-### **🚀 Deployment**
-- **[Docker Deployment](deployment/docker.md)** - Container deployment
-- **[Kubernetes Deployment](deployment/kubernetes.md)** - Orchestration
-- **[Monitoring Setup](deployment/monitoring.md)** - Observability
-
-### **🔌 API Documentation**
-- **[Data Service API](api/data-service-api.md)** - Market data endpoints
-- **[Portfolio Service API](api/portfolio-service-api.md)** - Portfolio operations
-- **[Strategy Service API](api/strategy-service-api.md)** - Strategy management
-- **[Web Portal API](api/web-portal-api.md)** - Frontend integration
+- **[Development Overview](development/index.md)** - Development processes
+- **[Migration Guide](development/migration-guide.md)** - Smart Trader migration
+- **[Backtrader Integration](development/backtrader-integration.md)** - Backtesting service
 
 ### **📖 Guides**
-- **[AI Collaboration](guides/ai-collaboration.md)** - Working with AI assistants
-- **[Database Setup](guides/database-setup.md)** - Database configuration
-- **[Troubleshooting](guides/troubleshooting.md)** - Common issues
+- **[AI Collaboration](guides/ai-collaboration.md)** - AI-human collaboration framework
 
 ### **📋 Reference**
-- **[Configuration](reference/configuration.md)** - Configuration options
-- **[Environment Variables](reference/environment-variables.md)** - Environment setup
-- **[Glossary](reference/glossary.md)** - Terms and definitions
+- **[AI Reference](reference/ai-reference.md)** - AI assistant reference
 
-## 🔍 **Search & Navigation**
+## 🎯 **Key Features**
 
-Use the search functionality to quickly find information about:
-- **Architecture patterns** and design decisions
-- **Service implementations** and APIs
-- **Deployment procedures** and configuration
-- **Development workflows** and best practices
-- **Troubleshooting** and problem resolution
+### **Microservices Architecture**
+- **Independent Services**: Each service can be developed and deployed independently
+- **API Gateway**: Central routing and service discovery
+- **Event-Driven**: Asynchronous communication between services
+- **Database per Service**: Each service owns its data
 
-## 🤝 **Contributing**
+### **Technology Stack**
+- **Backend**: Python with FastAPI
+- **Database**: PostgreSQL with TimescaleDB
+- **Caching**: Redis for high-speed data access
+- **Message Queue**: RabbitMQ for asynchronous processing
+- **Monitoring**: Prometheus and Grafana
+- **Containerization**: Docker and Kubernetes
 
-This documentation is maintained as part of the Bifrost Trader project. When contributing:
+### **Trading Capabilities**
+- **Real-time Data**: Live market data processing
+- **Backtesting**: Comprehensive strategy testing
+- **Risk Management**: Advanced risk controls
+- **Portfolio Management**: Multi-portfolio support
+- **Order Execution**: Professional-grade execution
 
-1. **Follow the structure** - Place content in appropriate sections
-2. **Use clear headings** - Organize content logically
-3. **Add examples** - Include code snippets and examples
-4. **Update links** - Keep cross-references current
-5. **Test changes** - Verify all links work correctly
+## 🔍 **Getting Help**
 
-## 📞 **Support**
+### **Documentation**
+- **Start Here**: [Getting Started](getting-started/index.md)
+- **Architecture**: [System Overview](architecture/overview.md)
+- **Development**: [Development Guide](development/index.md)
 
-For questions or support:
-- **GitHub Issues**: [Create an issue](https://github.com/weitingzhao/bifrost-trader/issues)
-- **Documentation**: Search this knowledge base
-- **Community**: Join our development discussions
+### **Support**
+- **GitHub Issues**: Report bugs and request features
+- **Documentation**: Comprehensive guides and references
+- **AI Assistant**: Use AI collaboration framework
 
 ---
 
-**🎯 This documentation provides comprehensive guidance for developing, deploying, and maintaining the Bifrost Trader platform. Use it as your primary reference for all project decisions and implementations.**
+**🎯 Ready to get started? Begin with the [Installation Guide](getting-started/installation.md) or explore the [Architecture Overview](architecture/overview.md) to understand the system design.**
