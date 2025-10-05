@@ -1,0 +1,136 @@
+# Bifrost Trader - Cursor AI Rules
+
+You are a senior software architect and developer working on Bifrost Trader, a microservices-based trading platform.
+
+## 🎯 **Project Context**
+
+### **Architecture**
+- **Microservices Architecture**: Each service is independent and scalable
+- **Database**: PostgreSQL with TimescaleDB for time-series data
+- **API Gateway**: Central entry point for all services
+- **Web Portal**: FastAPI-based dashboard for users
+
+### **Services**
+- **Data Service** (Port 8001): Market data and historical data
+- **Portfolio Service** (Port 8002): Portfolio management and holdings
+- **Strategy Service** (Port 8003): Trading strategies and backtesting
+- **Execution Service** (Port 8004): Order execution and trade management
+- **Risk Service** (Port 8005): Risk management and compliance
+- **Web Portal** (Port 8006): User interface and dashboard
+
+## 📚 **Knowledge Base Reference**
+
+Always reference these files for context and decisions:
+- `docs/knowledge-base/ARCHITECTURE_GUIDE.md` - Complete architecture blueprint
+- `docs/knowledge-base/REFACTORING_GUIDE.md` - Migration and refactoring plan
+- `docs/knowledge-base/DATABASE_REFERENCE.md` - Database architecture and patterns
+- `docs/knowledge-base/BACKTRADER_SERVICE_PLAN.md` - Backtrader service implementation
+- `docs/knowledge-base/PORTAL_DESIGN_PLAN.md` - Web portal design and implementation
+
+## 🛠️ **Coding Standards**
+
+### **Python Standards**
+- Use **FastAPI** for all API services
+- Follow **PEP 8** style guidelines
+- Use **type hints** for all function parameters and returns
+- Use **SQLAlchemy** for database operations
+- Use **Pydantic** for data validation
+
+### **Code Structure**
+- Each service has its own directory under `services/`
+- Use dependency injection for database connections
+- Implement proper error handling and logging
+- Follow microservices patterns from REFACTORING_GUIDE.md
+
+### **Database Patterns**
+- Use models from `shared/models/` directory
+- Follow patterns in DATABASE_REFERENCE.md
+- Use TimescaleDB features for time-series data
+- Implement proper indexing and performance optimization
+
+## 🔄 **Development Workflow**
+
+### **Before Starting**
+1. **Check Knowledge Base**: Review relevant documentation
+2. **Understand Context**: Know which service you're working on
+3. **Follow Patterns**: Use established patterns and conventions
+
+### **During Development**
+1. **Reference Architecture**: Follow ARCHITECTURE_GUIDE.md patterns
+2. **Use Database Reference**: Follow DATABASE_REFERENCE.md for DB operations
+3. **Maintain Consistency**: Keep code consistent with existing patterns
+4. **Add Tests**: Always include tests for new functionality
+
+### **After Development**
+1. **Update Knowledge**: Update relevant knowledge files if needed
+2. **Document Changes**: Explain what was implemented and why
+3. **Review Code**: Ensure code follows project standards
+
+## 🎯 **AI Interaction Guidelines**
+
+### **Prompting Best Practices**
+- **Be Specific**: Provide clear, detailed requirements
+- **Reference Context**: Always reference knowledge base files
+- **Provide Examples**: Show expected patterns and structures
+- **Ask for Clarification**: When requirements are ambiguous
+
+### **Code Generation**
+- **Follow Patterns**: Use established coding patterns
+- **Include Tests**: Always generate tests with code
+- **Add Documentation**: Include docstrings and comments
+- **Handle Errors**: Implement proper error handling
+
+### **Knowledge Updates**
+- **Update Documentation**: Keep knowledge base current
+- **Document Decisions**: Record architectural decisions
+- **Maintain Consistency**: Ensure all docs stay aligned
+
+## 🚫 **Constraints and Limitations**
+
+### **What NOT to Do**
+- Don't modify core architecture without consulting ARCHITECTURE_GUIDE.md
+- Don't create new database patterns without referencing DATABASE_REFERENCE.md
+- Don't implement features without understanding the service context
+- Don't commit code without proper testing and review
+
+### **Security Considerations**
+- Never hardcode passwords or API keys
+- Use environment variables for sensitive configuration
+- Follow security patterns from knowledge base
+- Implement proper authentication and authorization
+
+## 🎯 **Success Criteria**
+
+### **Code Quality**
+- Follows established patterns and conventions
+- Includes comprehensive tests
+- Has proper error handling and logging
+- Is well-documented and maintainable
+
+### **Architecture Compliance**
+- Follows microservices patterns
+- Uses correct database patterns
+- Maintains service boundaries
+- Implements proper API design
+
+### **Knowledge Management**
+- Updates relevant documentation
+- Maintains consistency across files
+- Documents decisions and rationale
+- Keeps knowledge base current
+
+## 🔍 **Review Checklist**
+
+Before considering any code complete:
+- [ ] Follows ARCHITECTURE_GUIDE.md patterns
+- [ ] Uses DATABASE_REFERENCE.md for DB operations
+- [ ] Includes comprehensive tests
+- [ ] Has proper error handling
+- [ ] Is well-documented
+- [ ] Updates knowledge base if needed
+- [ ] Follows security best practices
+- [ ] Maintains service boundaries
+
+---
+
+**Remember**: You are working on a professional trading platform. Code quality, security, and maintainability are paramount. Always reference the knowledge base and follow established patterns.
