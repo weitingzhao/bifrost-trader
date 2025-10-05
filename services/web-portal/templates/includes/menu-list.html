@@ -1,0 +1,133 @@
+<ul class="navbar-nav">
+
+    <!-- Dashboard Section -->
+    <li class="nav-item">
+        <a class="nav-link {% if request.url.path == '/' %}active{% endif %}" href="/">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center d-flex align-items-center justify-content-center me-2">
+                <i class="ni ni-chart-pie-35 text-dark text-sm opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">Dashboard</span>
+        </a>
+    </li>
+
+    <!-- Trading Section -->
+    <li class="nav-item">
+        <a data-bs-toggle="collapse" href="#tradingExamples" class="nav-link {% if 'trading' in request.url.path %}active{% endif %}" aria-controls="tradingExamples" role="button" aria-expanded="false">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center d-flex align-items-center justify-content-center me-2">
+                <i class="ni ni-chart-bar-32 text-dark text-sm opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">Trading</span>
+        </a>
+        <div class="collapse {% if 'trading' in request.url.path %}show{% endif %}" id="tradingExamples">
+            <ul class="nav ms-4 ps-3">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.url.path == '/trading' %}active{% endif %}" href="/trading">
+                        <span class="sidenav-mini-icon">L</span>
+                        <span class="sidenav-normal">Live Trading</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.url.path == '/backtesting' %}active{% endif %}" href="/backtesting">
+                        <span class="sidenav-mini-icon">B</span>
+                        <span class="sidenav-normal">Backtesting</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </li>
+
+    <!-- Portfolio Section -->
+    <li class="nav-item">
+        <a data-bs-toggle="collapse" href="#portfolioExamples" class="nav-link {% if 'portfolio' in request.url.path %}active{% endif %}" aria-controls="portfolioExamples" role="button" aria-expanded="false">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center d-flex align-items-center justify-content-center me-2">
+                <i class="ni ni-briefcase-24 text-dark text-sm opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">Portfolio</span>
+        </a>
+        <div class="collapse {% if 'portfolio' in request.url.path %}show{% endif %}" id="portfolioExamples">
+            <ul class="nav ms-4 ps-3">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.url.path == '/portfolio' %}active{% endif %}" href="/portfolio">
+                        <span class="sidenav-mini-icon">O</span>
+                        <span class="sidenav-normal">Overview</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/portfolio/positions">
+                        <span class="sidenav-mini-icon">P</span>
+                        <span class="sidenav-normal">Positions</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/portfolio/performance">
+                        <span class="sidenav-mini-icon">P</span>
+                        <span class="sidenav-normal">Performance</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </li>
+
+    <!-- Analytics Section -->
+    <li class="nav-item">
+        <a data-bs-toggle="collapse" href="#analyticsExamples" class="nav-link {% if 'analytics' in request.url.path %}active{% endif %}" aria-controls="analyticsExamples" role="button" aria-expanded="false">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center d-flex align-items-center justify-content-center me-2">
+                <i class="ni ni-chart-line text-dark text-sm opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">Analytics</span>
+        </a>
+        <div class="collapse {% if 'analytics' in request.url.path %}show{% endif %}" id="analyticsExamples">
+            <ul class="nav ms-4 ps-3">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.url.path == '/analytics' %}active{% endif %}" href="/analytics">
+                        <span class="sidenav-mini-icon">M</span>
+                        <span class="sidenav-normal">Market Analysis</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/analytics/risk">
+                        <span class="sidenav-mini-icon">R</span>
+                        <span class="sidenav-normal">Risk Analysis</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </li>
+
+    <!-- Research Section -->
+    <li class="nav-item">
+        <a data-bs-toggle="collapse" href="#researchExamples" class="nav-link {% if 'research' in request.url.path %}active{% endif %}" aria-controls="researchExamples" role="button" aria-expanded="false">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center d-flex align-items-center justify-content-center me-2">
+                <i class="ni ni-bullet-list-67 text-dark text-sm opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">Research</span>
+        </a>
+        <div class="collapse {% if 'research' in request.url.path %}show{% endif %}" id="researchExamples">
+            <ul class="nav ms-4 ps-3">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.url.path == '/research' %}active{% endif %}" href="/research">
+                        <span class="sidenav-mini-icon">S</span>
+                        <span class="sidenav-normal">Stock Screening</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/research/news">
+                        <span class="sidenav-mini-icon">N</span>
+                        <span class="sidenav-normal">News & Sentiment</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </li>
+
+    <!-- Settings Section -->
+    <li class="nav-item">
+        <a class="nav-link {% if 'settings' in request.url.path %}active{% endif %}" href="/settings">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center d-flex align-items-center justify-content-center me-2">
+                <i class="ni ni-settings-gear-65 text-dark text-sm opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">Settings</span>
+        </a>
+    </li>
+
+</ul>

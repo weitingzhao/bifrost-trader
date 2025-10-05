@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="apple-touch-icon" sizes="76x76" href="/static/img/logos/apple-icon.png">
+    <link rel="icon" type="image/png" href="/static/img/logos/favicon.png">
+    <title>
+        {{ page_title|default:"Bifrost Trader" }}
+    </title>
+    
+    <!-- Fonts and icons -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+    
+    <!-- Nucleo Icons -->
+    <link href="/static/css/nucleo-icons.css" rel="stylesheet" />
+    <link href="/static/css/nucleo-svg.css" rel="stylesheet" />
+    
+    <!-- Font Awesome Icons -->
+    <script src="/static/js/plugins/fontawesome.min.js"></script>
+    
+    <!-- jQuery -->
+    <script src="/static/js/jquery/jquery-3.7.1.min.js"></script>
+    <script src="/static/js/jquery/ui/1.14.0/jquery-ui.min.js"></script>
+    
+    <!-- CSS Files -->
+    <link id="pagestyle" href="/static/css/soft-ui-dashboard.css" rel="stylesheet" />
+    <link href="/static/css/trading.css" rel="stylesheet" />
+    <link href="/static/css/custom.css" rel="stylesheet" />
+    
+    {% block extrahead %}{% endblock extrahead %}
+</head>
+
+<body class="g-sidenav-show bg-gray-100 {% block body %}{% endblock body %}">
+
+    {% block sidebar %}
+    {% include 'includes/sidebar.html' %}
+    {% endblock sidebar %}
+
+    <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+        {% block header %}
+        {% include 'includes/navigation.html' %}
+        {% endblock header %}
+        
+        {% block content %}{% endblock content %}
+    </main>
+
+    {% block fixed_plugin %}
+    {% include 'includes/fixed-plugin.html' %}
+    {% endblock fixed_plugin %}
+
+    {% include 'includes/scripts.html' %}
+    {% block extra_js %}{% endblock extra_js %}
+
+    <!-- WebSocket Connection -->
+    <script>
+        // WebSocket connection for real-time updates
+        let ws = null;
+        let reconnectInterval = null;
+        
+        function connectWebSocket() {
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUrl = `${protocol}//${window.location.host}/ws`;
+            
+            ws = new WebSocket(wsUrl);
+            
+            ws.onopen = function(event) {
+                console.log('WebSocket connected');
+                clearInterval(reconnectInterval);
+                
+                // Subscribe to market data
+                ws.send(JSON.stringify({
+                    type: 'subscribe',
+                    data: { type: 'market_data' }
+                }));
+            };
+            
+            ws.onmessage = function(event) {
+                const message = JSON.parse(event.data);
+                handleWebSocketMessage(message);
+            };
+            
+            ws.onclose = function(event) {
+                console.log('WebSocket disconnected');
+                // Reconnect after 5 seconds
+                reconnectInterval = setInterval(connectWebSocket, 5000);
+            };
+            
+            ws.onerror = function(error) {
+                console.error('WebSocket error:', error);
+            };
+        }
+        
+        function handleWebSocketMessage(message) {
+            switch(message.type) {
+                case 'market_data':
+                    updateMarketData(message.data);
+                    break;
+                case 'order_update':
+                    updateOrderStatus(message.data);
+                    break;
+                case 'portfolio_update':
+                    updatePortfolioData(message.data);
+                    break;
+                case 'pong':
+                    // Handle ping response
+                    break;
+            }
+        }
+        
+        function updateMarketData(data) {
+            // Update market data in the UI
+            Object.keys(data).forEach(symbol => {
+                const quote = data[symbol];
+                const priceElement = document.getElementById(`price-${symbol}`);
+                if (priceElement) {
+                    priceElement.textContent = `$${quote.price.toFixed(2)}`;
+                }
+            });
+        }
+        
+        function updateOrderStatus(data) {
+            // Update order status in the UI
+            console.log('Order update:', data);
+        }
+        
+        function updatePortfolioData(data) {
+            // Update portfolio data in the UI
+            console.log('Portfolio update:', data);
+        }
+        
+        // Connect WebSocket when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            connectWebSocket();
+        });
+        
+        // Ping WebSocket every 30 seconds to keep connection alive
+        setInterval(function() {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({ type: 'ping' }));
+            }
+        }, 30000);
+    </script>
+
+</body>
+</html>

@@ -1,10 +1,83 @@
 # Bifrost Trader
 
-A microservices-based trading platform refactored from Smart Trader. Bifrost Trader represents the next generation of trading infrastructure, designed for scalability, maintainability, and high performance.
+A comprehensive microservices-based trading platform refactored from Smart Trader. Bifrost Trader represents the next generation of trading infrastructure, designed for scalability, maintainability, and high performance with advanced backtesting capabilities.
 
 ## 🎯 Project Overview
 
-Bifrost Trader is a comprehensive microservices architecture that transforms the monolithic Smart Trader application into a distributed system optimized for modern trading operations. The platform provides real-time market data, portfolio management, strategy development, risk management, and execution capabilities through independent, scalable services.
+Bifrost Trader is a sophisticated microservices architecture that transforms the monolithic Smart Trader application into a distributed system optimized for modern trading operations. The platform combines real-time market data, technical analysis, portfolio management, automated trading capabilities, and advanced backtesting through independent, scalable services.
+
+## ✨ Key Features
+
+### 📊 Market Data & Analysis
+- **Real-time Stock Data**: Integration with Yahoo Finance API for live market data
+- **Historical Data Management**: TimescaleDB-powered time-series storage for OHLCV data
+- **Technical Indicators**: Comprehensive technical analysis tools including:
+  - Bollinger Bands with custom smoothing
+  - MACD (Moving Average Convergence Divergence)
+  - RSI (Relative Strength Index)
+  - ADX (Average Directional Index)
+  - Custom Nadaraya-Watson smoothing indicators
+- **Fundamental Analysis**: Company financials, earnings data, and valuation metrics
+
+### 🔍 Stock Screening & Research
+- **Advanced Screeners**: Multi-criteria stock filtering based on technical and fundamental metrics
+- **Snapshot System**: Time-series snapshots of market data for historical analysis
+- **Research Tools**: Comprehensive research capabilities with customizable indicators
+- **Market Comparison**: Side-by-side analysis of multiple securities
+
+### 💼 Portfolio Management
+- **Multi-Portfolio Support**: Manage multiple portfolios with different strategies
+- **Position Tracking**: Real-time position monitoring and P&L tracking
+- **Order Management**: Comprehensive order system with various order types (Market, Limit, Stop, Stop-Limit)
+- **Transaction History**: Complete audit trail of all trading activities
+- **Cash Flow Management**: Track deposits, withdrawals, and cash balances
+
+### 🤖 Advanced Backtesting & Strategy Engine
+- **Professional Backtesting**: Complete Backtrader framework integration for strategy development
+- **Multi-timeframe Analysis**: Support for multiple timeframes (daily, hourly, minute-level)
+- **Strategy Optimization**: Ray-powered distributed optimization for parameter tuning
+- **Live Trading**: Real-time strategy execution with Interactive Brokers integration
+- **Custom Indicators**: Support for custom technical indicators and overlays
+- **Performance Analytics**: Detailed performance metrics and trade analysis
+
+### 📈 Visualization & Reporting
+- **Interactive Charts**: Bokeh-powered interactive charts and dashboards
+- **Real-time Dashboards**: Live market data visualization
+- **Performance Reports**: Comprehensive performance analytics and reporting
+- **Strategy Visualization**: Advanced plotting and analysis tools
+
+### 🛡️ Risk Management
+- **Built-in Risk Controls**: Position sizing and risk management
+- **Compliance Monitoring**: Regulatory compliance and reporting
+- **Alert Systems**: Real-time risk alerts and notifications
+
+## 🏗️ Technical Architecture
+
+### **Backend Technologies**
+- **FastAPI**: Modern async web framework with automatic API documentation
+- **PostgreSQL + TimescaleDB**: Primary database with time-series optimization
+- **Redis**: Caching and message broker for real-time features
+- **Celery**: Asynchronous task processing for data fetching and analysis
+
+### **Trading & Analysis**
+- **Backtrader**: Professional backtesting and live trading framework
+- **Interactive Brokers API**: Live trading integration
+- **yfinance**: Market data provider
+- **TA-Lib**: Technical analysis library
+- **Pandas**: Data manipulation and analysis
+- **NumPy**: Numerical computing
+
+### **Frontend & Visualization**
+- **Bootstrap 5**: Responsive UI framework
+- **Bokeh**: Interactive data visualization
+- **Panel**: Dashboard and app framework
+- **WebSockets**: Real-time data streaming
+
+### **Data Processing & Optimization**
+- **Ray**: Distributed computing for strategy optimization
+- **Scikit-learn**: Machine learning capabilities
+- **Matplotlib/Plotly**: Additional visualization options
+- **TimescaleDB**: High-performance time-series database
 
 ## 🏗️ Architecture Overview
 

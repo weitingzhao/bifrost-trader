@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  web-portal:
+    build: .
+    ports:
+      - "8006:8006"
+    environment:
+      - PYTHONPATH=/app
+      - ENVIRONMENT=development
+    volumes:
+      - .:/app
+      - /app/__pycache__
+    depends_on:
+      - data-service
+      - portfolio-service
+      - strategy-service
+      - execution-service
+      - risk-service
+    networks:
+      - bifrost-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8006/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  bifrost-network:
+    external: true

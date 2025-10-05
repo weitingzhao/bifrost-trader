@@ -1,0 +1,111 @@
+/* Custom styles for Bifrost Trader */
+
+/* Brand colors */
+:root {
+    --bifrost-primary: #4f46e5;
+    --bifrost-secondary: #06b6d4;
+    --bifrost-success: #10b981;
+    --bifrost-warning: #f59e0b;
+    --bifrost-danger: #ef4444;
+    --bifrost-dark: #1f2937;
+    --bifrost-light: #f9fafb;
+}
+
+/* Custom button styles */
+.btn-bifrost-primary {
+    background-color: var(--bifrost-primary);
+    border-color: var(--bifrost-primary);
+    color: white;
+}
+
+.btn-bifrost-primary:hover {
+    background-color: #4338ca;
+    border-color: #4338ca;
+}
+
+/* Card enhancements */
+.card-bifrost {
+    border: none;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+    border-radius: 0.375rem;
+}
+
+/* Navigation enhancements */
+.navbar-bifrost {
+    background: linear-gradient(135deg, var(--bifrost-primary) 0%, var(--bifrost-secondary) 100%);
+}
+
+/* Sidebar enhancements */
+.sidenav-bifrost {
+    background: linear-gradient(180deg, #ffffff 0%, #f8f9fc 100%);
+}
+
+/* Chart enhancements */
+.chart-bifrost {
+    background: white;
+    border-radius: 0.375rem;
+    padding: 1rem;
+}
+
+/* Status indicators */
+.status-active {
+    color: var(--bifrost-success);
+}
+
+.status-inactive {
+    color: var(--bifrost-danger);
+}
+
+.status-pending {
+    color: var(--bifrost-warning);
+}
+
+/* Loading states */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid var(--bifrost-primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive utilities */
+@media (max-width: 576px) {
+    .mobile-hidden {
+        display: none !important;
+    }
+}
+
+@media (min-width: 577px) {
+    .desktop-hidden {
+        display: none !important;
+    }
+}
+
+/* Print styles */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    
+    .card {
+        border: 1px solid #000 !important;
+        box-shadow: none !important;
+    }
+}

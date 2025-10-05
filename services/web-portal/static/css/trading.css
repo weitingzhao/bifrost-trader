@@ -1,0 +1,103 @@
+/* Custom CSS for Bifrost Trader Web Portal */
+
+/* Trading-specific styles */
+.trading-card {
+    border: 1px solid #e3e6f0;
+    border-radius: 0.375rem;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+}
+
+.price-positive {
+    color: #1cc88a !important;
+}
+
+.price-negative {
+    color: #e74a3b !important;
+}
+
+.price-neutral {
+    color: #858796 !important;
+}
+
+/* Real-time indicators */
+.live-indicator {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Chart containers */
+.chart-container {
+    position: relative;
+    height: 300px;
+    width: 100%;
+}
+
+/* Trading interface */
+.trading-panel {
+    background: #f8f9fc;
+    border-radius: 0.375rem;
+    padding: 1rem;
+}
+
+.order-form {
+    background: white;
+    border-radius: 0.375rem;
+    padding: 1.5rem;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+}
+
+/* Portfolio cards */
+.portfolio-card {
+    transition: transform 0.2s ease-in-out;
+}
+
+.portfolio-card:hover {
+    transform: translateY(-2px);
+}
+
+/* Market data table */
+.market-data-table {
+    font-size: 0.875rem;
+}
+
+.market-data-table th {
+    background-color: #f8f9fc;
+    border-bottom: 2px solid #e3e6f0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .trading-panel {
+        margin-bottom: 1rem;
+    }
+    
+    .chart-container {
+        height: 250px;
+    }
+}
+
+/* Dark theme support */
+[data-theme="dark"] .trading-card {
+    background-color: #2d3748;
+    border-color: #4a5568;
+}
+
+[data-theme="dark"] .trading-panel {
+    background-color: #2d3748;
+}
+
+[data-theme="dark"] .order-form {
+    background-color: #2d3748;
+    color: #e2e8f0;
+}
