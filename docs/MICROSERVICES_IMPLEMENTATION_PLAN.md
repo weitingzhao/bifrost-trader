@@ -27,7 +27,7 @@
 - **Missing**: Complete data ingestion pipeline, TimescaleDB integration
 - **Priority**: HIGH - Essential for other services
 
-#### **4. Strategy Service** (Port 8003)
+#### **4. Strategy Service** (Port 8003)––
 - **Status**: 🔄 **PARTIAL**
 - **Tech Stack**: Backtrader + Ray + FastAPI (needs API layer)
 - **Current**: Complete Backtrader framework, Ray optimization
