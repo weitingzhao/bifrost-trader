@@ -1,13 +1,13 @@
-site_name: Bifrost Trader Knowledge Base
-site_description: Comprehensive knowledge base for Bifrost Trader microservices trading platform
+site_name: Bifrost Trader Documentation
+site_description: Comprehensive documentation for Bifrost Trader microservices trading platform
 site_author: Bifrost Trader Team
-site_url: https://bifrost-trader.github.io/knowledge-base
+site_url: https://bifrost-trader.github.io/docs
 
 repo_name: weitingzhao/bifrost-trader
 repo_url: https://github.com/weitingzhao/bifrost-trader
-edit_uri: edit/main/docs/knowledge-base/
+edit_uri: edit/main/docs/
 
-docs_dir: docs/knowledge-base
+docs_dir: docs
 site_dir: site
 
 theme:
@@ -129,17 +129,52 @@ markdown_extensions:
 
 nav:
   - Home: index.md
-  - Architecture & Design:
-    - Architecture Guide: ARCHITECTURE_GUIDE.md
-    - Portal Design Plan: PORTAL_DESIGN_PLAN.md
-  - Database & Infrastructure:
-    - Database Reference: DATABASE_REFERENCE.md
-  - Strategy & Backtesting:
-    - Backtrader Service Plan: BACKTRADER_SERVICE_PLAN.md
-  - Migration & Refactoring:
-    - Refactoring Guide: REFACTORING_GUIDE.md
-  - AI Reference:
-    - AI Reference: AI_REFERENCE.md
+  - Getting Started:
+    - Overview: getting-started/index.md
+    - Installation: getting-started/installation.md
+    - Quick Start: getting-started/quick-start.md
+    - Development Setup: getting-started/development-setup.md
+  - Architecture:
+    - Overview: architecture/index.md
+    - System Overview: architecture/overview.md
+    - Microservices: architecture/microservices.md
+    - Database Design: architecture/database.md
+    - API Design: architecture/api-design.md
+  - Services:
+    - Overview: services/index.md
+    - Data Service: services/data-service.md
+    - Portfolio Service: services/portfolio-service.md
+    - Strategy Service: services/strategy-service.md
+    - Execution Service: services/execution-service.md
+    - Risk Service: services/risk-service.md
+    - Web Portal: services/web-portal.md
+  - Development:
+    - Overview: development/index.md
+    - Migration Guide: development/migration-guide.md
+    - Refactoring Guide: development/refactoring-guide.md
+    - Backtrader Integration: development/backtrader-integration.md
+    - Testing: development/testing.md
+  - Deployment:
+    - Overview: deployment/index.md
+    - Docker: deployment/docker.md
+    - Kubernetes: deployment/kubernetes.md
+    - Monitoring: deployment/monitoring.md
+  - API Documentation:
+    - Overview: api/index.md
+    - Data Service API: api/data-service-api.md
+    - Portfolio Service API: api/portfolio-service-api.md
+    - Strategy Service API: api/strategy-service-api.md
+    - Web Portal API: api/web-portal-api.md
+  - Guides:
+    - Overview: guides/index.md
+    - AI Collaboration: guides/ai-collaboration.md
+    - Database Setup: guides/database-setup.md
+    - Troubleshooting: guides/troubleshooting.md
+  - Reference:
+    - Overview: reference/index.md
+    - Configuration: reference/configuration.md
+    - Environment Variables: reference/environment-variables.md
+    - Glossary: reference/glossary.md
 
 extra:
   social:
