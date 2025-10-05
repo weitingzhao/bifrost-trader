@@ -19,13 +19,6 @@ Complete migration from Smart Trader:
 - Data migration procedures
 - Testing and validation
 
-### **🏗️ [Refactoring Guide](refactoring-guide.md)**
-Code organization and refactoring patterns:
-- Microservices refactoring
-- Database schema updates
-- API design patterns
-- Code quality improvements
-
 ### **🧠 [Backtrader Integration](backtrader-integration.md)**
 Backtrader framework integration:
 - Strategy development
@@ -33,7 +26,14 @@ Backtrader framework integration:
 - Performance optimization
 - Ray distributed computing
 
-### **🧪 [Testing Strategies](testing.md)**
+### **🏗️ Refactoring Guide** (Planned)
+Code organization and refactoring patterns:
+- Microservices refactoring
+- Database schema updates
+- API design patterns
+- Code quality improvements
+
+### **🧪 Testing Strategies** (Planned)
 Comprehensive testing approaches:
 - Unit testing patterns
 - Integration testing
