@@ -2,59 +2,74 @@
 Portfolio API endpoints
 """
 
-from fastapi import APIRouter, HTTPException
-from typing import Dict, Any, List
-from ..services.dashboard_service import DashboardService
+from fastapi import APIRouter, HTTPException, Query
+from typing import Dict, Any, List, Optional
+from ..services.portfolio_service import PortfolioService
 
 router = APIRouter()
-dashboard_service = DashboardService()
+portfolio_service = PortfolioService()
 
 @router.get("/")
-async def get_portfolio_overview() -> Dict[str, Any]:
-    """Get portfolio overview."""
+async def get_portfolio_overview(user_id: int = Query(default=1, description="User ID")) -> Dict[str, Any]:
+    """Get comprehensive portfolio overview for a user."""
     try:
-        data = await dashboard_service.get_dashboard_data()
-        return {
-            "portfolio_summary": data.get("portfolio_summary", {}),
-            "active_positions": data.get("active_positions", []),
-            "performance_metrics": data.get("performance_metrics", {}),
-            "risk_metrics": data.get("risk_metrics", {})
-        }
+        return await portfolio_service.get_portfolio_overview(user_id)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=f"Error getting portfolio overview: {str(e)}")
 
 @router.get("/positions")
-async def get_positions() -> Dict[str, Any]:
-    """Get all positions."""
+async def get_positions(user_id: int = Query(default=1, description="User ID")) -> Dict[str, Any]:
+    """Get all positions for a user's portfolios."""
     try:
-        data = await dashboard_service.get_dashboard_data()
-        return {"positions": data.get("active_positions", [])}
+        positions = await portfolio_service.get_portfolio_positions(user_id)
+        return {"positions": positions}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=f"Error getting positions: {str(e)}")
 
 @router.get("/performance")
-async def get_performance() -> Dict[str, Any]:
-    """Get performance metrics."""
+async def get_performance(user_id: int = Query(default=1, description="User ID")) -> Dict[str, Any]:
+    """Get performance metrics for a user's portfolio."""
     try:
-        data = await dashboard_service.get_dashboard_data()
-        return data.get("performance_metrics", {})
+        overview = await portfolio_service.get_portfolio_overview(user_id)
+        return overview.get("performance_metrics", {})
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=f"Error getting performance metrics: {str(e)}")
 
 @router.get("/risk")
-async def get_risk_metrics() -> Dict[str, Any]:
-    """Get risk metrics."""
+async def get_risk_metrics(user_id: int = Query(default=1, description="User ID")) -> Dict[str, Any]:
+    """Get risk metrics for a user's portfolio."""
     try:
-        data = await dashboard_service.get_dashboard_data()
-        return data.get("risk_metrics", {})
+        overview = await portfolio_service.get_portfolio_overview(user_id)
+        return overview.get("risk_metrics", {})
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=f"Error getting risk metrics: {str(e)}")
 
 @router.get("/history")
-async def get_trading_history() -> Dict[str, Any]:
-    """Get trading history."""
+async def get_trading_history(
+    user_id: int = Query(default=1, description="User ID"),
+    limit: int = Query(default=50, description="Number of records to return")
+) -> Dict[str, Any]:
+    """Get trading history for a user."""
     try:
-        data = await dashboard_service.get_dashboard_data()
-        return {"history": data.get("recent_activity", [])}
+        history = await portfolio_service.get_trading_history(user_id, limit)
+        return {"history": history}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=f"Error getting trading history: {str(e)}")
+
+@router.get("/summary")
+async def get_portfolio_summary(user_id: int = Query(default=1, description="User ID")) -> Dict[str, Any]:
+    """Get portfolio summary data."""
+    try:
+        overview = await portfolio_service.get_portfolio_overview(user_id)
+        return overview.get("portfolio_summary", {})
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error getting portfolio summary: {str(e)}")
+
+@router.get("/recent-activity")
+async def get_recent_activity(user_id: int = Query(default=1, description="User ID")) -> Dict[str, Any]:
+    """Get recent trading activity for a user."""
+    try:
+        overview = await portfolio_service.get_portfolio_overview(user_id)
+        return {"recent_activity": overview.get("recent_activity", [])}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error getting recent activity: {str(e)}")

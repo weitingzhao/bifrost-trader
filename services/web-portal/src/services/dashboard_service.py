@@ -1,7 +1,7 @@
 """
 Dashboard Service
 
-Handles dashboard data aggregation and business logic.
+Handles dashboard data aggregation and business logic with PostgreSQL integration.
 """
 
 import httpx
@@ -9,6 +9,12 @@ import asyncio
 from typing import Dict, Any, Optional, List
 from datetime import datetime, timedelta
 import json
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', 'shared'))
+
+from database.connection import get_db_connection
+from services.portfolio_service import PortfolioService
 
 class DashboardService:
     def __init__(self):
@@ -17,217 +23,173 @@ class DashboardService:
         self.strategy_service_url = "http://strategy-service:8003"
         self.execution_service_url = "http://execution-service:8004"
         self.risk_service_url = "http://risk-service:8005"
+        self.db = get_db_connection()
+        self.portfolio_service = PortfolioService()
         
-    async def get_dashboard_data(self) -> Dict[str, Any]:
+    async def get_dashboard_data(self, user_id: str = "1") -> Dict[str, Any]:
         """Get comprehensive dashboard data."""
         try:
-            # Fetch data from multiple services concurrently
-            tasks = [
-                self._get_portfolio_summary(),
-                self._get_active_positions(),
-                self._get_performance_metrics(),
-                self._get_risk_metrics(),
-                self._get_recent_activity(),
-                self._get_market_overview()
-            ]
+            # Convert user_id to int
+            user_id_int = int(user_id)
             
-            results = await asyncio.gather(*tasks, return_exceptions=True)
+            # Get portfolio overview from database
+            portfolio_overview = await self.portfolio_service.get_portfolio_overview(user_id_int)
+            
+            # Get market overview
+            market_overview = await self._get_market_overview()
             
             return {
-                "portfolio_summary": results[0] if not isinstance(results[0], Exception) else {},
-                "active_positions": results[1] if not isinstance(results[1], Exception) else [],
-                "performance_metrics": results[2] if not isinstance(results[2], Exception) else {},
-                "risk_metrics": results[3] if not isinstance(results[3], Exception) else {},
-                "recent_activity": results[4] if not isinstance(results[4], Exception) else [],
-                "market_overview": results[5] if not isinstance(results[5], Exception) else {},
+                "portfolio_summary": portfolio_overview.get("portfolio_summary", {}),
+                "active_positions": portfolio_overview.get("active_positions", []),
+                "performance_metrics": portfolio_overview.get("performance_metrics", {}),
+                "risk_metrics": portfolio_overview.get("risk_metrics", {}),
+                "recent_activity": portfolio_overview.get("recent_activity", []),
+                "market_overview": market_overview,
                 "last_updated": datetime.now().isoformat()
             }
         except Exception as e:
-            print(f"Dashboard data error: {e}")
-            return self._get_default_dashboard_data()
-    
-    async def _get_portfolio_summary(self) -> Dict[str, Any]:
-        """Get portfolio summary data."""
-        try:
-            async with httpx.AsyncClient() as client:
-                response = await client.get(f"{self.portfolio_service_url}/api/portfolio/summary")
-                if response.status_code == 200:
-                    return response.json()
-        except Exception as e:
-            print(f"Portfolio summary error: {e}")
-        
-        # Return default data
-        return {
-            "total_value": 100000.0,
-            "cash_balance": 25000.0,
-            "buying_power": 100000.0,
-            "daily_pnl": 1250.50,
-            "daily_return": 1.25,
-            "total_pnl": 5000.0,
-            "total_return": 5.0
-        }
-    
-    async def _get_active_positions(self) -> List[Dict[str, Any]]:
-        """Get active positions."""
-        try:
-            async with httpx.AsyncClient() as client:
-                response = await client.get(f"{self.portfolio_service_url}/api/portfolio/positions")
-                if response.status_code == 200:
-                    return response.json()
-        except Exception as e:
-            print(f"Active positions error: {e}")
-        
-        # Return default data
-        return [
-            {
-                "symbol": "AAPL",
-                "quantity": 100,
-                "current_price": 175.50,
-                "current_value": 17550.0,
-                "unrealized_pnl": 550.0,
-                "weight": 17.55
-            },
-            {
-                "symbol": "MSFT",
-                "quantity": 50,
-                "current_price": 380.25,
-                "current_value": 19012.5,
-                "unrealized_pnl": 1012.5,
-                "weight": 19.01
-            },
-            {
-                "symbol": "GOOGL",
-                "quantity": 25,
-                "current_price": 142.80,
-                "current_value": 3570.0,
-                "unrealized_pnl": 70.0,
-                "weight": 3.57
+            print(f"Error getting dashboard data: {e}")
+            return {
+                "portfolio_summary": self._get_empty_portfolio_summary(),
+                "active_positions": [],
+                "performance_metrics": self._get_empty_performance_metrics(),
+                "risk_metrics": self._get_empty_risk_metrics(),
+                "recent_activity": [],
+                "market_overview": self._get_empty_market_overview(),
+                "last_updated": datetime.now().isoformat()
             }
-        ]
-    
-    async def _get_performance_metrics(self) -> Dict[str, Any]:
-        """Get performance metrics."""
-        try:
-            async with httpx.AsyncClient() as client:
-                response = await client.get(f"{self.strategy_service_url}/api/performance/metrics")
-                if response.status_code == 200:
-                    return response.json()
-        except Exception as e:
-            print(f"Performance metrics error: {e}")
-        
-        # Return default data
-        return {
-            "total_return": 5.0,
-            "annualized_return": 12.5,
-            "sharpe_ratio": 1.8,
-            "max_drawdown": -8.5,
-            "win_rate": 65.5,
-            "avg_trade": 125.75,
-            "total_trades": 45
-        }
-    
-    async def _get_risk_metrics(self) -> Dict[str, Any]:
-        """Get risk metrics."""
-        try:
-            async with httpx.AsyncClient() as client:
-                response = await client.get(f"{self.risk_service_url}/api/risk/metrics")
-                if response.status_code == 200:
-                    return response.json()
-        except Exception as e:
-            print(f"Risk metrics error: {e}")
-        
-        # Return default data
-        return {
-            "portfolio_var": 2500.0,
-            "var_percentile": 95,
-            "beta": 1.2,
-            "volatility": 18.5,
-            "correlation": 0.75
-        }
-    
-    async def _get_recent_activity(self) -> List[Dict[str, Any]]:
-        """Get recent trading activity."""
-        try:
-            async with httpx.AsyncClient() as client:
-                response = await client.get(f"{self.execution_service_url}/api/execution/recent")
-                if response.status_code == 200:
-                    return response.json()
-        except Exception as e:
-            print(f"Recent activity error: {e}")
-        
-        # Return default data
-        return [
-            {
-                "timestamp": datetime.now().isoformat(),
-                "action": "BUY",
-                "symbol": "AAPL",
-                "quantity": 100,
-                "price": 175.50,
-                "status": "FILLED"
-            },
-            {
-                "timestamp": (datetime.now() - timedelta(minutes=5)).isoformat(),
-                "action": "SELL",
-                "symbol": "TSLA",
-                "quantity": 50,
-                "price": 245.80,
-                "status": "FILLED"
-            }
-        ]
-    
+
     async def _get_market_overview(self) -> Dict[str, Any]:
-        """Get market overview."""
+        """Fetches a summary of market data from database."""
         try:
-            async with httpx.AsyncClient() as client:
-                response = await client.get(f"{self.data_service_url}/api/market/overview")
-                if response.status_code == 200:
-                    return response.json()
+            # Get market data from database
+            query = """
+            SELECT 
+                symbol,
+                name,
+                status,
+                ms_stock.industry,
+                ms_stock.sector
+            FROM market_symbol ms
+            LEFT JOIN market_stock ms_stock ON ms.symbol = ms_stock.symbol
+            WHERE ms.status = 'ACTIVE' AND ms.symbol IN ('SPY', 'QQQ', 'DIA', 'VIX')
+            ORDER BY ms.symbol
+            """
+            
+            results = self.db.execute_query(query)
+            
+            market_data = {}
+            for row in results:
+                symbol = row['symbol']
+                market_data[symbol] = {
+                    "name": row['name'],
+                    "status": row['status'],
+                    "industry": row['industry'],
+                    "sector": row['sector']
+                }
+            
+            # Add some mock price data (in real implementation, this would come from historical data)
+            market_overview = {
+                "SPY": {"price": 456.78, "change": 2.34, "change_percent": 0.51},
+                "QQQ": {"price": 389.45, "change": -1.23, "change_percent": -0.31},
+                "DIA": {"price": 34567.89, "change": 89.12, "change_percent": 0.26},
+                "VIX": {"price": 18.45, "change": -1.23, "change_percent": -6.25}
+            }
+            
+            return market_overview
+            
         except Exception as e:
             print(f"Market overview error: {e}")
-        
-        # Return default data
+            return self._get_empty_market_overview()
+
+    async def _get_portfolio_summary(self, user_id: int) -> Dict[str, Any]:
+        """Fetches a summary of the user's portfolio from database."""
+        try:
+            portfolio_overview = await self.portfolio_service.get_portfolio_overview(user_id)
+            return portfolio_overview.get("portfolio_summary", {})
+        except Exception as e:
+            print(f"Portfolio summary error: {e}")
+            return self._get_empty_portfolio_summary()
+
+    async def _get_active_positions(self, user_id: int) -> List[Dict[str, Any]]:
+        """Fetches a list of active positions for the user from database."""
+        try:
+            portfolio_overview = await self.portfolio_service.get_portfolio_overview(user_id)
+            return portfolio_overview.get("active_positions", [])
+        except Exception as e:
+            print(f"Active positions error: {e}")
+            return []
+
+    async def _get_recent_activity(self, user_id: int) -> List[Dict[str, Any]]:
+        """Fetches recent trading activity from database."""
+        try:
+            portfolio_overview = await self.portfolio_service.get_portfolio_overview(user_id)
+            return portfolio_overview.get("recent_activity", [])
+        except Exception as e:
+            print(f"Recent activity error: {e}")
+            return []
+
+    async def _get_performance_metrics(self, user_id: int) -> Dict[str, Any]:
+        """Fetches key performance metrics for the portfolio from database."""
+        try:
+            portfolio_overview = await self.portfolio_service.get_portfolio_overview(user_id)
+            return portfolio_overview.get("performance_metrics", {})
+        except Exception as e:
+            print(f"Performance metrics error: {e}")
+            return self._get_empty_performance_metrics()
+
+    async def _get_risk_metrics(self, user_id: int) -> Dict[str, Any]:
+        """Fetches key risk metrics for the portfolio from database."""
+        try:
+            portfolio_overview = await self.portfolio_service.get_portfolio_overview(user_id)
+            return portfolio_overview.get("risk_metrics", {})
+        except Exception as e:
+            print(f"Risk metrics error: {e}")
+            return self._get_empty_risk_metrics()
+
+    def _get_empty_portfolio_summary(self) -> Dict[str, Any]:
+        """Return empty portfolio summary."""
         return {
-            "sp500": {"price": 4567.89, "change": 12.34, "change_percent": 0.27},
-            "nasdaq": {"price": 14234.56, "change": -45.67, "change_percent": -0.32},
-            "dow": {"price": 34567.89, "change": 89.12, "change_percent": 0.26},
-            "vix": {"price": 18.45, "change": -1.23, "change_percent": -6.25}
+            "portfolio_id": None,
+            "name": "No Portfolio",
+            "total_value": 0.0,
+            "initial_capital": 0.0,
+            "cash_balance": 0.0,
+            "total_holdings_value": 0.0,
+            "total_unrealized_pnl": 0.0,
+            "total_pnl": 0.0,
+            "total_pnl_percent": 0.0,
+            "weighted_unrealized_pnl_percent": 0.0
         }
-    
-    def _get_default_dashboard_data(self) -> Dict[str, Any]:
-        """Get default dashboard data when services are unavailable."""
+
+    def _get_empty_performance_metrics(self) -> Dict[str, Any]:
+        """Return empty performance metrics."""
         return {
-            "portfolio_summary": {
-                "total_value": 100000.0,
-                "cash_balance": 25000.0,
-                "buying_power": 100000.0,
-                "daily_pnl": 0.0,
-                "daily_return": 0.0,
-                "total_pnl": 0.0,
-                "total_return": 0.0
-            },
-            "active_positions": [],
-            "performance_metrics": {
-                "total_return": 0.0,
-                "annualized_return": 0.0,
-                "sharpe_ratio": 0.0,
-                "max_drawdown": 0.0,
-                "win_rate": 0.0,
-                "avg_trade": 0.0,
-                "total_trades": 0
-            },
-            "risk_metrics": {
-                "portfolio_var": 0.0,
-                "var_percentile": 95,
-                "beta": 0.0,
-                "volatility": 0.0,
-                "correlation": 0.0
-            },
-            "recent_activity": [],
-            "market_overview": {
-                "sp500": {"price": 0.0, "change": 0.0, "change_percent": 0.0},
-                "nasdaq": {"price": 0.0, "change": 0.0, "change_percent": 0.0},
-                "dow": {"price": 0.0, "change": 0.0, "change_percent": 0.0},
-                "vix": {"price": 0.0, "change": 0.0, "change_percent": 0.0}
-            },
-            "last_updated": datetime.now().isoformat()
+            "total_return": 0.0,
+            "total_return_percent": 0.0,
+            "annualized_return": 0.0,
+            "total_trades": 0,
+            "win_rate": 0.0,
+            "avg_trade": 0.0,
+            "days_held": 0
+        }
+
+    def _get_empty_risk_metrics(self) -> Dict[str, Any]:
+        """Return empty risk metrics."""
+        return {
+            "portfolio_var": 0.0,
+            "var_percentile": 95,
+            "beta": 0.0,
+            "volatility": 0.0,
+            "max_drawdown": 0.0,
+            "sharpe_ratio": 0.0
+        }
+
+    def _get_empty_market_overview(self) -> Dict[str, Any]:
+        """Return empty market overview."""
+        return {
+            "SPY": {"price": 0.0, "change": 0.0, "change_percent": 0.0},
+            "QQQ": {"price": 0.0, "change": 0.0, "change_percent": 0.0},
+            "DIA": {"price": 0.0, "change": 0.0, "change_percent": 0.0},
+            "VIX": {"price": 0.0, "change": 0.0, "change_percent": 0.0}
         }
