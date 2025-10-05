@@ -1,0 +1,151 @@
+site_name: Bifrost Trader Knowledge Base
+site_description: Comprehensive knowledge base for Bifrost Trader microservices trading platform
+site_author: Bifrost Trader Team
+site_url: https://bifrost-trader.github.io/knowledge-base
+
+repo_name: weitingzhao/bifrost-trader
+repo_url: https://github.com/weitingzhao/bifrost-trader
+edit_uri: edit/main/docs/knowledge-base/
+
+docs_dir: docs/knowledge-base
+site_dir: site
+
+theme:
+  name: material
+  palette:
+    # Palette toggle for automatic mode
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+
+  features:
+    - announce.dismiss
+    - content.action.edit
+    - content.action.view
+    - content.code.annotate
+    - content.code.copy
+    - content.code.select
+    - content.footnote.tooltips
+    - content.tabs.link
+    - content.tooltips
+    - header.autohide
+    - navigation.expand
+    - navigation.footer
+    - navigation.indexes
+    - navigation.instant
+    - navigation.instant.prefetch
+    - navigation.instant.progress
+    - navigation.instant.progress.bar
+    - navigation.instant.progress.spinner
+    - navigation.instant.progress.sound
+    - navigation.path
+    - navigation.prune
+    - navigation.sections
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.top
+    - navigation.tracking
+    - search.highlight
+    - search.share
+    - search.suggest
+    - toc.follow
+    - toc.integrate
+
+  icon:
+    repo: fontawesome/brands/github
+    edit: material/pencil
+    view: material/eye
+
+plugins:
+  - search:
+      lang: en
+  - mermaid2
+
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - toc:
+      permalink: true
+      title: On this page
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.magiclink:
+      normalize_issue_symbols: true
+      repo_url_shorthand: true
+      user: weitingzhao
+      repo: bifrost-trader
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+      combine_header_slug: true
+      slugify: !!python/object/apply:pymdownx.slugs.slugify
+        kwds:
+          case: lower
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+nav:
+  - Home: index.md
+  - Architecture & Design:
+    - Architecture Guide: ARCHITECTURE_GUIDE.md
+    - Portal Design Plan: PORTAL_DESIGN_PLAN.md
+  - Database & Infrastructure:
+    - Database Reference: DATABASE_REFERENCE.md
+  - Strategy & Backtesting:
+    - Backtrader Service Plan: BACKTRADER_SERVICE_PLAN.md
+  - Migration & Refactoring:
+    - Refactoring Guide: REFACTORING_GUIDE.md
+  - AI Reference:
+    - AI Reference: AI_REFERENCE.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/weitingzhao/bifrost-trader
+    - icon: fontawesome/brands/docker
+      link: https://hub.docker.com/u/bifrosttrader
+
+copyright: Copyright &copy; 2025 Bifrost Trader Team
