@@ -1,0 +1,169 @@
+version: '3.8'
+
+services:
+  # PostgreSQL with TimescaleDB
+  postgres:
+    image: timescale/timescaledb:latest-pg17
+    container_name: bifrost-trader.postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=${DB_USERNAME:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASS:-Spm123!@#}
+      - POSTGRES_DB=${DB_NAME:-bifrost_trader}
+      - TIMESCALEDB_TELEMETRY=off
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    env_file:
+      - .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init:/docker-entrypoint-initdb.d
+      - ./database/backups:/backups
+    command: [
+      "postgres",
+      "-c", "max_connections=200",
+      "-c", "shared_buffers=4GB",
+      "-c", "effective_cache_size=8GB",
+      "-c", "maintenance_work_mem=1GB",
+      "-c", "random_page_cost=1.1",
+      "-c", "work_mem=100MB",
+      "-c", "min_wal_size=2GB",
+      "-c", "max_wal_size=8GB",
+      "-c", "checkpoint_completion_target=0.9",
+      "-c", "wal_buffers=16MB",
+      "-c", "default_statistics_target=100",
+      "-c", "log_statement=all",
+      "-c", "log_min_duration_statement=1000",
+      "-c", "log_line_prefix='%t [%p]: [%l-1] user=%u,db=%d,app=%a,client=%h '"
+    ]
+    networks:
+      - bifrost_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-postgres} -d ${DB_NAME:-bifrost_trader}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # Redis for caching and message broker
+  redis:
+    image: redis:7-alpine
+    container_name: bifrost-trader.redis
+    restart: always
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      - bifrost_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # PgBouncer for connection pooling
+  pgbouncer:
+    image: pgbouncer/pgbouncer:latest
+    container_name: bifrost-trader.pgbouncer
+    restart: always
+    environment:
+      - DATABASES_HOST=postgres
+      - DATABASES_PORT=5432
+      - DATABASES_USER=${DB_USERNAME:-postgres}
+      - DATABASES_PASSWORD=${DB_PASS:-Spm123!@#}
+      - DATABASES_DBNAME=${DB_NAME:-bifrost_trader}
+      - POOL_MODE=transaction
+      - MAX_CLIENT_CONN=100
+      - DEFAULT_POOL_SIZE=20
+      - RESERVE_POOL_SIZE=5
+      - RESERVE_POOL_TIMEOUT=5
+      - MAX_DB_CONNECTIONS=50
+      - MAX_USER_CONNECTIONS=50
+      - SERVER_RESET_QUERY=DISCARD ALL
+      - IGNORE_STARTUP_PARAMETERS=extra_float_digits
+    ports:
+      - "6432:5432"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - bifrost_network
+    healthcheck:
+      test: ["CMD", "pg_isready", "-h", "localhost", "-p", "5432"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Database Admin Interface (pgAdmin)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: bifrost-trader.pgadmin
+    restart: always
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@bifrostrader.com
+      - PGADMIN_DEFAULT_PASSWORD=admin123
+      - PGADMIN_CONFIG_SERVER_MODE=False
+      - PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED=False
+    ports:
+      - "8080:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - bifrost_network
+
+  # Redis Commander (Redis Admin Interface)
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: bifrost-trader.redis-commander
+    restart: always
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+      - HTTP_USER=admin
+      - HTTP_PASSWORD=admin123
+    ports:
+      - "8081:8081"
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - bifrost_network
+
+  # Database Backup Service
+  db-backup:
+    image: postgres:17-alpine
+    container_name: bifrost-trader.db-backup
+    restart: "no"
+    environment:
+      - PGPASSWORD=${DB_PASS:-Spm123!@#}
+    volumes:
+      - ./database/backups:/backups
+      - ./scripts/backup.sh:/backup.sh
+    command: /bin/sh -c "chmod +x /backup.sh && /backup.sh"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - bifrost_network
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  pgadmin_data:
+    driver: local
+
+networks:
+  bifrost_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
