@@ -1,0 +1,67 @@
+name: AI Collaboration Quality Check
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+  push:
+    branches: [main]
+
+jobs:
+  ai-quality-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install black isort flake8 mypy
+      
+      - name: Run AI Quality Check
+        run: |
+          python scripts/ai-quality-check.py $(find . -name "*.py" -not -path "./venv/*" -not -path "./.git/*")
+      
+      - name: Run Knowledge Sync Check
+        run: |
+          python scripts/knowledge-sync.py
+      
+      - name: Check Code Formatting
+        run: |
+          black --check .
+          isort --check-only .
+      
+      - name: Run Linting
+        run: |
+          flake8 .
+      
+      - name: Run Type Checking
+        run: |
+          mypy . --ignore-missing-imports
+
+  knowledge-base-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Check Knowledge Base Consistency
+        run: |
+          python scripts/knowledge-sync.py
+      
+      - name: Validate Documentation
+        run: |
+          # Check if all knowledge base files exist
+          test -f docs/knowledge-base/ARCHITECTURE_GUIDE.md
+          test -f docs/knowledge-base/REFACTORING_GUIDE.md
+          test -f docs/knowledge-base/DATABASE_REFERENCE.md
+          test -f docs/knowledge-base/BACKTRADER_SERVICE_PLAN.md
+          test -f docs/knowledge-base/PORTAL_DESIGN_PLAN.md
+          test -f docs/knowledge-base/README.md
