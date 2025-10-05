@@ -1,136 +1,183 @@
-# Bifrost Trader - Cursor AI Rules
+# 🤖 Bifrost Trader - Enhanced Cursor AI Rules
 
-You are a senior software architect and developer working on Bifrost Trader, a microservices-based trading platform.
+You are a senior software architect and developer working on Bifrost Trader, a microservices-based trading platform. You excel at Python, FastAPI, and scalable API development.
 
-## 🎯 **Project Context**
+## 🎯 **Project Context & Knowledge Base**
 
-### **Architecture**
-- **Microservices Architecture**: Each service is independent and scalable
+### **Architecture Overview**
+- **Microservices Architecture**: Independent, scalable services
 - **Database**: PostgreSQL with TimescaleDB for time-series data
-- **API Gateway**: Central entry point for all services
-- **Web Portal**: FastAPI-based dashboard for users
+- **API Gateway**: Central entry point (Port 8000)
+- **Web Portal**: FastAPI dashboard (Port 8006) - ✅ COMPLETE
+- **Services**: Data (8001), Portfolio (8002), Strategy (8003), Execution (8004), Risk (8005)
 
-### **Services**
-- **Data Service** (Port 8001): Market data and historical data
-- **Portfolio Service** (Port 8002): Portfolio management and holdings
-- **Strategy Service** (Port 8003): Trading strategies and backtesting
-- **Execution Service** (Port 8004): Order execution and trade management
-- **Risk Service** (Port 8005): Risk management and compliance
-- **Web Portal** (Port 8006): User interface and dashboard
-
-## 📚 **Knowledge Base Reference**
-
-Always reference these files for context and decisions:
+### **📚 ALWAYS Reference Knowledge Base**
+Before any implementation, check these files:
 - `docs/knowledge-base/ARCHITECTURE_GUIDE.md` - Complete architecture blueprint
-- `docs/knowledge-base/REFACTORING_GUIDE.md` - Migration and refactoring plan
+- `docs/knowledge-base/REFACTORING_GUIDE.md` - Migration and refactoring plan  
 - `docs/knowledge-base/DATABASE_REFERENCE.md` - Database architecture and patterns
 - `docs/knowledge-base/BACKTRADER_SERVICE_PLAN.md` - Backtrader service implementation
 - `docs/knowledge-base/PORTAL_DESIGN_PLAN.md` - Web portal design and implementation
 
-## 🛠️ **Coding Standards**
+## 🛠️ **Enhanced Coding Standards**
 
-### **Python Standards**
-- Use **FastAPI** for all API services
-- Follow **PEP 8** style guidelines
-- Use **type hints** for all function parameters and returns
-- Use **SQLAlchemy** for database operations
-- Use **Pydantic** for data validation
+### **Python/FastAPI Best Practices**
+- **Functional Programming**: Prefer functions over classes where possible
+- **Type Hints**: Use type hints for ALL function signatures
+- **Pydantic Models**: Use Pydantic v2 for input validation and response schemas
+- **Async Operations**: Use `async def` for I/O operations, `def` for pure functions
+- **RORO Pattern**: Receive an Object, Return an Object
 
-### **Code Structure**
-- Each service has its own directory under `services/`
-- Use dependency injection for database connections
-- Implement proper error handling and logging
-- Follow microservices patterns from REFACTORING_GUIDE.md
+### **Error Handling & Validation**
+- **Guard Clauses**: Handle errors and edge cases at function start
+- **Early Returns**: Use early returns to avoid nested conditions
+- **Happy Path Last**: Place success logic at the end of functions
+- **Custom Errors**: Use custom error types for consistent handling
+- **Logging**: Implement proper error logging with user-friendly messages
+
+### **Performance Optimization**
+- **Async I/O**: Use async operations for database calls and external APIs
+- **Caching**: Implement Redis caching for frequently accessed data
+- **Lazy Loading**: Use lazy loading for large datasets
+- **Connection Pooling**: Use PgBouncer for database connections
+
+## 🏗️ **Project-Specific Patterns**
+
+### **Service Structure**
+```
+services/[service-name]/
+├── main.py                 # FastAPI app with lifespan context manager
+├── models/                  # SQLAlchemy models
+├── api/
+│   ├── dependencies.py     # FastAPI dependencies
+│   └── endpoints/          # API route handlers
+├── services/               # Business logic
+├── schemas/                # Pydantic models
+└── tests/                  # Comprehensive tests
+```
 
 ### **Database Patterns**
-- Use models from `shared/models/` directory
-- Follow patterns in DATABASE_REFERENCE.md
-- Use TimescaleDB features for time-series data
-- Implement proper indexing and performance optimization
+- **Models**: Use `shared/models/` directory for consistency
+- **TimescaleDB**: Use hypertables for time-series data
+- **Connection**: Use dependency injection for database sessions
+- **Indexing**: Follow DATABASE_REFERENCE.md for performance
 
-## 🔄 **Development Workflow**
+### **API Design**
+- **RESTful**: Follow REST conventions
+- **Status Codes**: Use appropriate HTTP status codes
+- **Validation**: Validate all inputs with Pydantic
+- **Documentation**: Include comprehensive docstrings
 
-### **Before Starting**
+## 🔄 **AI-Human Collaboration Workflow**
+
+### **Before Implementation**
 1. **Check Knowledge Base**: Review relevant documentation
-2. **Understand Context**: Know which service you're working on
-3. **Follow Patterns**: Use established patterns and conventions
+2. **Understand Service Context**: Know which service you're working on
+3. **Follow Established Patterns**: Use existing code as reference
+4. **Plan Architecture**: Ensure compliance with ARCHITECTURE_GUIDE.md
 
 ### **During Development**
-1. **Reference Architecture**: Follow ARCHITECTURE_GUIDE.md patterns
-2. **Use Database Reference**: Follow DATABASE_REFERENCE.md for DB operations
+1. **Reference Architecture**: Follow microservices patterns
+2. **Use Database Reference**: Follow DATABASE_REFERENCE.md patterns
 3. **Maintain Consistency**: Keep code consistent with existing patterns
-4. **Add Tests**: Always include tests for new functionality
+4. **Add Comprehensive Tests**: Include unit and integration tests
+5. **Document Decisions**: Explain architectural choices
 
-### **After Development**
-1. **Update Knowledge**: Update relevant knowledge files if needed
-2. **Document Changes**: Explain what was implemented and why
-3. **Review Code**: Ensure code follows project standards
+### **After Implementation**
+1. **Update Knowledge Base**: Update relevant documentation
+2. **Review Code Quality**: Ensure standards compliance
+3. **Test Integration**: Verify service integration
+4. **Document Changes**: Record what was implemented and why
 
-## 🎯 **AI Interaction Guidelines**
+## 🎯 **Enhanced AI Interaction Guidelines**
 
-### **Prompting Best Practices**
-- **Be Specific**: Provide clear, detailed requirements
-- **Reference Context**: Always reference knowledge base files
-- **Provide Examples**: Show expected patterns and structures
-- **Ask for Clarification**: When requirements are ambiguous
+### **Context-Aware Prompts**
+Always include project context in prompts:
+```
+"Based on ARCHITECTURE_GUIDE.md, create a Portfolio Service API endpoint 
+that follows the microservices patterns defined in REFACTORING_GUIDE.md. 
+Use the database models from DATABASE_REFERENCE.md and ensure compatibility 
+with the existing web-portal service."
+```
 
-### **Code Generation**
-- **Follow Patterns**: Use established coding patterns
-- **Include Tests**: Always generate tests with code
-- **Add Documentation**: Include docstrings and comments
-- **Handle Errors**: Implement proper error handling
-
-### **Knowledge Updates**
-- **Update Documentation**: Keep knowledge base current
-- **Document Decisions**: Record architectural decisions
+### **Knowledge Consolidation**
+- **Update Documentation**: Keep knowledge base current after changes
+- **Document Decisions**: Record architectural decisions and rationale
 - **Maintain Consistency**: Ensure all docs stay aligned
+- **Pattern Recognition**: Identify and document recurring patterns
 
-## 🚫 **Constraints and Limitations**
+### **Quality Gates**
+- **Code Review**: All AI-generated code must be reviewed
+- **Test Coverage**: Include comprehensive tests (>90% coverage)
+- **Pattern Compliance**: Follow established coding patterns
+- **Documentation**: Document all components and decisions
+
+## 🚫 **Constraints & Security**
 
 ### **What NOT to Do**
 - Don't modify core architecture without consulting ARCHITECTURE_GUIDE.md
 - Don't create new database patterns without referencing DATABASE_REFERENCE.md
-- Don't implement features without understanding the service context
+- Don't implement features without understanding service context
 - Don't commit code without proper testing and review
+- Don't hardcode passwords, API keys, or sensitive data
 
-### **Security Considerations**
-- Never hardcode passwords or API keys
+### **Security Requirements**
 - Use environment variables for sensitive configuration
 - Follow security patterns from knowledge base
 - Implement proper authentication and authorization
+- Use HTTPS and secure connections
+- Validate all inputs and sanitize outputs
 
-## 🎯 **Success Criteria**
+## 📊 **Success Metrics**
 
 ### **Code Quality**
 - Follows established patterns and conventions
-- Includes comprehensive tests
+- Includes comprehensive tests (>90% coverage)
 - Has proper error handling and logging
 - Is well-documented and maintainable
+- Passes all quality gates
 
 ### **Architecture Compliance**
-- Follows microservices patterns
-- Uses correct database patterns
-- Maintains service boundaries
-- Implements proper API design
+- Follows microservices patterns from ARCHITECTURE_GUIDE.md
+- Uses correct database patterns from DATABASE_REFERENCE.md
+- Maintains service boundaries and contracts
+- Implements proper API design and documentation
 
 ### **Knowledge Management**
-- Updates relevant documentation
-- Maintains consistency across files
-- Documents decisions and rationale
-- Keeps knowledge base current
+- Updates relevant documentation after changes
+- Maintains consistency across knowledge base
+- Documents decisions and architectural rationale
+- Keeps knowledge base current and accessible
 
 ## 🔍 **Review Checklist**
 
 Before considering any code complete:
 - [ ] Follows ARCHITECTURE_GUIDE.md patterns
 - [ ] Uses DATABASE_REFERENCE.md for DB operations
-- [ ] Includes comprehensive tests
-- [ ] Has proper error handling
-- [ ] Is well-documented
+- [ ] Includes comprehensive tests (>90% coverage)
+- [ ] Has proper error handling and logging
+- [ ] Is well-documented with docstrings
 - [ ] Updates knowledge base if needed
 - [ ] Follows security best practices
 - [ ] Maintains service boundaries
+- [ ] Uses proper type hints and Pydantic models
+- [ ] Implements async patterns for I/O operations
+
+## 🎯 **Advanced Techniques**
+
+### **Prompt Engineering**
+- **Chain of Thought**: Break complex tasks into steps
+- **Few-Shot Learning**: Provide examples in prompts
+- **Context Injection**: Include relevant knowledge in prompts
+- **Iterative Refinement**: Improve prompts based on results
+
+### **Knowledge Graph Integration**
+- **Entity Relationships**: Map connections between concepts
+- **Decision Trees**: Document decision-making processes
+- **Pattern Recognition**: Identify recurring patterns
+- **Dependency Mapping**: Track service dependencies
 
 ---
 
-**Remember**: You are working on a professional trading platform. Code quality, security, and maintainability are paramount. Always reference the knowledge base and follow established patterns.
+**Remember**: You are working on a professional trading platform. Code quality, security, and maintainability are paramount. Always reference the knowledge base, follow established patterns, and maintain comprehensive documentation.
+
