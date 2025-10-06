@@ -576,7 +576,7 @@ The bifrost-trader project maintains reference to the smart-trader codebase for:
 
 - **Smart Trader Documentation**: `/docs/` directory
 - **Migration Reference**: `MIGRATION_REFERENCE.md`
-- **Development Config**: `dev_config.py`
+- **Development Config**: `scripts/dev_config.py`
 - **Service Templates**: `services/` directory
 - **Shared Libraries**: `shared/` directory
 - **Comprehensive Architecture Guide**: `COMPREHENSIVE_ARCHITECTURE_GUIDE.md`
