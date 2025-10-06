@@ -262,9 +262,35 @@ class YahooFinanceService:
     def _search_symbols_sync(self, query: str) -> List[Dict[str, Any]]:
         """Synchronous symbol search."""
         try:
-            # This is a placeholder - Yahoo Finance doesn't have a direct search API
-            # You might need to implement this using other data sources
-            return []
+            # Use yfinance's search functionality
+            import yfinance as yf
+            
+            # Try to get suggestions from Yahoo Finance
+            # This is a basic implementation - in production, you might want to use
+            # a more sophisticated search mechanism or maintain a symbol database
+            results = []
+            
+            # Common stock symbols to search through (this is a simplified approach)
+            common_symbols = ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'META', 'NVDA', 'NFLX', 'AMD', 'INTC']
+            
+            for symbol in common_symbols:
+                if query.upper() in symbol.upper():
+                    try:
+                        ticker = yf.Ticker(symbol)
+                        info = ticker.info
+                        if info and 'longName' in info:
+                            results.append({
+                                'symbol': symbol,
+                                'name': info.get('longName', ''),
+                                'short_name': info.get('shortName', ''),
+                                'exchange': info.get('exchange', ''),
+                                'market': info.get('market', ''),
+                                'currency': info.get('currency', '')
+                            })
+                    except Exception:
+                        continue
+            
+            return results[:10]  # Limit to 10 results
         except Exception as e:
             self.logger.error(f"Error in _search_symbols_sync: {e}")
             return []

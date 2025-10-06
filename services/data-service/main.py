@@ -12,12 +12,40 @@ from datetime import datetime, timedelta
 from typing import List, Dict, Any, Optional
 import asyncio
 
-from shared.utils import HealthChecker, setup_logging, load_environment, get_database_connection
-from shared.models import MarketSymbol, MarketData, APIResponse, PaginatedResponse
-from .services.yahoo_finance_service import YahooFinanceService
-from .services.data_ingestion_service import DataIngestionService
-from .models.market_symbol import MarketSymbolModel
-from .models.market_data import MarketDataModel
+# Import shared utilities (we'll create these locally for now)
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
+
+try:
+    from shared.utils import HealthChecker, setup_logging, load_environment, get_database_connection
+    from shared.models import MarketSymbol, MarketData, APIResponse, PaginatedResponse
+except ImportError:
+    # Fallback to local implementations
+    class HealthChecker:
+        def __init__(self, service_name):
+            self.service_name = service_name
+        def get_health_status(self):
+            return {"status": "healthy", "service": self.service_name}
+    
+    def setup_logging(service_name):
+        import logging
+        logging.basicConfig(level=logging.INFO)
+        return logging.getLogger(service_name)
+    
+    def load_environment():
+        pass
+    
+    class APIResponse:
+        def __init__(self, success, data, message):
+            self.success = success
+            self.data = data
+            self.message = message
+from src.services.yahoo_finance_service import YahooFinanceService
+from src.services.data_ingestion_service import DataIngestionService
+from src.models.market_symbol import MarketSymbolModel
+from src.models.market_data import MarketDataModel
+import os
 
 
 # Load environment variables
@@ -31,7 +59,10 @@ health_checker = HealthChecker("data-service")
 
 # Services
 yahoo_service = YahooFinanceService()
-ingestion_service = DataIngestionService()
+
+# Database connection for ingestion service
+database_url = f"postgresql://{os.getenv('DB_USERNAME', 'postgres')}:{os.getenv('DB_PASS', '')}@{os.getenv('DB_HOST', 'localhost')}:{os.getenv('DB_PORT', '5432')}/{os.getenv('DB_NAME', 'bifrost_trader')}"
+ingestion_service = DataIngestionService(database_url)
 
 
 @asynccontextmanager
@@ -351,7 +382,7 @@ async def get_symbol_stats():
 async def get_data_stats():
     """Get data statistics."""
     try:
-        stats = await ingestion_service.get_data_statistics()
+        stats = ingestion_service.get_ingestion_stats()
         return APIResponse(
             success=True,
             data=stats,
@@ -359,6 +390,124 @@ async def get_data_stats():
         )
     except Exception as e:
         logger.error(f"Error getting data stats: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# New enhanced endpoints
+
+@app.post("/symbols/{symbol}/ingest")
+async def ingest_symbol_data(symbol: str):
+    """Ingest all data for a symbol (info + historical + latest price)."""
+    try:
+        result = await ingestion_service.update_symbol_data(symbol)
+        
+        if 'error' in result:
+            raise HTTPException(status_code=400, detail=result['error'])
+        
+        return APIResponse(
+            success=True,
+            data=result,
+            message=f"Symbol data ingested successfully for {symbol}"
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error ingesting symbol data for {symbol}: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/symbols/batch-ingest")
+async def batch_ingest_symbols(symbols: List[str]):
+    """Batch ingest multiple symbols."""
+    try:
+        if len(symbols) > 50:  # Limit batch size
+            raise HTTPException(status_code=400, detail="Batch size too large. Maximum 50 symbols.")
+        
+        result = await ingestion_service.batch_ingest_symbols(symbols)
+        
+        return APIResponse(
+            success=True,
+            data=result,
+            message=f"Batch ingestion completed for {len(symbols)} symbols"
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error in batch ingestion: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/symbols/{symbol}/info")
+async def get_symbol_info(symbol: str):
+    """Get comprehensive symbol information."""
+    try:
+        info = await yahoo_service.get_company_info(symbol)
+        
+        if not info:
+            raise HTTPException(status_code=404, detail=f"Symbol {symbol} not found")
+        
+        return APIResponse(
+            success=True,
+            data=info,
+            message=f"Symbol info retrieved for {symbol}"
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error getting symbol info for {symbol}: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/symbols/{symbol}/latest-price")
+async def get_latest_price(symbol: str):
+    """Get latest price information for a symbol."""
+    try:
+        price_info = await yahoo_service.get_latest_price(symbol)
+        
+        if not price_info:
+            raise HTTPException(status_code=404, detail=f"Price data not found for {symbol}")
+        
+        return APIResponse(
+            success=True,
+            data=price_info,
+            message=f"Latest price retrieved for {symbol}"
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error getting latest price for {symbol}: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/symbols/search")
+async def search_symbols(query: str = Query(..., min_length=1, max_length=50)):
+    """Search for symbols by query."""
+    try:
+        results = await yahoo_service.search_symbols(query)
+        
+        return APIResponse(
+            success=True,
+            data=results,
+            message=f"Search completed for query: {query}"
+        )
+    except Exception as e:
+        logger.error(f"Error searching symbols: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/symbols/{symbol}/validate")
+async def validate_symbol(symbol: str):
+    """Validate if a symbol exists."""
+    try:
+        is_valid = yahoo_service.validate_symbol(symbol)
+        
+        return APIResponse(
+            success=True,
+            data={"symbol": symbol, "valid": is_valid},
+            message=f"Symbol validation completed for {symbol}"
+        )
+    except Exception as e:
+        logger.error(f"Error validating symbol {symbol}: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
