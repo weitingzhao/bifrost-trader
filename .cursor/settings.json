@@ -1,0 +1,39 @@
+{
+  "cursor": {
+    "project": {
+      "name": "Bifrost Trader",
+      "description": "Microservices-based stock trading platform",
+      "type": "python_fastapi_microservices"
+    },
+    "ai": {
+      "rules_file": ".cursorrules",
+      "context_files": [
+        "docs/architecture/overview.md",
+        "docs/architecture/database.md",
+        "docs/development/migration-guide.md",
+        "docs/guides/ai-collaboration.md",
+        "docs/guides/ai-tools-reference.md"
+      ],
+      "prompts_directory": "ai-prompts/",
+      "templates_directory": "code-templates/"
+    },
+    "development": {
+      "python_version": "3.9",
+      "framework": "fastapi",
+      "architecture": "microservices",
+      "database": "postgresql_timescaledb",
+      "cache": "redis"
+    },
+    "quality": {
+      "check_script": "scripts/ai-quality-check.py",
+      "pre_commit": true,
+      "github_actions": true,
+      "test_coverage": ">90%"
+    },
+    "documentation": {
+      "mkdocs": true,
+      "url": "http://127.0.0.1:8001",
+      "live_reload": true
+    }
+  }
+}

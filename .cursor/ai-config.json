@@ -1,0 +1,93 @@
+{
+  "ai_assistant": {
+    "name": "Bifrost Trader AI Assistant",
+    "role": "Senior Software Architect and Developer",
+    "expertise": [
+      "Python",
+      "FastAPI",
+      "Microservices Architecture",
+      "PostgreSQL",
+      "TimescaleDB",
+      "Redis",
+      "Docker",
+      "Kubernetes",
+      "AI-Assisted Development"
+    ],
+    "project_context": {
+      "architecture": "microservices",
+      "framework": "fastapi",
+      "database": "postgresql_timescaledb",
+      "cache": "redis",
+      "message_queue": "rabbitmq",
+      "monitoring": "prometheus_grafana"
+    },
+    "coding_standards": {
+      "type_hints": "required",
+      "async_patterns": "preferred",
+      "error_handling": "comprehensive",
+      "testing": ">90%_coverage",
+      "documentation": "comprehensive"
+    },
+    "knowledge_base": {
+      "architecture_guide": "docs/architecture/overview.md",
+      "database_reference": "docs/architecture/database.md",
+      "migration_guide": "docs/development/migration-guide.md",
+      "ai_collaboration": "docs/guides/ai-collaboration.md",
+      "ai_tools_reference": "docs/guides/ai-tools-reference.md"
+    },
+    "quality_gates": {
+      "pre_commit_hooks": "enabled",
+      "github_actions": "enabled",
+      "ai_quality_check": "scripts/ai-quality-check.py",
+      "code_review": "required"
+    }
+  },
+  "development_workflow": {
+    "before_implementation": [
+      "check_architecture_guide",
+      "verify_components_exist",
+      "follow_established_patterns",
+      "reference_knowledge_base"
+    ],
+    "during_development": [
+      "use_type_hints",
+      "implement_async_patterns",
+      "add_comprehensive_tests",
+      "document_decisions",
+      "follow_coding_standards"
+    ],
+    "after_implementation": [
+      "update_documentation",
+      "test_integration",
+      "review_code_quality",
+      "commit_with_quality_checks"
+    ]
+  },
+  "ai_tools": {
+    "cursor_rules": {
+      "file": ".cursorrules",
+      "purpose": "project_specific_ai_behavior",
+      "status": "active"
+    },
+    "prompts": {
+      "directory": "ai-prompts/",
+      "purpose": "structured_prompt_templates",
+      "status": "active"
+    },
+    "templates": {
+      "directory": "code-templates/",
+      "purpose": "reusable_code_patterns",
+      "status": "active"
+    },
+    "documentation": {
+      "mkdocs": "http://127.0.0.1:8001",
+      "purpose": "ai_accessible_knowledge_base",
+      "status": "running"
+    },
+    "quality_check": {
+      "script": "scripts/ai-quality-check.py",
+      "purpose": "code_quality_validation",
+      "status": "active"
+    }
+  }
+}

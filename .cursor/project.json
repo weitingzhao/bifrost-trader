@@ -1,0 +1,80 @@
+{
+  "version": "1.0.0",
+  "name": "Bifrost Trader",
+  "description": "Microservices-based stock trading platform with AI-assisted development",
+  "type": "project",
+  "language": "python",
+  "framework": "fastapi",
+  "database": "postgresql",
+  "architecture": "microservices",
+  "ai_tools": [
+    "cursor-ai",
+    "mkdocs",
+    "ai-prompts",
+    "code-templates",
+    "quality-checks",
+    "github-actions"
+  ],
+  "services": {
+    "api-gateway": {
+      "port": 8000,
+      "status": "complete",
+      "description": "Central routing and service discovery"
+    },
+    "data-service": {
+      "port": 8001,
+      "status": "partial",
+      "description": "Market data ingestion and processing"
+    },
+    "portfolio-service": {
+      "port": 8002,
+      "status": "partial",
+      "description": "Portfolio management and tracking"
+    },
+    "strategy-service": {
+      "port": 8003,
+      "status": "partial",
+      "description": "Backtesting and strategy execution"
+    },
+    "execution-service": {
+      "port": 8004,
+      "status": "not-implemented",
+      "description": "Order execution and trade management"
+    },
+    "risk-service": {
+      "port": 8005,
+      "status": "not-implemented",
+      "description": "Risk management and compliance"
+    },
+    "web-portal": {
+      "port": 8006,
+      "status": "complete",
+      "description": "User interface and dashboard"
+    }
+  },
+  "documentation": {
+    "mkdocs": {
+      "url": "http://127.0.0.1:8001",
+      "status": "running",
+      "theme": "material"
+    },
+    "guides": [
+      "ai-collaboration",
+      "ai-tools-reference"
+    ]
+  },
+  "ai_collaboration": {
+    "cursor_rules": ".cursorrules",
+    "prompts": "ai-prompts/",
+    "templates": "code-templates/",
+    "quality_check": "scripts/ai-quality-check.py",
+    "setup_script": "scripts/setup-ai-collaboration.sh"
+  },
+  "development": {
+    "python_version": "3.9",
+    "virtual_env": "venv/",
+    "requirements": "requirements.txt",
+    "pre_commit": ".pre-commit-config.yaml",
+    "github_actions": ".github/workflows/"
+  }
+}

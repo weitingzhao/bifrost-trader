@@ -1,0 +1,80 @@
+{
+  "workspace": {
+    "name": "Bifrost Trader",
+    "type": "microservices_trading_platform",
+    "root": ".",
+    "services": [
+      "api-gateway",
+      "data-service", 
+      "portfolio-service",
+      "strategy-service",
+      "execution-service",
+      "risk-service",
+      "web-portal"
+    ],
+    "shared": [
+      "shared/models",
+      "shared/schemas",
+      "shared/utils"
+    ],
+    "documentation": "docs/",
+    "scripts": "scripts/",
+    "ai_tools": [
+      "ai-prompts",
+      "code-templates"
+    ]
+  },
+  "file_watching": {
+    "include": [
+      "services/**/*.py",
+      "shared/**/*.py",
+      "docs/**/*.md",
+      "scripts/**/*.py",
+      "*.py",
+      "*.md",
+      "*.yml",
+      "*.yaml",
+      "*.json"
+    ],
+    "exclude": [
+      "venv/**",
+      ".git/**",
+      "__pycache__/**",
+      "*.pyc",
+      "site/**",
+      ".pytest_cache/**"
+    ]
+  },
+  "ai_context": {
+    "always_reference": [
+      "docs/architecture/overview.md",
+      "docs/architecture/database.md",
+      "docs/development/migration-guide.md",
+      "docs/guides/ai-collaboration.md",
+      "docs/guides/ai-tools-reference.md"
+    ],
+    "coding_standards": {
+      "python": {
+        "type_hints": "required",
+        "async_preferred": true,
+        "error_handling": "comprehensive",
+        "testing": "required"
+      },
+      "fastapi": {
+        "pydantic_models": "required",
+        "async_endpoints": "preferred",
+        "dependency_injection": "required",
+        "error_responses": "standardized"
+      }
+    }
+  },
+  "development_environment": {
+    "python_version": "3.9",
+    "virtual_env": "venv/",
+    "documentation_server": "http://127.0.0.1:8001",
+    "services": {
+      "api_gateway": "http://localhost:8000",
+      "web_portal": "http://localhost:8006"
+    }
+  }
+}
