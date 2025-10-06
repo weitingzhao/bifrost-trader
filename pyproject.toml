@@ -4,8 +4,8 @@ target-version = ['py39']
 include = '\.pyi?$'
 extend-exclude = '''
 /(
-  # Exclude a few files that are problematic
   services/strategy-service/src/backtrader/.*
+  venv/.*
 )/
 '''
 

@@ -30,8 +30,8 @@ jobs:
       
       - name: Check Code Formatting
         run: |
-          black --check --exclude "venv|services/strategy-service/src/backtrader" . --line-length 88
-          isort --check-only --skip-glob "venv/*" --skip-glob "services/strategy-service/src/backtrader/*" .
+          black --check .
+          isort --check-only .
       
       - name: Run Linting
         run: |
