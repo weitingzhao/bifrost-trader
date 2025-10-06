@@ -1,6 +1,6 @@
 """
 Development configuration for Bifrost Trader.
-Provides easy access to Smart Trader components during migration.
+Provides easy access to Smart Trader components during migration and sets up Python paths.
 """
 
 import os
@@ -8,17 +8,41 @@ import sys
 from pathlib import Path
 
 # Project paths
-PROJECT_ROOT = Path(__file__).parent.parent
-BIFROST_ROOT = Path(__file__).parent
+PROJECT_ROOT = Path(__file__).parent.parent.parent
+BIFROST_ROOT = Path(__file__).parent.parent
 SMART_TRADER_ROOT = PROJECT_ROOT / "smart-trader"
 
 # Ensure smart-trader is accessible
 if not SMART_TRADER_ROOT.exists():
     raise FileNotFoundError(f"Smart Trader project not found at {SMART_TRADER_ROOT}")
 
-# Add smart-trader to Python path
-if str(SMART_TRADER_ROOT) not in sys.path:
-    sys.path.insert(0, str(SMART_TRADER_ROOT))
+# Add paths to Python path for development
+paths_to_add = [
+    str(BIFROST_ROOT),
+    str(SMART_TRADER_ROOT),
+    str(BIFROST_ROOT / "shared"),
+    str(BIFROST_ROOT / "services" / "data-service" / "src"),
+    str(BIFROST_ROOT / "services" / "portfolio-service" / "src"),
+    str(BIFROST_ROOT / "services" / "strategy-service" / "src"),
+    str(BIFROST_ROOT / "services" / "risk-service" / "src"),
+    str(BIFROST_ROOT / "services" / "ml-service" / "src"),
+    str(BIFROST_ROOT / "services" / "analytics-service" / "src"),
+    str(BIFROST_ROOT / "services" / "compliance-service" / "src"),
+    str(BIFROST_ROOT / "services" / "news-service" / "src"),
+    str(BIFROST_ROOT / "services" / "microstructure-service" / "src"),
+    str(BIFROST_ROOT / "services" / "web-portal" / "src"),
+    str(BIFROST_ROOT / "services" / "api-gateway"),
+]
+
+# Add paths that don't already exist
+for path in paths_to_add:
+    if os.path.exists(path) and path not in sys.path:
+        sys.path.insert(0, path)
+
+# Set environment variables for easy access
+os.environ.setdefault('BIFROST_ROOT', str(BIFROST_ROOT))
+os.environ.setdefault('SMART_TRADER_ROOT', str(SMART_TRADER_ROOT))
+os.environ.setdefault('PROJECT_ROOT', str(PROJECT_ROOT))
 
 # Smart Trader component paths for easy reference
 SMART_TRADER_PATHS = {

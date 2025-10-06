@@ -37,7 +37,7 @@ fi
 
 # Check if virtual environment exists
 if [ ! -d "venv" ]; then
-    print_error "Virtual environment not found. Please run ./scripts/setup-dev-environment.sh first"
+    print_error "Virtual environment not found. Please run ./scripts/setup-ai-collaboration.sh first"
     exit 1
 fi
 
