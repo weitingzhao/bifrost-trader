@@ -137,6 +137,7 @@ nav:
     - Overview: architecture/index.md
     - System Overview: architecture/overview.md
     - Database Design: architecture/database.md
+    - Database Folder Structure: architecture/database-folder-structure.md
   - Services:
     - Overview: services/index.md
     - Web Portal: services/web-portal.md

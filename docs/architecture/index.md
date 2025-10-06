@@ -28,6 +28,13 @@ Database architecture and implementation:
 - Backup and recovery procedures
 - Schema design and migrations
 
+### **📁 [Database Folder Structure](database-folder-structure.md)**
+Database folder organization and structure:
+- Infrastructure vs application separation
+- Folder purposes and usage patterns
+- Best practices and architectural decisions
+- Usage examples and guidelines
+
 ## 🎯 **Key Architectural Decisions**
 
 ### **Microservices Architecture**
