@@ -70,12 +70,12 @@
       "status": "active"
     },
     "prompts": {
-      "directory": "ai-prompts/",
+      "directory": ".cursor/prompts/",
       "purpose": "structured_prompt_templates",
       "status": "active"
     },
     "templates": {
-      "directory": "code-templates/",
+      "directory": ".cursor/templates/",
       "purpose": "reusable_code_patterns",
       "status": "active"
     },

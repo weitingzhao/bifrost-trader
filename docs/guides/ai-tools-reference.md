@@ -42,14 +42,14 @@ Defines behavior and constraints for Cursor AI to ensure consistent, project-spe
 
 ---
 
-## 🎯 **2. AI Prompts Framework (`ai-prompts/`)**
+## 🎯 **2. AI Prompts Framework (`.cursor/prompts/`)**
 
 ### **Purpose**
 Provides structured prompt templates for consistent AI interactions and reproducible results.
 
 ### **Structure**
 ```
-ai-prompts/
+.cursor/prompts/
 ├── README.md                    # Framework overview
 └── templates/
     ├── service-creation.md      # Microservice creation prompts
@@ -64,8 +64,8 @@ ai-prompts/
 
 ### **How to Use**
 ```bash
-# 1. Copy template from ai-prompts/templates/
-cat ai-prompts/templates/service-creation.md
+# 1. Copy template from .cursor/prompts/templates/
+cat .cursor/prompts/templates/service-creation.md
 
 # 2. Customize with your specific requirements
 # Example: Create a new portfolio service
@@ -93,14 +93,14 @@ Database tables: portfolio, holding, transaction, cash_balance
 
 ---
 
-## 🎯 **3. Code Templates (`code-templates/`)**
+## 🎯 **3. Code Templates (`.cursor/templates/`)**
 
 ### **Purpose**
 Provides reusable code templates for consistent development patterns and rapid prototyping.
 
 ### **Structure**
 ```
-code-templates/
+.cursor/templates/
 ├── README.md                    # Template overview
 ├── microservice/               # Complete FastAPI service structure
 ├── api-endpoints/              # RESTful endpoint patterns
@@ -116,7 +116,7 @@ code-templates/
 ### **How to Use**
 ```bash
 # 1. Copy template to create new service
-cp -r code-templates/microservice/ services/new-service/
+cp -r .cursor/templates/microservice/ services/new-service/
 
 # 2. Customize the templates
 # Replace placeholders with your specific requirements
@@ -200,7 +200,7 @@ mkdocs gh-deploy
 
 ---
 
-## 🎯 **5. AI Quality Check Script (`scripts/ai-quality-check.py`)**
+## 🎯 **5. AI Quality Check Script (`.cursor/scripts/ai-quality-check.py`)**
 
 ### **Purpose**
 Validates AI-generated code against project standards and coding best practices.
@@ -214,16 +214,16 @@ Validates AI-generated code against project standards and coding best practices.
 ### **How to Use**
 ```bash
 # Check a single file
-python scripts/ai-quality-check.py path/to/file.py
+python .cursor/scripts/ai-quality-check.py path/to/file.py
 
 # Check all Python files
-python scripts/ai-quality-check.py $(find . -name "*.py" -not -path "./venv/*")
+python .cursor/scripts/ai-quality-check.py $(find . -name "*.py" -not -path "./venv/*")
 
 # Run as part of CI/CD
-./scripts/ai-quality-check.py
+./.cursor/scripts/ai-quality-check.py
 
 # Check specific directory
-python scripts/ai-quality-check.py services/web-portal/
+python .cursor/scripts/ai-quality-check.py services/web-portal/
 ```
 
 ### **Quality Checks**
@@ -235,7 +235,7 @@ python scripts/ai-quality-check.py services/web-portal/
 
 ---
 
-## 🎯 **6. AI Collaboration Setup (`scripts/setup-ai-collaboration.sh`)**
+## 🎯 **6. AI Collaboration Setup (`.cursor/scripts/setup-ai-collaboration.sh`)**
 
 ### **Purpose**
 Automated setup of the complete AI collaboration framework with all recommended tools.
@@ -249,10 +249,10 @@ Automated setup of the complete AI collaboration framework with all recommended 
 ### **How to Use**
 ```bash
 # Make script executable
-chmod +x scripts/setup-ai-collaboration.sh
+chmod +x .cursor/scripts/setup-ai-collaboration.sh
 
 # Run the complete setup
-./scripts/setup-ai-collaboration.sh
+./.cursor/scripts/setup-ai-collaboration.sh
 
 # This will set up:
 # - Pre-commit hooks for code quality
@@ -357,18 +357,18 @@ mkdocs serve --dev-addr=127.0.0.1:8001
 ### **2. Daily Development Workflow**
 ```bash
 # 1. Use Cursor AI with .cursorrules for consistent behavior
-# 2. Reference ai-prompts/ for structured prompts
-# 3. Use code-templates/ for consistent code structure
-# 4. Check quality with ai-quality-check.py
+# 2. Reference .cursor/prompts/ for structured prompts
+# 3. Use .cursor/templates/ for consistent code structure
+# 4. Check quality with .cursor/scripts/ai-quality-check.py
 # 5. Access documentation via MkDocs
 ```
 
 ### **3. Creating New Services**
 ```bash
-# 1. Use service creation prompt from ai-prompts/templates/
-# 2. Copy microservice template from code-templates/
+# 1. Use service creation prompt from .cursor/prompts/templates/
+# 2. Copy microservice template from .cursor/templates/
 # 3. Customize for your specific service
-# 4. Run quality check: python scripts/ai-quality-check.py
+# 4. Run quality check: python .cursor/scripts/ai-quality-check.py
 # 5. Commit changes (triggers GitHub Actions)
 ```
 
@@ -378,7 +378,7 @@ mkdocs serve --dev-addr=127.0.0.1:8001
 git commit -m "your message"
 
 # Manual quality check
-python scripts/ai-quality-check.py your-file.py
+python .cursor/scripts/ai-quality-check.py your-file.py
 
 # CI/CD checks (automated via GitHub Actions)
 # Runs on every PR and push to main
@@ -462,10 +462,11 @@ gh run list --workflow=ai-collaboration.yml
 
 ### **File Locations**
 - **Cursor Rules**: `.cursorrules`
-- **AI Prompts**: `ai-prompts/`
-- **Code Templates**: `code-templates/`
-- **Quality Check**: `scripts/ai-quality-check.py`
-- **Setup Script**: `scripts/setup-ai-collaboration.sh`
+- **Cursor Configuration**: `.cursor/`
+- **AI Prompts**: `.cursor/prompts/`
+- **Code Templates**: `.cursor/templates/`
+- **Quality Check**: `.cursor/scripts/ai-quality-check.py`
+- **Setup Script**: `.cursor/scripts/setup-ai-collaboration.sh`
 - **GitHub Actions**: `.github/workflows/ai-collaboration.yml`
 
 ### **Quick Commands**
@@ -474,10 +475,10 @@ gh run list --workflow=ai-collaboration.yml
 mkdocs serve --dev-addr=127.0.0.1:8001
 
 # Run quality check
-python scripts/ai-quality-check.py
+python .cursor/scripts/ai-quality-check.py
 
 # Setup AI collaboration
-./scripts/setup-ai-collaboration.sh
+./.cursor/scripts/setup-ai-collaboration.sh
 
 # Build documentation
 mkdocs build

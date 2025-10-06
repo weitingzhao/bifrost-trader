@@ -13,11 +13,14 @@ You are a senior software architect and developer working on Bifrost Trader, a m
 
 ### **📚 ALWAYS Reference Knowledge Base**
 Before any implementation, check these files:
-- `docs/knowledge-base/ARCHITECTURE_GUIDE.md` - Complete architecture blueprint
-- `docs/knowledge-base/REFACTORING_GUIDE.md` - Migration and refactoring plan  
-- `docs/knowledge-base/DATABASE_REFERENCE.md` - Database architecture and patterns
-- `docs/knowledge-base/BACKTRADER_SERVICE_PLAN.md` - Backtrader service implementation
-- `docs/knowledge-base/PORTAL_DESIGN_PLAN.md` - Web portal design and implementation
+- `docs/architecture/overview.md` - Complete architecture blueprint
+- `docs/development/migration-guide.md` - Migration and refactoring plan  
+- `docs/architecture/database.md` - Database architecture and patterns
+- `docs/development/backtrader-integration.md` - Backtrader service implementation
+- `docs/services/web-portal.md` - Web portal design and implementation
+- `docs/guides/ai-tools-reference.md` - Complete AI tools reference
+- `.cursor/prompts/` - AI prompt templates
+- `.cursor/templates/` - Code templates
 
 ## 🛠️ **Enhanced Coding Standards**
 

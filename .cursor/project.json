@@ -65,10 +65,10 @@
   },
   "ai_collaboration": {
     "cursor_rules": ".cursorrules",
-    "prompts": "ai-prompts/",
-    "templates": "code-templates/",
-    "quality_check": "scripts/ai-quality-check.py",
-    "setup_script": "scripts/setup-ai-collaboration.sh"
+    "prompts": ".cursor/prompts/",
+    "templates": ".cursor/templates/",
+    "quality_check": ".cursor/scripts/ai-quality-check.py",
+    "setup_script": ".cursor/scripts/setup-ai-collaboration.sh"
   },
   "development": {
     "python_version": "3.9",

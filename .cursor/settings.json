@@ -14,8 +14,8 @@
         "docs/guides/ai-collaboration.md",
         "docs/guides/ai-tools-reference.md"
       ],
-      "prompts_directory": "ai-prompts/",
-      "templates_directory": "code-templates/"
+      "prompts_directory": ".cursor/prompts/",
+      "templates_directory": ".cursor/templates/"
     },
     "development": {
       "python_version": "3.9",
@@ -25,7 +25,7 @@
       "cache": "redis"
     },
     "quality": {
-      "check_script": "scripts/ai-quality-check.py",
+      "check_script": ".cursor/scripts/ai-quality-check.py",
       "pre_commit": true,
       "github_actions": true,
       "test_coverage": ">90%"
