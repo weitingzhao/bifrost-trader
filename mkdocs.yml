@@ -1,7 +1,7 @@
 site_name: Bifrost Trader Documentation
 site_description: Comprehensive documentation for Bifrost Trader microservices trading platform
 site_author: Bifrost Trader Team
-site_url: http://127.0.0.1:8000
+site_url: http://127.0.0.1:8001
 
 repo_name: weitingzhao/bifrost-trader
 repo_url: https://github.com/weitingzhao/bifrost-trader
@@ -147,6 +147,7 @@ nav:
   - Guides:
     - Overview: guides/index.md
     - AI Collaboration: guides/ai-collaboration.md
+    - AI Tools Reference: guides/ai-tools-reference.md
   - Reference:
     - Overview: reference/index.md
     - AI Reference: reference/ai-reference.md

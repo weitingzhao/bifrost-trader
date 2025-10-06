@@ -12,6 +12,14 @@ Complete guide to AI-human collaboration framework:
 - Quality gates and workflows
 - Advanced techniques and patterns
 
+### **🛠️ [AI Tools Reference](ai-tools-reference.md)**
+Comprehensive reference for all AI tools and frameworks:
+- 8 major AI tools and frameworks
+- Detailed usage instructions
+- Complete workflow integration
+- Troubleshooting guide
+- Quick reference commands
+
 ## 🔍 **Guide Categories**
 
 ### **Development Guides**
