@@ -2,9 +2,11 @@
 Dashboard data models
 """
 
-from pydantic import BaseModel
-from typing import Dict, Any, List, Optional
 from datetime import datetime
+from typing import Any, Dict, List, Optional
+
+from pydantic import BaseModel
+
 
 class PortfolioSummary(BaseModel):
     total_value: float
@@ -15,6 +17,7 @@ class PortfolioSummary(BaseModel):
     total_pnl: float
     total_return: float
 
+
 class Position(BaseModel):
     symbol: str
     quantity: int
@@ -22,6 +25,7 @@ class Position(BaseModel):
     current_value: float
     unrealized_pnl: float
     weight: float
+
 
 class PerformanceMetrics(BaseModel):
     total_return: float
@@ -32,12 +36,14 @@ class PerformanceMetrics(BaseModel):
     avg_trade: float
     total_trades: int
 
+
 class RiskMetrics(BaseModel):
     portfolio_var: float
     var_percentile: int
     beta: float
     volatility: float
     correlation: float
+
 
 class Activity(BaseModel):
     timestamp: str
@@ -47,16 +53,19 @@ class Activity(BaseModel):
     price: float
     status: str
 
+
 class MarketIndex(BaseModel):
     price: float
     change: float
     change_percent: float
+
 
 class MarketOverview(BaseModel):
     sp500: MarketIndex
     nasdaq: MarketIndex
     dow: MarketIndex
     vix: MarketIndex
+
 
 class DashboardData(BaseModel):
     portfolio_summary: PortfolioSummary

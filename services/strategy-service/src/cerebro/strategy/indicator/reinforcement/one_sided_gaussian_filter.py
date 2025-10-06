@@ -1,20 +1,24 @@
 import logging
+
 import backtrader as bt
 import numpy as np
 
+
 class OneSidedGaussianFilter(bt.Indicator):
-    lines = ('out', 'smax', 'smin', 'sig')
+    lines = ("out", "smax", "smin", "sig")
     params = (
-        ('smthper', 10),
-        ('extrasmthper', 10),
-        ('atrper', 21),
-        ('mult', 0.628),
+        ("smthper", 10),
+        ("extrasmthper", 10),
+        ("atrper", 21),
+        ("mult", 0.628),
     )
 
     plotinfo = dict(subplot=False)  # Plot in the main chart
 
     def __init__(self):
-        self.addminperiod(self.params.smthper + self.params.extrasmthper + self.params.atrper)
+        self.addminperiod(
+            self.params.smthper + self.params.extrasmthper + self.params.atrper
+        )
         self.atr = bt.indicators.ATR(self.data, period=self.params.atrper)
 
     def _twopoless(self, src, length):
@@ -70,7 +74,7 @@ class OneSidedGaussianFilter(bt.Indicator):
         out = self._twopoless(out1, self.params.extrasmthper)
 
         self.lines.out[0] = out[-1]  # Corrected to match Pine Script logic
-        self.lines.sig[0] = out[-2] if len(out) > 1 else float('nan')
+        self.lines.sig[0] = out[-2] if len(out) > 1 else float("nan")
 
         if len(self) >= self.params.atrper:
             atr_value = self.atr[0]
@@ -80,5 +84,5 @@ class OneSidedGaussianFilter(bt.Indicator):
             # self.log(
             #     f"out: {self.lines.out[0]}, sig: {self.lines.sig[0]}, smax: {self.lines.smax[0]}, smin: {self.lines.smin[0]}")
         else:
-            self.lines.smax[0] = float('nan')
-            self.lines.smin[0] = float('nan')
+            self.lines.smax[0] = float("nan")
+            self.lines.smin[0] = float("nan")

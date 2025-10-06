@@ -16,7 +16,7 @@ class MarketSymbol(models.Model):
     daily_period_yfinance = models.CharField(max_length=20, blank=True)
 
     class Meta:
-        db_table = 'market_symbol'
+        db_table = "market_symbol"
 
     def __str__(self):
         return f"{self.symbol} - {self.name}"
@@ -33,17 +33,20 @@ class MarketStockHistoricalBarsByMin(TimescaleModel):
     stock_splits = models.FloatField()
 
     class Meta:
-        db_table = 'market_stock_hist_bars_min_ts'
+        db_table = "market_stock_hist_bars_min_ts"
         indexes = [
-            models.Index(fields=['symbol', 'time']),
+            models.Index(fields=["symbol", "time"]),
         ]
         # Setting a composite primary key
         constraints = [
-            models.UniqueConstraint(fields=['symbol', 'time'], name='symbol_timestamp_min_pk'),
+            models.UniqueConstraint(
+                fields=["symbol", "time"], name="symbol_timestamp_min_pk"
+            ),
         ]
 
     def __str__(self):
         return f"{self.symbol} - {self.time}"
+
 
 class MarketStockHistoricalBarsByDay(TimescaleModel):
     symbol = models.CharField(max_length=10, null=False, blank=False, default="NaN")
@@ -58,13 +61,15 @@ class MarketStockHistoricalBarsByDay(TimescaleModel):
     stock_splits = models.FloatField()
 
     class Meta:
-        db_table = 'market_stock_hist_bars_day_ts'
+        db_table = "market_stock_hist_bars_day_ts"
         indexes = [
-            models.Index(fields=['symbol', 'time']),
+            models.Index(fields=["symbol", "time"]),
         ]
         # Setting a composite primary key
         constraints = [
-            models.UniqueConstraint(fields=['symbol', 'time'], name='symbol_timestamp_day_pk'),
+            models.UniqueConstraint(
+                fields=["symbol", "time"], name="symbol_timestamp_day_pk"
+            ),
         ]
 
     def __str__(self):
@@ -82,17 +87,20 @@ class MarketStockHistoricalBarsByHour(TimescaleModel):
     # stock_splits = models.FloatField()
 
     class Meta:
-        db_table = 'market_stock_hist_bars_hour_ts'
+        db_table = "market_stock_hist_bars_hour_ts"
         indexes = [
-            models.Index(fields=['symbol', 'time']),
+            models.Index(fields=["symbol", "time"]),
         ]
         # Setting a composite primary key
         constraints = [
-            models.UniqueConstraint(fields=['symbol', 'time'], name='symbol_timestamp_hour_pk'),
+            models.UniqueConstraint(
+                fields=["symbol", "time"], name="symbol_timestamp_hour_pk"
+            ),
         ]
 
     def __str__(self):
         return f"{self.symbol} - {self.time}"
+
 
 class MarketStockHistoricalBarsByHourExt(TimescaleModel):
     symbol = models.CharField(max_length=10, null=False, blank=False, default="NaN")
@@ -103,12 +111,14 @@ class MarketStockHistoricalBarsByHourExt(TimescaleModel):
     volume = models.FloatField()
 
     class Meta:
-        db_table = 'market_stock_hist_bars_hour_ext_ts'
+        db_table = "market_stock_hist_bars_hour_ext_ts"
         indexes = [
-            models.Index(fields=['symbol', 'time']),
+            models.Index(fields=["symbol", "time"]),
         ]
         constraints = [
-            models.UniqueConstraint(fields=['symbol', 'time'], name='symbol_timestamp_hour_extended_pk'),
+            models.UniqueConstraint(
+                fields=["symbol", "time"], name="symbol_timestamp_hour_extended_pk"
+            ),
         ]
 
     def __str__(self):

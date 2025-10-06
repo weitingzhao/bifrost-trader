@@ -1,19 +1,17 @@
 import backtrader as bt
 import numpy as np
 
+
 class AdaptiveSuperTrend(bt.Indicator):
-    lines = (
-        'supertrend',
-        'direction'
-    )
+    lines = ("supertrend", "direction")
 
     params = (
-        ('atr_len', 10),
-        ('factor', 3.0),
-        ('training_data_period', 100),
-        ('highvol', 0.75),
-        ('midvol', 0.5),
-        ('lowvol', 0.25),
+        ("atr_len", 10),
+        ("factor", 3.0),
+        ("training_data_period", 100),
+        ("highvol", 0.75),
+        ("midvol", 0.5),
+        ("lowvol", 0.25),
     )
 
     def __init__(self):
@@ -33,9 +31,24 @@ class AdaptiveSuperTrend(bt.Indicator):
         medium_volatility = lower + (upper - lower) * self.params.midvol
         low_volatility = lower + (upper - lower) * self.params.lowvol
 
-        hv = [v for v in training_data if abs(v - high_volatility) < abs(v - medium_volatility) and abs(v - high_volatility) < abs(v - low_volatility)]
-        mv = [v for v in training_data if abs(v - medium_volatility) < abs(v - high_volatility) and abs(v - medium_volatility) < abs(v - low_volatility)]
-        lv = [v for v in training_data if abs(v - low_volatility) < abs(v - high_volatility) and abs(v - low_volatility) < abs(v - medium_volatility)]
+        hv = [
+            v
+            for v in training_data
+            if abs(v - high_volatility) < abs(v - medium_volatility)
+            and abs(v - high_volatility) < abs(v - low_volatility)
+        ]
+        mv = [
+            v
+            for v in training_data
+            if abs(v - medium_volatility) < abs(v - high_volatility)
+            and abs(v - medium_volatility) < abs(v - low_volatility)
+        ]
+        lv = [
+            v
+            for v in training_data
+            if abs(v - low_volatility) < abs(v - high_volatility)
+            and abs(v - low_volatility) < abs(v - medium_volatility)
+        ]
 
         hv_new = np.mean(hv) if hv else high_volatility
         mv_new = np.mean(mv) if mv else medium_volatility
@@ -58,8 +71,16 @@ class AdaptiveSuperTrend(bt.Indicator):
         prev_lower_band = self.lines.supertrend[-1] if len(self) > 1 else lower_band
         prev_upper_band = self.lines.supertrend[-1] if len(self) > 1 else upper_band
 
-        lower_band = lower_band if lower_band > prev_lower_band or self.data.close[-1] < prev_lower_band else prev_lower_band
-        upper_band = upper_band if upper_band < prev_upper_band or self.data.close[-1] > prev_upper_band else prev_upper_band
+        lower_band = (
+            lower_band
+            if lower_band > prev_lower_band or self.data.close[-1] < prev_lower_band
+            else prev_lower_band
+        )
+        upper_band = (
+            upper_band
+            if upper_band < prev_upper_band or self.data.close[-1] > prev_upper_band
+            else prev_upper_band
+        )
 
         if len(self) == 1 or np.isnan(self.lines.supertrend[-1]):
             direction = 1

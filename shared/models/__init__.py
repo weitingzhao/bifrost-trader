@@ -3,31 +3,33 @@ Shared base models for Bifrost Trader services.
 These models provide common functionality across all microservices.
 """
 
-from pydantic import BaseModel, Field
-from typing import Optional, Dict, Any, List
+import uuid
 from datetime import datetime
 from enum import Enum
-import uuid
+from typing import Any, Dict, List, Optional
+
+from pydantic import BaseModel, Field
 
 
 class BaseEntity(BaseModel):
     """Base entity with common fields for all models."""
-    
+
     id: Optional[int] = Field(None, description="Unique identifier")
     created_at: Optional[datetime] = Field(None, description="Creation timestamp")
     updated_at: Optional[datetime] = Field(None, description="Last update timestamp")
-    uuid: Optional[str] = Field(default_factory=lambda: str(uuid.uuid4()), description="UUID for external references")
-    
+    uuid: Optional[str] = Field(
+        default_factory=lambda: str(uuid.uuid4()),
+        description="UUID for external references",
+    )
+
     class Config:
         from_attributes = True
-        json_encoders = {
-            datetime: lambda v: v.isoformat()
-        }
+        json_encoders = {datetime: lambda v: v.isoformat()}
 
 
 class MarketSymbol(BaseEntity):
     """Market symbol representation."""
-    
+
     symbol: str = Field(..., description="Symbol ticker")
     name: str = Field(..., description="Company name")
     market: str = Field(..., description="Market exchange")
@@ -37,13 +39,17 @@ class MarketSymbol(BaseEntity):
     status: str = Field("active", description="Symbol status")
     has_company_info: bool = Field(False, description="Has company information")
     is_delisted: bool = Field(False, description="Is delisted")
-    min_period_yfinance: Optional[str] = Field(None, description="Minimum period for yfinance")
-    daily_period_yfinance: Optional[str] = Field(None, description="Daily period for yfinance")
+    min_period_yfinance: Optional[str] = Field(
+        None, description="Minimum period for yfinance"
+    )
+    daily_period_yfinance: Optional[str] = Field(
+        None, description="Daily period for yfinance"
+    )
 
 
 class Portfolio(BaseEntity):
     """Portfolio representation."""
-    
+
     user_id: int = Field(..., description="User ID")
     name: str = Field(..., description="Portfolio name")
     money_market: float = Field(0.0, description="Money market balance")
@@ -55,7 +61,7 @@ class Portfolio(BaseEntity):
 
 class Holding(BaseEntity):
     """Portfolio holding representation."""
-    
+
     portfolio_id: int = Field(..., description="Portfolio ID")
     symbol: str = Field(..., description="Symbol ticker")
     quantity: float = Field(..., description="Quantity held")
@@ -68,7 +74,7 @@ class Holding(BaseEntity):
 
 class Transaction(BaseEntity):
     """Transaction representation."""
-    
+
     portfolio_id: int = Field(..., description="Portfolio ID")
     symbol: str = Field(..., description="Symbol ticker")
     transaction_type: str = Field(..., description="Transaction type (buy, sell)")
@@ -82,19 +88,21 @@ class Transaction(BaseEntity):
 
 class Strategy(BaseEntity):
     """Trading strategy representation."""
-    
+
     user_id: int = Field(..., description="User ID")
     name: str = Field(..., description="Strategy name")
     description: Optional[str] = Field(None, description="Strategy description")
     strategy_type: str = Field(..., description="Strategy type")
-    parameters: Dict[str, Any] = Field(default_factory=dict, description="Strategy parameters")
+    parameters: Dict[str, Any] = Field(
+        default_factory=dict, description="Strategy parameters"
+    )
     is_active: bool = Field(True, description="Is strategy active")
     is_live: bool = Field(False, description="Is strategy live trading")
 
 
 class Order(BaseEntity):
     """Order representation."""
-    
+
     portfolio_id: int = Field(..., description="Portfolio ID")
     symbol: str = Field(..., description="Symbol ticker")
     order_type: str = Field(..., description="Order type (market, limit, stop)")
@@ -110,7 +118,7 @@ class Order(BaseEntity):
 
 class RiskSettings(BaseEntity):
     """Risk management settings."""
-    
+
     user_id: int = Field(..., description="User ID")
     portfolio_id: int = Field(..., description="Portfolio ID")
     max_position_size: float = Field(..., description="Maximum position size")
@@ -123,7 +131,7 @@ class RiskSettings(BaseEntity):
 
 class MarketData(BaseEntity):
     """Market data representation."""
-    
+
     symbol: str = Field(..., description="Symbol ticker")
     timestamp: datetime = Field(..., description="Data timestamp")
     open_price: float = Field(..., description="Open price")
@@ -136,7 +144,7 @@ class MarketData(BaseEntity):
 
 class ScreeningCriteria(BaseEntity):
     """Stock screening criteria."""
-    
+
     user_id: int = Field(..., description="User ID")
     name: str = Field(..., description="Screening criteria name")
     criteria: Dict[str, Any] = Field(..., description="Screening criteria")
@@ -145,7 +153,7 @@ class ScreeningCriteria(BaseEntity):
 
 class Notification(BaseEntity):
     """Notification representation."""
-    
+
     user_id: int = Field(..., description="User ID")
     title: str = Field(..., description="Notification title")
     message: str = Field(..., description="Notification message")
@@ -156,29 +164,33 @@ class Notification(BaseEntity):
 
 class ServiceStatus(BaseModel):
     """Service status representation."""
-    
+
     service_name: str = Field(..., description="Service name")
     status: str = Field(..., description="Service status")
     version: str = Field(..., description="Service version")
     uptime: float = Field(..., description="Service uptime in seconds")
     last_health_check: datetime = Field(..., description="Last health check timestamp")
-    dependencies: List[str] = Field(default_factory=list, description="Service dependencies")
+    dependencies: List[str] = Field(
+        default_factory=list, description="Service dependencies"
+    )
 
 
 class APIResponse(BaseModel):
     """Standard API response format."""
-    
+
     success: bool = Field(..., description="Request success status")
     data: Optional[Any] = Field(None, description="Response data")
     message: Optional[str] = Field(None, description="Response message")
     error: Optional[str] = Field(None, description="Error message")
-    timestamp: datetime = Field(default_factory=datetime.now, description="Response timestamp")
+    timestamp: datetime = Field(
+        default_factory=datetime.now, description="Response timestamp"
+    )
     request_id: Optional[str] = Field(None, description="Request ID for tracking")
 
 
 class PaginatedResponse(APIResponse):
     """Paginated API response."""
-    
+
     page: int = Field(..., description="Current page number")
     page_size: int = Field(..., description="Page size")
     total_pages: int = Field(..., description="Total number of pages")

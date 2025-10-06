@@ -4,31 +4,47 @@ Database Models for Bifrost Trader Strategy Service
 This module contains SQLAlchemy models for the strategy service microservice.
 """
 
-from sqlalchemy import Column, Integer, String, DateTime, Decimal, Boolean, Text, Date, ForeignKey, CheckConstraint
+import uuid
+from datetime import datetime
+
+from sqlalchemy import (
+    Boolean,
+    CheckConstraint,
+    Column,
+    Date,
+    DateTime,
+    Decimal,
+    ForeignKey,
+    Integer,
+    String,
+    Text,
+)
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
-from sqlalchemy.dialects.postgresql import JSONB
-from datetime import datetime
-import uuid
 
 Base = declarative_base()
 
+
 class StrategyCategory(Base):
     """Strategy categories."""
-    __tablename__ = 'strategy_category'
-    
+
+    __tablename__ = "strategy_category"
+
     strategy_category_id = Column(Integer, primary_key=True)
     name = Column(String(100), nullable=False, unique=True)
     description = Column(Text)
     created_at = Column(DateTime, default=datetime.utcnow)
-    
+
     # Relationships
     strategies = relationship("StrategyStrategyCategory", back_populates="category_ref")
 
+
 class Strategy(Base):
     """Trading strategies."""
-    __tablename__ = 'strategy'
-    
+
+    __tablename__ = "strategy"
+
     strategy_id = Column(Integer, primary_key=True)
     owner_user_id = Column(Integer)
     name = Column(String(255), nullable=False)
@@ -39,27 +55,43 @@ class Strategy(Base):
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    
+
     # Relationships
-    categories = relationship("StrategyStrategyCategory", back_populates="strategy_ref", cascade="all, delete-orphan")
-    ratings = relationship("Rating", back_populates="strategy_ref", cascade="all, delete-orphan")
-    rating_indicator_results = relationship("RatingIndicatorResult", back_populates="strategy_ref", cascade="all, delete-orphan")
+    categories = relationship(
+        "StrategyStrategyCategory",
+        back_populates="strategy_ref",
+        cascade="all, delete-orphan",
+    )
+    ratings = relationship(
+        "Rating", back_populates="strategy_ref", cascade="all, delete-orphan"
+    )
+    rating_indicator_results = relationship(
+        "RatingIndicatorResult",
+        back_populates="strategy_ref",
+        cascade="all, delete-orphan",
+    )
+
 
 class StrategyStrategyCategory(Base):
     """Junction table for strategy categories."""
-    __tablename__ = 'strategy_strategy_category'
-    
-    strategy_id = Column(Integer, ForeignKey('strategy.strategy_id'), primary_key=True)
-    strategy_category_id = Column(Integer, ForeignKey('strategy_category.strategy_category_id'), primary_key=True)
-    
+
+    __tablename__ = "strategy_strategy_category"
+
+    strategy_id = Column(Integer, ForeignKey("strategy.strategy_id"), primary_key=True)
+    strategy_category_id = Column(
+        Integer, ForeignKey("strategy_category.strategy_category_id"), primary_key=True
+    )
+
     # Relationships
     strategy_ref = relationship("Strategy", back_populates="categories")
     category_ref = relationship("StrategyCategory", back_populates="strategies")
 
+
 class Screening(Base):
     """Stock screening configurations."""
-    __tablename__ = 'screening'
-    
+
+    __tablename__ = "screening"
+
     screening_id = Column(Integer, primary_key=True)
     owner_user_id = Column(Integer)
     name = Column(String(255), nullable=False)
@@ -68,56 +100,68 @@ class Screening(Base):
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    
+
     # Relationships
-    snapshot_screenings = relationship("SnapshotScreening", back_populates="screening_ref")
+    snapshot_screenings = relationship(
+        "SnapshotScreening", back_populates="screening_ref"
+    )
+
 
 class Rating(Base):
     """Strategy ratings for symbols (TimescaleDB)."""
-    __tablename__ = 'rating'
-    
+
+    __tablename__ = "rating"
+
     symbol = Column(String(20), nullable=False)
     time = Column(Date, nullable=False)
-    strategy_id = Column(Integer, ForeignKey('strategy.strategy_id'), nullable=False)
+    strategy_id = Column(Integer, ForeignKey("strategy.strategy_id"), nullable=False)
     score = Column(Decimal(5, 2), nullable=False)
-    
+
     # Relationships
     strategy_ref = relationship("Strategy", back_populates="ratings")
-    
+
     __table_args__ = (
-        CheckConstraint('symbol IS NOT NULL', name='rating_symbol_not_null'),
-        CheckConstraint('time IS NOT NULL', name='rating_time_not_null'),
-        CheckConstraint('strategy_id IS NOT NULL', name='rating_strategy_id_not_null'),
+        CheckConstraint("symbol IS NOT NULL", name="rating_symbol_not_null"),
+        CheckConstraint("time IS NOT NULL", name="rating_time_not_null"),
+        CheckConstraint("strategy_id IS NOT NULL", name="rating_strategy_id_not_null"),
     )
+
 
 class RatingIndicatorResult(Base):
     """Rating indicator results (TimescaleDB)."""
-    __tablename__ = 'rating_indicator_result'
-    
+
+    __tablename__ = "rating_indicator_result"
+
     symbol = Column(String(20), nullable=False)
     time = Column(DateTime, nullable=False)
-    strategy_id = Column(Integer, ForeignKey('strategy.strategy_id'), nullable=False)
+    strategy_id = Column(Integer, ForeignKey("strategy.strategy_id"), nullable=False)
     indicator_name = Column(String(100), nullable=False)
     indicator_value = Column(Decimal(15, 4))
     indicator_signal = Column(String(20))
-    
+
     # Relationships
     strategy_ref = relationship("Strategy", back_populates="rating_indicator_results")
-    
+
     __table_args__ = (
-        CheckConstraint('symbol IS NOT NULL', name='rating_indicator_symbol_not_null'),
-        CheckConstraint('time IS NOT NULL', name='rating_indicator_time_not_null'),
-        CheckConstraint('strategy_id IS NOT NULL', name='rating_indicator_strategy_id_not_null'),
-        CheckConstraint('indicator_name IS NOT NULL', name='rating_indicator_name_not_null'),
+        CheckConstraint("symbol IS NOT NULL", name="rating_indicator_symbol_not_null"),
+        CheckConstraint("time IS NOT NULL", name="rating_indicator_time_not_null"),
+        CheckConstraint(
+            "strategy_id IS NOT NULL", name="rating_indicator_strategy_id_not_null"
+        ),
+        CheckConstraint(
+            "indicator_name IS NOT NULL", name="rating_indicator_name_not_null"
+        ),
     )
+
 
 class SnapshotScreening(Base):
     """Screening snapshot data (TimescaleDB)."""
-    __tablename__ = 'snapshot_screening'
-    
+
+    __tablename__ = "snapshot_screening"
+
     symbol = Column(String(20), nullable=False)
     time = Column(DateTime, nullable=False)
-    screening_id = Column(Integer, ForeignKey('screening.screening_id'), nullable=False)
+    screening_id = Column(Integer, ForeignKey("screening.screening_id"), nullable=False)
     price = Column(Decimal(15, 4))
     volume = Column(Integer)
     market_cap = Column(Decimal(20, 2))
@@ -128,20 +172,26 @@ class SnapshotScreening(Base):
     roa = Column(Decimal(10, 4))
     current_ratio = Column(Decimal(10, 4))
     quick_ratio = Column(Decimal(10, 4))
-    
+
     # Relationships
     screening_ref = relationship("Screening", back_populates="snapshot_screenings")
-    
+
     __table_args__ = (
-        CheckConstraint('symbol IS NOT NULL', name='snapshot_screening_symbol_not_null'),
-        CheckConstraint('time IS NOT NULL', name='snapshot_screening_time_not_null'),
-        CheckConstraint('screening_id IS NOT NULL', name='snapshot_screening_screening_id_not_null'),
+        CheckConstraint(
+            "symbol IS NOT NULL", name="snapshot_screening_symbol_not_null"
+        ),
+        CheckConstraint("time IS NOT NULL", name="snapshot_screening_time_not_null"),
+        CheckConstraint(
+            "screening_id IS NOT NULL", name="snapshot_screening_screening_id_not_null"
+        ),
     )
+
 
 class SnapshotOverview(Base):
     """Overview snapshot data (TimescaleDB)."""
-    __tablename__ = 'snapshot_overview'
-    
+
+    __tablename__ = "snapshot_overview"
+
     symbol = Column(String(20), nullable=False)
     time = Column(DateTime, nullable=False)
     name = Column(String(255))
@@ -155,16 +205,18 @@ class SnapshotOverview(Base):
     eps = Column(Decimal(10, 4))
     dividend_yield = Column(Decimal(10, 4))
     beta = Column(Decimal(10, 4))
-    
+
     __table_args__ = (
-        CheckConstraint('symbol IS NOT NULL', name='snapshot_overview_symbol_not_null'),
-        CheckConstraint('time IS NOT NULL', name='snapshot_overview_time_not_null'),
+        CheckConstraint("symbol IS NOT NULL", name="snapshot_overview_symbol_not_null"),
+        CheckConstraint("time IS NOT NULL", name="snapshot_overview_time_not_null"),
     )
+
 
 class SnapshotTechnical(Base):
     """Technical analysis snapshot data (TimescaleDB)."""
-    __tablename__ = 'snapshot_technical'
-    
+
+    __tablename__ = "snapshot_technical"
+
     symbol = Column(String(20), nullable=False)
     time = Column(DateTime, nullable=False)
     sma_20 = Column(Decimal(15, 4))
@@ -183,16 +235,20 @@ class SnapshotTechnical(Base):
     stochastic_k = Column(Decimal(10, 4))
     stochastic_d = Column(Decimal(10, 4))
     williams_r = Column(Decimal(10, 4))
-    
+
     __table_args__ = (
-        CheckConstraint('symbol IS NOT NULL', name='snapshot_technical_symbol_not_null'),
-        CheckConstraint('time IS NOT NULL', name='snapshot_technical_time_not_null'),
+        CheckConstraint(
+            "symbol IS NOT NULL", name="snapshot_technical_symbol_not_null"
+        ),
+        CheckConstraint("time IS NOT NULL", name="snapshot_technical_time_not_null"),
     )
+
 
 class SnapshotFundamental(Base):
     """Fundamental analysis snapshot data (TimescaleDB)."""
-    __tablename__ = 'snapshot_fundamental'
-    
+
+    __tablename__ = "snapshot_fundamental"
+
     symbol = Column(String(20), nullable=False)
     time = Column(DateTime, nullable=False)
     revenue = Column(Decimal(20, 2))
@@ -204,16 +260,20 @@ class SnapshotFundamental(Base):
     total_debt = Column(Decimal(20, 2))
     operating_cash_flow = Column(Decimal(20, 2))
     free_cash_flow = Column(Decimal(20, 2))
-    
+
     __table_args__ = (
-        CheckConstraint('symbol IS NOT NULL', name='snapshot_fundamental_symbol_not_null'),
-        CheckConstraint('time IS NOT NULL', name='snapshot_fundamental_time_not_null'),
+        CheckConstraint(
+            "symbol IS NOT NULL", name="snapshot_fundamental_symbol_not_null"
+        ),
+        CheckConstraint("time IS NOT NULL", name="snapshot_fundamental_time_not_null"),
     )
+
 
 class SnapshotSetup(Base):
     """Setup analysis snapshot data (TimescaleDB)."""
-    __tablename__ = 'snapshot_setup'
-    
+
+    __tablename__ = "snapshot_setup"
+
     symbol = Column(String(20), nullable=False)
     time = Column(DateTime, nullable=False)
     setup_type = Column(String(50))
@@ -223,16 +283,18 @@ class SnapshotSetup(Base):
     stop_loss = Column(Decimal(15, 4))
     target_price = Column(Decimal(15, 4))
     risk_reward_ratio = Column(Decimal(10, 4))
-    
+
     __table_args__ = (
-        CheckConstraint('symbol IS NOT NULL', name='snapshot_setup_symbol_not_null'),
-        CheckConstraint('time IS NOT NULL', name='snapshot_setup_time_not_null'),
+        CheckConstraint("symbol IS NOT NULL", name="snapshot_setup_symbol_not_null"),
+        CheckConstraint("time IS NOT NULL", name="snapshot_setup_time_not_null"),
     )
+
 
 class SnapshotBullFlag(Base):
     """Bull flag pattern snapshot data (TimescaleDB)."""
-    __tablename__ = 'snapshot_bull_flag'
-    
+
+    __tablename__ = "snapshot_bull_flag"
+
     symbol = Column(String(20), nullable=False)
     time = Column(DateTime, nullable=False)
     flag_score = Column(Decimal(5, 2))
@@ -240,16 +302,20 @@ class SnapshotBullFlag(Base):
     pole_height = Column(Decimal(15, 4))
     flag_height = Column(Decimal(15, 4))
     breakout_probability = Column(Decimal(5, 2))
-    
+
     __table_args__ = (
-        CheckConstraint('symbol IS NOT NULL', name='snapshot_bull_flag_symbol_not_null'),
-        CheckConstraint('time IS NOT NULL', name='snapshot_bull_flag_time_not_null'),
+        CheckConstraint(
+            "symbol IS NOT NULL", name="snapshot_bull_flag_symbol_not_null"
+        ),
+        CheckConstraint("time IS NOT NULL", name="snapshot_bull_flag_time_not_null"),
     )
+
 
 class SnapshotEarning(Base):
     """Earnings snapshot data (TimescaleDB)."""
-    __tablename__ = 'snapshot_earning'
-    
+
+    __tablename__ = "snapshot_earning"
+
     symbol = Column(String(20), nullable=False)
     time = Column(DateTime, nullable=False)
     earnings_date = Column(Date)
@@ -259,8 +325,8 @@ class SnapshotEarning(Base):
     eps_estimate = Column(Decimal(10, 4))
     eps_actual = Column(Decimal(10, 4))
     surprise_percent = Column(Decimal(10, 4))
-    
+
     __table_args__ = (
-        CheckConstraint('symbol IS NOT NULL', name='snapshot_earning_symbol_not_null'),
-        CheckConstraint('time IS NOT NULL', name='snapshot_earning_time_not_null'),
+        CheckConstraint("symbol IS NOT NULL", name="snapshot_earning_symbol_not_null"),
+        CheckConstraint("time IS NOT NULL", name="snapshot_earning_time_not_null"),
     )

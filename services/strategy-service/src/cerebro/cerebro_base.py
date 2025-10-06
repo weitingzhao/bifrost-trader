@@ -1,11 +1,13 @@
-import redis
-import pandas as pd
-import backtrader as bt
-from apps.tasks.controller.instance import Instance
 import json
 
-class cerebroBase():
+import backtrader as bt
+import pandas as pd
+from apps.tasks.controller.instance import Instance
 
+import redis
+
+
+class cerebroBase:
     def __init__(self, stdstats=False):
         # Create a cerebro entity
         self.cerebro = bt.Cerebro(stdstats=stdstats)
@@ -14,35 +16,38 @@ class cerebroBase():
         self.data = None
         self.data_df = None
         self.result = None
-        self.strategy  = None
+        self.strategy = None
         self.instance = Instance()
         # Message
         self.sms_need = False
-        self.msg_group_name = 'stock_bt_result'
-        self.redis_client = redis.StrictRedis(host='localhost', port=6379, db=0)
+        self.msg_group_name = "stock_bt_result"
+        self.redis_client = redis.StrictRedis(host="localhost", port=6379, db=0)
 
-    def set_data(self, data_json : object):
-
-
+    def set_data(self, data_json: object):
         # Extract symbols from JSON
-        symbols = data_json.get('symbols')
+        symbols = data_json.get("symbols")
         # Continue with the rest of your logic
-        period = data_json.get('period')
-        interval = data_json.get('interval')
-        since = data_json.get('since')
-        self.sms_need = True if data_json.get('sms') is True else False
+        period = data_json.get("period")
+        interval = data_json.get("interval")
+        since = data_json.get("since")
+        self.sms_need = True if data_json.get("sms") is True else False
 
         # Assign to self.data_meta
-        self.data_condition = {'symbols': symbols, 'period': period, 'interval': interval, 'since': since}
+        self.data_condition = {
+            "symbols": symbols,
+            "period": period,
+            "interval": interval,
+            "since": since,
+        }
 
         # Build the meta dictionary based on input
         meta = {
-            'error': 'false',
-            'output': '',
-            'status': 'STARTED',
-            'initial': 'false',
-            'leftover': symbols.split('|'),
-            'done': []
+            "error": "false",
+            "output": "",
+            "status": "STARTED",
+            "initial": "false",
+            "leftover": symbols.split("|"),
+            "done": [],
         }
 
         # Prepare args dictionary
@@ -50,7 +55,9 @@ class cerebroBase():
 
         # Call the function to get Yahoo data
         worker = self.instance.service().fetching().stock_hist_bars_yahoo()
-        error_list, meta = worker.run(meta=meta, task_result=None, args=args, is_test=False)
+        error_list, meta = worker.run(
+            meta=meta, task_result=None, args=args, is_test=False
+        )
         if len(error_list) > 0:
             return
         yahoo_data = worker.snapshot
@@ -60,21 +67,24 @@ class cerebroBase():
         # # Step 1.  Prepare data as Data Frame
         # Filter the DataFrame by the 'since' date
         stock_data_df = yahoo_data_df[yahoo_data_df.index >= since]
-        stock_data_df.rename(columns={
-            'Open': 'open',
-            'High': 'high',
-            'Low': 'low',
-            'Close': 'close',
-            'Volume': 'volume',
-        }, inplace=True)
+        stock_data_df.rename(
+            columns={
+                "Open": "open",
+                "High": "high",
+                "Low": "low",
+                "Close": "close",
+                "Volume": "volume",
+            },
+            inplace=True,
+        )
         # Remove the 'dividends' and 'stocksplits' columns
-        stock_data_df.drop(columns=['Dividends', 'Stock Splits'], inplace=True)
-        stock_data_df.rename_axis('datetime', inplace=True)
+        stock_data_df.drop(columns=["Dividends", "Stock Splits"], inplace=True)
+        stock_data_df.rename_axis("datetime", inplace=True)
         # Add the openinterest column and set it to 0
-        stock_data_df['openinterest'] = 0
+        stock_data_df["openinterest"] = 0
 
         # Set Data Name
-        self.data_name = f'{symbols}-{since}'
+        self.data_name = f"{symbols}-{since}"
         self.data_df = stock_data_df
 
     def _prepare_data(self):
@@ -87,7 +97,6 @@ class cerebroBase():
         self.strategy = strategy
 
     def configure(self):
-
         # Set our desired cash start
         self.cerebro.broker.setcash(1000.0)
         # Add a FixedSize sizer according to the stake
@@ -96,36 +105,36 @@ class cerebroBase():
         self.cerebro.broker.setcommission(commission=0.001)
         # Add the Analyzers
         self.cerebro.addanalyzer(bt.analyzers.SQN)
-        self.cerebro.addanalyzer(bt.analyzers.TradeAnalyzer)  # visualize the drawdown evol
+        self.cerebro.addanalyzer(
+            bt.analyzers.TradeAnalyzer
+        )  # visualize the drawdown evol
         self.cerebro.addobserver(bt.observers.DrawDown)  # visualize the drawdown evol
 
     def sent_messge(self):
         try:
-            if self.sms_need is False or  self.result is None:
+            if self.sms_need is False or self.result is None:
                 return
 
             # key = ticker.contract.symbol
             detail = {
-                'atr': self.result[0].atr.array[-1],
-                'bbands': {
-                    'upper': self.result[0].bbands.lines.bolu.array[-1],
-                    'middle': self.result[0].bbands.lines.mid.array[-1],
-                    'lower': self.result[0].bbands.lines.bold.array[-1]
+                "atr": self.result[0].atr.array[-1],
+                "bbands": {
+                    "upper": self.result[0].bbands.lines.bolu.array[-1],
+                    "middle": self.result[0].bbands.lines.mid.array[-1],
+                    "lower": self.result[0].bbands.lines.bold.array[-1],
                 },
-                'rs': {
-                    'upper': { 'max': 2.9, 'min': 2.1},
-                    'lower': { 'max': 1.9, 'min': 1.1}
+                "rs": {
+                    "upper": {"max": 2.9, "min": 2.1},
+                    "lower": {"max": 1.9, "min": 1.1},
                 },
-                'rs2': {
-                    'upper': {'max': 2.8, 'min': 2.2},
-                    'lower': {'max': 1.8, 'min': 1.2}
-                }
+                "rs2": {
+                    "upper": {"max": 2.8, "min": 2.2},
+                    "lower": {"max": 1.8, "min": 1.2},
+                },
             }
-            json_str = json.dumps({
-                'type': 'bt_symbol',
-                'meta': self.data_condition,
-                'indicator' : detail
-            })
+            json_str = json.dumps(
+                {"type": "bt_symbol", "meta": self.data_condition, "indicator": detail}
+            )
 
             print(f"BT->Redis->: {json_str}")
             self.redis_client.publish(self.msg_group_name, json_str)

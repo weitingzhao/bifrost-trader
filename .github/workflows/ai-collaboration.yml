@@ -28,10 +28,6 @@ jobs:
         run: |
           python scripts/ai-quality-check.py $(find . -name "*.py" -not -path "./venv/*" -not -path "./.git/*")
       
-      - name: Run Knowledge Sync Check
-        run: |
-          python scripts/knowledge-sync.py
-      
       - name: Check Code Formatting
         run: |
           black --check .
@@ -45,23 +41,31 @@ jobs:
         run: |
           mypy . --ignore-missing-imports
 
-  knowledge-base-check:
+  documentation-check:
     runs-on: ubuntu-latest
     
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
       
-      - name: Check Knowledge Base Consistency
-        run: |
-          python scripts/knowledge-sync.py
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
       
-      - name: Validate Documentation
+      - name: Install MkDocs
         run: |
-          # Check if all knowledge base files exist
-          test -f docs/knowledge-base/ARCHITECTURE_GUIDE.md
-          test -f docs/knowledge-base/REFACTORING_GUIDE.md
-          test -f docs/knowledge-base/DATABASE_REFERENCE.md
-          test -f docs/knowledge-base/BACKTRADER_SERVICE_PLAN.md
-          test -f docs/knowledge-base/PORTAL_DESIGN_PLAN.md
-          test -f docs/knowledge-base/README.md
+          python -m pip install --upgrade pip
+          pip install mkdocs mkdocs-material mkdocs-mermaid2-plugin
+      
+      - name: Build Documentation
+        run: |
+          mkdocs build
+      
+      - name: Validate Documentation Structure
+        run: |
+          # Check if main documentation files exist
+          test -f docs/index.md
+          test -f docs/architecture/overview.md
+          test -f docs/services/data-service.md
+          test -f mkdocs.yml

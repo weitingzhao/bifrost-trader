@@ -22,12 +22,14 @@ User interface and dashboard:
 - Portfolio management UI
 - Strategy configuration
 
-### **📊 Data Service** (Planned)
+### **📊 [Data Service](data-service.md)**
 Market data processing and management:
 - Real-time data ingestion
 - Historical data storage
 - Data validation and cleaning
 - API endpoints for data access
+- Yahoo Finance integration
+- TimescaleDB optimization
 
 ### **💼 Portfolio Service** (Planned)
 Portfolio management and tracking:

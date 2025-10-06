@@ -1,16 +1,18 @@
 import backtrader as bt
 import numpy as np
 
+
 # Gaussian kernel function for Nadaraya-Watson smoother
 def gaussian_kernel(x, h):
     return np.exp(-0.5 * (x / h) ** 2) / (np.sqrt(2 * np.pi) * h)
 
+
 # Custom Nadaraya-Watson Smoother
 class NadarayaWatsonSmoother(bt.Indicator):
-    lines = ('smoothed',)  # Smoothed line
+    lines = ("smoothed",)  # Smoothed line
     params = (
-        ('window', 20),  # Lookback window size
-        ('bandwidth', 5),  # Kernel bandwidth
+        ("window", 20),  # Lookback window size
+        ("bandwidth", 5),  # Kernel bandwidth
     )
 
     def __init__(self):
@@ -39,4 +41,3 @@ class NadarayaWatsonSmoother(bt.Indicator):
             self.lines.smoothed[0] = smoothed / weight_sum
         else:
             self.lines.smoothed[0] = self.data[0]  # Fallback
-

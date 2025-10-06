@@ -1,7 +1,8 @@
-import ray
 import math
-import time
 import random
+import time
+
+import ray
 
 
 @ray.remote
@@ -18,12 +19,11 @@ class ProgressActor:
             sum(self.num_samples_completed_per_task.values()) / self.total_num_samples
         )
 
+
 @ray.remote
 def sampling_task(
-        num_samples: int,
-        task_id: int,
-        progress_actor: ray.actor.ActorHandle) -> int:
-
+    num_samples: int, task_id: int, progress_actor: ray.actor.ActorHandle
+) -> int:
     num_inside = 0
     for i in range(num_samples):
         x, y = random.uniform(-1, 1), random.uniform(-1, 1)
@@ -38,10 +38,3 @@ def sampling_task(
     # Report the final progress.
     progress_actor.report_progress.remote(task_id, num_samples)
     return num_inside
-
-
-
-
-
-
-

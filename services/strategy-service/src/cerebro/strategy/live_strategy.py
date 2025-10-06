@@ -1,14 +1,14 @@
-import backtrader as bt
-import threading
 import datetime
+import threading
 
+import backtrader as bt
 from cerebro.strategy.three_step_strategy import ThreeStepStrategy
 
 
 class LiveStrategy(ThreeStepStrategy):
     params = (
-        ('order_valid', 30),  # 订单有效期（秒）
-        ('price_deviation', 0.01),  # 允许的价格偏离
+        ("order_valid", 30),  # 订单有效期（秒）
+        ("price_deviation", 0.01),  # 允许的价格偏离
     )
 
     def __init__(self):
@@ -27,11 +27,11 @@ class LiveStrategy(ThreeStepStrategy):
     def record_trade(self, order):
         # 记录交易到数据库或文件
         trade = {
-            'datetime': self.datetime.datetime(),
-            'symbol': order.data._name,
-            'size': order.size,
-            'price': order.executed.price,
-            'commission': order.executed.comm
+            "datetime": self.datetime.datetime(),
+            "symbol": order.data._name,
+            "size": order.size,
+            "price": order.executed.price,
+            "commission": order.executed.comm,
         }
         print(f"TRADE RECORDED: {trade}")
 
@@ -58,7 +58,8 @@ class LiveStrategy(ThreeStepStrategy):
             stopprice=self.stop_loss,
             limitprice=self.take_profit,
             exectype=bt.Order.StopLimit,
-            valid=datetime.timedelta(seconds=self.p.order_valid))
+            valid=datetime.timedelta(seconds=self.p.order_valid),
+        )
 
         self.orders[order[0].ref] = order[0]
 
@@ -68,9 +69,9 @@ class LiveStrategy(ThreeStepStrategy):
         bid = self.hourly.bid[0]
         ask = self.hourly.ask[0]
 
-        if trend_type == 'breakout':
+        if trend_type == "breakout":
             return min(last + 0.01, ask)
-        elif trend_type == 'reversal':
+        elif trend_type == "reversal":
             return max(last - 0.01, bid)
         else:
             return (bid + ask) / 2

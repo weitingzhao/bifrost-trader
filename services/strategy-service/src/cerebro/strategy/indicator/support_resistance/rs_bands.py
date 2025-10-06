@@ -1,23 +1,29 @@
 import backtrader as bt
 import numpy as np
 
-class SupportResistanceBands(bt.Indicator):
-    lines = ('support', 'resistance')
-    params = (
-        ('period', 10),
 
+class SupportResistanceBands(bt.Indicator):
+    lines = ("support", "resistance")
+    params = (
+        ("period", 10),
         # Calculated using Highest/Lowest levels in 300 bars
-        ('channel_width', 5), # 1 - 8 # Maximum Channel Width %
-        ('min_strength', 1), # 1 # Channel must contain at least 2 Pivot Points
-        ('max_num_sr', 6),  # 1 - 10 # Maximum number of Support/Resistance Channels to Show
-        ('loopback', 290), # 100 - 400 # While calculating S/R levels it checks Pivots in Loopback Period
+        ("channel_width", 5),  # 1 - 8 # Maximum Channel Width %
+        ("min_strength", 1),  # 1 # Channel must contain at least 2 Pivot Points
+        (
+            "max_num_sr",
+            6,
+        ),  # 1 - 10 # Maximum number of Support/Resistance Channels to Show
+        (
+            "loopback",
+            290,
+        ),  # 100 - 400 # While calculating S/R levels it checks Pivots in Loopback Period
     )
 
-    plotinfo = dict(subplot=False, plotname='Support/Resistance Channels')
+    plotinfo = dict(subplot=False, plotname="Support/Resistance Channels")
 
     plotlines = dict(
-        support=dict(color='lime', linestyle='--'),
-        resistance=dict(color='red', linestyle='--')
+        support=dict(color="lime", linestyle="--"),
+        resistance=dict(color="red", linestyle="--"),
     )
 
     def __init__(self):
@@ -37,8 +43,16 @@ class SupportResistanceBands(bt.Indicator):
                 self.pivot_lows.append((self.data.datetime[0], low[self.p.period]))
 
         # Remove old pivot points
-        self.pivot_highs = [(dt, val) for dt, val in self.pivot_highs if self.data.datetime[0] - dt <= self.p.loopback]
-        self.pivot_lows = [(dt, val) for dt, val in self.pivot_lows if self.data.datetime[0] - dt <= self.p.loopback]
+        self.pivot_highs = [
+            (dt, val)
+            for dt, val in self.pivot_highs
+            if self.data.datetime[0] - dt <= self.p.loopback
+        ]
+        self.pivot_lows = [
+            (dt, val)
+            for dt, val in self.pivot_lows
+            if self.data.datetime[0] - dt <= self.p.loopback
+        ]
 
         # Calculate support and resistance levels
         self.sr_levels = self.calculate_sr_levels()
@@ -57,7 +71,9 @@ class SupportResistanceBands(bt.Indicator):
             level = self.find_sr_level(pivot)
             if level:
                 sr_levels.append(level)
-        sr_levels = sorted(sr_levels, key=lambda x: x[2], reverse=True)[:self.p.max_num_sr]
+        sr_levels = sorted(sr_levels, key=lambda x: x[2], reverse=True)[
+            : self.p.max_num_sr
+        ]
         return sr_levels
 
     # find / create SR channel of a pivot point

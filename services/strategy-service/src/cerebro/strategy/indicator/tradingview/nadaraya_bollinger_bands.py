@@ -1,6 +1,7 @@
 import backtrader as bt
 import numpy as np
 
+
 class Palette:
     def __init__(self, bear, bull, shade1_bear, shade1_bull, shade2_bear, shade2_bull):
         self.bear = bear
@@ -9,6 +10,7 @@ class Palette:
         self.shade1_bull = shade1_bull
         self.shade2_bear = shade2_bear
         self.shade2_bull = shade2_bull
+
 
 def create_palette(bear, bull, alpha1=1, alpha2=2):
     shade1 = int(100 * alpha1)
@@ -19,55 +21,57 @@ def create_palette(bear, bull, alpha1=1, alpha2=2):
     shade2_bull = (bull[0], bull[1], bull[2], shade2)
     return Palette(bear, bull, shade1_bear, shade1_bull, shade2_bear, shade2_bull)
 
+
 class NadarayaBollingerBands(bt.Indicator):
-    lines = ('upper_band_1', 'lower_band_1',
-             'upper_band_2', 'lower_band_2',
-             'upper_band_3', 'lower_band_3',
-             'upper_band_4', 'lower_band_4')
+    lines = (
+        "upper_band_1",
+        "lower_band_1",
+        "upper_band_2",
+        "lower_band_2",
+        "upper_band_3",
+        "lower_band_3",
+        "upper_band_4",
+        "lower_band_4",
+    )
 
     params = dict(
         # group_smoothing="smoothing"
         smoothing_factor=6,
         repaint=False,
         sens=4,
-
         # group_boll = "Bollinger Bands Settings (Short, Medium, Long)"
         short_period=20,
         short_stdev=3,
-
         med_period=75,
         med_stdev=4,
-
         long_period=100,
         long_stdev=4.25,
-
         # group_graphics="Plots and Labels"
-        label_src='Close',
+        label_src="Close",
         labels=True,
         plots=True,
         plot_thickness=2,
-
         bands_lvl1=True,
         bands_lvl2=True,
-
         # grp="Color Theme"
-        pallete_bear='red',
-        pallete_bull='green',
+        pallete_bear="red",
+        pallete_bull="green",
         alpha1=0.90,
         alpha2=0.85,
-
         # grp_n="Notifications"
         notifs=False,
     )
 
-
     def gaussian_kernel(self, x, h):
-        return np.exp(-1 * ((x ** 2) / (2 * (h ** 2))))
-
+        return np.exp(-1 * ((x**2) / (2 * (h**2))))
 
     def bollingers(self, tp, n, factor=3):
-        bolu = bt.indicators.SimpleMovingAverage(tp, period=n) + (factor * bt.indicators.StandardDeviation(tp, period=n))
-        bold = bt.indicators.SimpleMovingAverage(tp, period=n) - (factor * bt.indicators.StandardDeviation(tp, period=n))
+        bolu = bt.indicators.SimpleMovingAverage(tp, period=n) + (
+            factor * bt.indicators.StandardDeviation(tp, period=n)
+        )
+        bold = bt.indicators.SimpleMovingAverage(tp, period=n) - (
+            factor * bt.indicators.StandardDeviation(tp, period=n)
+        )
         return bolu, bold
 
     def add_cols(self, mat, h_n=1):
@@ -81,13 +85,16 @@ class NadarayaBollingerBands(bt.Indicator):
         if self.p.repaint:
             for i in range(500):
                 sum_val = 0.0
-                gk = [self.gaussian_kernel(y - i, self.p.smoothing_factor) for y in range(500)]
+                gk = [
+                    self.gaussian_kernel(y - i, self.p.smoothing_factor)
+                    for y in range(500)
+                ]
                 gk_sum = np.sum(gk)
                 for y in range(500):
                     sum_val += src[y] * (gk[y] / gk_sum)
                 smoothed.append(sum_val)
                 if i % 2 == 0 and i != 0:
-                    self.plot_line(i-1, smoothed[i-1], i, smoothed[i], color)
+                    self.plot_line(i - 1, smoothed[i - 1], i, smoothed[i], color)
                     # Plotting lines is not directly supported in backtrader, so this part is omitted
                     pass
         return smoothed
@@ -111,10 +118,11 @@ class NadarayaBollingerBands(bt.Indicator):
                 smoothed += src[i] * (gk[i] / gk_sum)
         return smoothed
 
-
     def __init__(self):
         # Create the theme
-        self.theme = create_palette(self.p.pallete_bear, self.p.pallete_bull, self.p.alpha1, self.p.alpha2)
+        self.theme = create_palette(
+            self.p.pallete_bear, self.p.pallete_bull, self.p.alpha1, self.p.alpha2
+        )
 
         # Define constants
         bollinger_bands_lvl1 = True
@@ -146,7 +154,6 @@ class NadarayaBollingerBands(bt.Indicator):
         # Calculate pivot high and low
         self.pivot_high = bt.indicators.Highest(self.data.high, period=pivot_rad)
         self.pivot_low = bt.indicators.Lowest(self.data.low, period=pivot_rad)
-
 
         n = 499
 
@@ -181,18 +188,32 @@ class NadarayaBollingerBands(bt.Indicator):
 
         spacing = bt.indicators.ATR(self.data, period=300)
 
-        band_test_upper_source = self.data.close if self.p.label_src == "Close" else self.data.high
-        band_test_lower_source = self.data.close if self.p.label_src == "Close" else self.data.low
+        band_test_upper_source = (
+            self.data.close if self.p.label_src == "Close" else self.data.high
+        )
+        band_test_lower_source = (
+            self.data.close if self.p.label_src == "Close" else self.data.low
+        )
 
         offset = self.p.sens if self.p.label_src == "Pivots" else 0
 
-        upper_band_test = (band_test_upper_source >= smoothed_bolu_1[offset] and
-                           (band_test_upper_source[-1] <= smoothed_bolu_1[offset] or np.isnan(band_test_upper_source[-1])) and
-                           not self.p.repaint) * (band_test_upper_source + spacing[0] * 1.01)
+        upper_band_test = (
+            band_test_upper_source >= smoothed_bolu_1[offset]
+            and (
+                band_test_upper_source[-1] <= smoothed_bolu_1[offset]
+                or np.isnan(band_test_upper_source[-1])
+            )
+            and not self.p.repaint
+        ) * (band_test_upper_source + spacing[0] * 1.01)
 
-        lower_band_test = (band_test_lower_source <= smoothed_bold_1[offset] and
-                           (band_test_lower_source[-1] >= smoothed_bold_1[offset] or np.isnan(band_test_upper_source[-1])) and
-                           not self.p.repaint) * (band_test_lower_source - spacing[0] * 1.01)
+        lower_band_test = (
+            band_test_lower_source <= smoothed_bold_1[offset]
+            and (
+                band_test_lower_source[-1] >= smoothed_bold_1[offset]
+                or np.isnan(band_test_upper_source[-1])
+            )
+            and not self.p.repaint
+        ) * (band_test_lower_source - spacing[0] * 1.01)
 
         if self.p.notifs:
             if self.data.close[0] > smoothed_bolu_1[0]:
@@ -200,18 +221,58 @@ class NadarayaBollingerBands(bt.Indicator):
             elif self.data.close[0] < smoothed_bold_1[0]:
                 self.log("Lower Band Crossed")
 
-
         # Plot shapes
-        self.plotshape(self.p.labels and upper_band_test, style='triangledown', location='absolute', color=self.theme.bear, offset=-1 * offset, size='tiny')
-        self.plotshape(self.p.labels and lower_band_test, style='triangleup', location='absolute', color=self.theme.bull, offset=-1 * offset, size='tiny')
+        self.plotshape(
+            self.p.labels and upper_band_test,
+            style="triangledown",
+            location="absolute",
+            color=self.theme.bear,
+            offset=-1 * offset,
+            size="tiny",
+        )
+        self.plotshape(
+            self.p.labels and lower_band_test,
+            style="triangleup",
+            location="absolute",
+            color=self.theme.bull,
+            offset=-1 * offset,
+            size="tiny",
+        )
 
         # Plot smoothed bands
-        self.plot(not self.p.repaint and self.p.plots and smoothed_bolu_1, linewidth=self.p.plot_thickness, color=self.theme.bear)
-        self.plot(not self.p.repaint and self.p.plots and smoothed_bold_1, linewidth=self.p.plot_thickness, color=self.theme.bull)
+        self.plot(
+            not self.p.repaint and self.p.plots and smoothed_bolu_1,
+            linewidth=self.p.plot_thickness,
+            color=self.theme.bear,
+        )
+        self.plot(
+            not self.p.repaint and self.p.plots and smoothed_bold_1,
+            linewidth=self.p.plot_thickness,
+            color=self.theme.bull,
+        )
 
         # Fill areas between bands
-        self.fill_between(self.lines.upper_band_1, self.lines.upper_band_2, color=self.theme.shade1_bear, alpha=0.5)
-        self.fill_between(self.lines.lower_band_1, self.lines.lower_band_2, color=self.theme.shade1_bull, alpha=0.5)
-        self.fill_between(self.lines.upper_band_2, self.lines.upper_band_3, color=self.theme.shade2_bear, alpha=0.5)
-        self.fill_between(self.lines.lower_band_2, self.lines.lower_band_3, color=self.theme.shade2_bull, alpha=0.5)
-
+        self.fill_between(
+            self.lines.upper_band_1,
+            self.lines.upper_band_2,
+            color=self.theme.shade1_bear,
+            alpha=0.5,
+        )
+        self.fill_between(
+            self.lines.lower_band_1,
+            self.lines.lower_band_2,
+            color=self.theme.shade1_bull,
+            alpha=0.5,
+        )
+        self.fill_between(
+            self.lines.upper_band_2,
+            self.lines.upper_band_3,
+            color=self.theme.shade2_bear,
+            alpha=0.5,
+        )
+        self.fill_between(
+            self.lines.lower_band_2,
+            self.lines.lower_band_3,
+            color=self.theme.shade2_bull,
+            alpha=0.5,
+        )

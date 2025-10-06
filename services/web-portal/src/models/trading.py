@@ -2,9 +2,11 @@
 Trading data models
 """
 
-from pydantic import BaseModel
-from typing import Dict, Any, List, Optional
 from datetime import datetime
+from typing import Any, Dict, List, Optional
+
+from pydantic import BaseModel
+
 
 class AccountSummary(BaseModel):
     buying_power: float
@@ -12,6 +14,7 @@ class AccountSummary(BaseModel):
     margin_used: float
     equity: float
     day_trading_buying_power: float
+
 
 class Order(BaseModel):
     order_id: str
@@ -23,6 +26,7 @@ class Order(BaseModel):
     status: str
     timestamp: str
 
+
 class MarketQuote(BaseModel):
     price: float
     change: float
@@ -31,11 +35,13 @@ class MarketQuote(BaseModel):
     bid: float
     ask: float
 
+
 class Strategy(BaseModel):
     id: str
     name: str
     description: str
     status: str
+
 
 class TradingData(BaseModel):
     account_summary: AccountSummary

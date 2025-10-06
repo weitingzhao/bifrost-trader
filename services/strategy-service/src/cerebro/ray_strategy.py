@@ -1,17 +1,16 @@
 import contextlib
 import io
-import ray
 
+import ray
 from backtrader_plotting import Bokeh
 from backtrader_plotting.schemes import Tradimo
 from cerebro.cerebro_base import cerebroBase
 
+
 # @ray.remote
 class RayStrategyProfile(cerebroBase):
-
     def __init__(self, stdstats=False):
         super().__init__(stdstats)
-
 
     def run(self):
         # Prepare data
@@ -34,16 +33,19 @@ class RayStrategyProfile(cerebroBase):
         output.close()
 
         # Print out the starting conditions
-        print('Starting Portfolio Value: %.2f' % self.cerebro.broker.getvalue())
-        print('Final Portfolio Value: %.2f' % self.cerebro.broker.getvalue())
+        print("Starting Portfolio Value: %.2f" % self.cerebro.broker.getvalue())
+        print("Final Portfolio Value: %.2f" % self.cerebro.broker.getvalue())
 
         # Save the plot as an image
         # Plot the result
         bokeh = Bokeh(
             # kwargs
-            style='bar', plot_mode='single',
+            style="bar",
+            plot_mode="single",
             # params
-            scheme=Tradimo(), output_mode='memory')
+            scheme=Tradimo(),
+            output_mode="memory",
+        )
 
         self.cerebro.plot(bokeh, iplot=False)
         # plot = bokeh.plot_html(bokeh.figurepages[0].model, template="smart_trader.html.j2")

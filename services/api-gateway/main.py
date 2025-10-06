@@ -3,21 +3,21 @@ API Gateway for Bifrost Trader.
 Central entry point for all service requests.
 """
 
-from fastapi import FastAPI, HTTPException, Request, Depends
+import asyncio
+import logging
+import os
+from contextlib import asynccontextmanager
+from datetime import datetime
+from typing import Any, Dict, Optional
+
+import httpx
+from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.responses import JSONResponse
-import httpx
-import os
-import logging
-from datetime import datetime
-from typing import Dict, Any, Optional
-import asyncio
-from contextlib import asynccontextmanager
 
-from shared.utils import ServiceRegistry, HealthChecker, setup_logging, load_environment
 from shared.models import APIResponse, ServiceStatus
-
+from shared.utils import HealthChecker, ServiceRegistry, load_environment, setup_logging
 
 # Load environment variables
 load_environment()
@@ -45,7 +45,7 @@ app = FastAPI(
     title="Bifrost Trader API Gateway",
     version="1.0.0",
     description="Central API Gateway for Bifrost Trader microservices",
-    lifespan=lifespan
+    lifespan=lifespan,
 )
 
 # CORS middleware
@@ -59,8 +59,7 @@ app.add_middleware(
 
 # Trusted host middleware
 app.add_middleware(
-    TrustedHostMiddleware,
-    allowed_hosts=["*"]  # Configure appropriately for production
+    TrustedHostMiddleware, allowed_hosts=["*"]  # Configure appropriately for production
 )
 
 
@@ -83,16 +82,18 @@ async def log_requests(request: Request, call_next):
     return response
 
 
-async def proxy_request(service_name: str, path: str, method: str = "GET", data: Optional[Dict] = None) -> Dict[str, Any]:
+async def proxy_request(
+    service_name: str, path: str, method: str = "GET", data: Optional[Dict] = None
+) -> Dict[str, Any]:
     """Proxy request to appropriate service."""
     service_url = service_registry.get_service_url(service_name)
     if not service_url:
         raise HTTPException(status_code=404, detail=f"Service {service_name} not found")
-    
+
     try:
         async with httpx.AsyncClient(timeout=30.0) as client:
             url = f"{service_url}{path}"
-            
+
             if method.upper() == "GET":
                 response = await client.get(url)
             elif method.upper() == "POST":
@@ -103,10 +104,10 @@ async def proxy_request(service_name: str, path: str, method: str = "GET", data:
                 response = await client.delete(url)
             else:
                 raise HTTPException(status_code=405, detail="Method not allowed")
-            
+
             response.raise_for_status()
             return response.json()
-    
+
     except httpx.TimeoutException:
         raise HTTPException(status_code=504, detail="Service timeout")
     except httpx.HTTPError as e:
@@ -137,7 +138,7 @@ async def metrics():
         "service": "api-gateway",
         "uptime": health_checker.get_uptime(),
         "timestamp": datetime.now().isoformat(),
-        "services": list(service_registry.services.keys())
+        "services": list(service_registry.services.keys()),
     }
 
 
@@ -146,37 +147,40 @@ async def metrics():
 async def get_services_status():
     """Get status of all services."""
     services_status = []
-    
+
     for service_name, service_url in service_registry.services.items():
         try:
             async with httpx.AsyncClient(timeout=5.0) as client:
                 response = await client.get(f"{service_url}/health")
                 if response.status_code == 200:
-                    services_status.append({
-                        "service": service_name,
-                        "status": "healthy",
-                        "url": service_url,
-                        "response_time": response.elapsed.total_seconds()
-                    })
+                    services_status.append(
+                        {
+                            "service": service_name,
+                            "status": "healthy",
+                            "url": service_url,
+                            "response_time": response.elapsed.total_seconds(),
+                        }
+                    )
                 else:
-                    services_status.append({
-                        "service": service_name,
-                        "status": "unhealthy",
-                        "url": service_url,
-                        "error": f"HTTP {response.status_code}"
-                    })
+                    services_status.append(
+                        {
+                            "service": service_name,
+                            "status": "unhealthy",
+                            "url": service_url,
+                            "error": f"HTTP {response.status_code}",
+                        }
+                    )
         except Exception as e:
-            services_status.append({
-                "service": service_name,
-                "status": "unreachable",
-                "url": service_url,
-                "error": str(e)
-            })
-    
-    return {
-        "services": services_status,
-        "timestamp": datetime.now().isoformat()
-    }
+            services_status.append(
+                {
+                    "service": service_name,
+                    "status": "unreachable",
+                    "url": service_url,
+                    "error": str(e),
+                }
+            )
+
+    return {"services": services_status, "timestamp": datetime.now().isoformat()}
 
 
 # Data Service Routes
@@ -345,8 +349,8 @@ async def http_exception_handler(request: Request, exc: HTTPException):
             "success": False,
             "error": exc.detail,
             "timestamp": datetime.now().isoformat(),
-            "path": str(request.url)
-        }
+            "path": str(request.url),
+        },
     )
 
 
@@ -360,21 +364,15 @@ async def general_exception_handler(request: Request, exc: Exception):
             "success": False,
             "error": "Internal server error",
             "timestamp": datetime.now().isoformat(),
-            "path": str(request.url)
-        }
+            "path": str(request.url),
+        },
     )
 
 
 if __name__ == "__main__":
     import uvicorn
-    
+
     port = int(os.getenv("PORT", 8000))
     host = os.getenv("HOST", "0.0.0.0")
-    
-    uvicorn.run(
-        "main:app",
-        host=host,
-        port=port,
-        reload=True,
-        log_level="info"
-    )
+
+    uvicorn.run("main:app", host=host, port=port, reload=True, log_level="info")

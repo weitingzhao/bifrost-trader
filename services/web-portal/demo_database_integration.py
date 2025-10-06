@@ -6,63 +6,66 @@ This script demonstrates how the web portal integrates with PostgreSQL database
 to render real portfolio data instead of mock data.
 """
 
-import sys
 import os
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', 'shared'))
+import sys
+
+sys.path.append(os.path.join(os.path.dirname(__file__), "..", "..", "shared"))
+
 
 def demo_database_integration():
     """Demonstrate database integration features."""
     print("🗄️ Bifrost Trader Web Portal - PostgreSQL Database Integration Demo")
     print("=" * 70)
-    
+
     print("\n✅ **Database Integration Features Implemented:**")
     print("\n📊 **Portfolio Service with Database Integration**")
     print("   - PortfolioService class connects to PostgreSQL")
     print("   - Fetches real portfolio data from database tables")
     print("   - Calculates performance metrics from actual trade data")
     print("   - Provides real-time position tracking and P&L")
-    
+
     print("\n🔧 **Database Models Created**")
     print("   - Portfolio models: Portfolio, Holding, Transaction, Order, Trade")
     print("   - Market data models: MarketSymbol, MarketStock, HistoricalBars")
     print("   - Strategy models: Strategy, Rating, Snapshot tables")
-    
+
     print("\n🌐 **API Endpoints Updated**")
     print("   - All portfolio endpoints now fetch data from PostgreSQL")
     print("   - Dashboard API integrated with database for real-time data")
     print("   - User-specific data retrieval with user_id parameter")
-    
+
     print("\n📈 **Sample Data Structure**")
     print("   - Sample portfolio with $100,000 initial capital")
     print("   - 5 stock positions: AAPL, MSFT, GOOGL, TSLA, NVDA")
     print("   - Real-time P&L calculations")
     print("   - Complete trading history and performance metrics")
-    
+
     print("\n🔍 **Database Schema Integration**")
     print("   - Portfolio Management: portfolio, holding, transaction, order, trade")
     print("   - Market Data: market_symbol, market_stock, historical_bars")
     print("   - Strategy Analysis: strategy, rating, snapshot tables")
     print("   - TimescaleDB: Optimized for time-series data")
-    
+
     print("\n🚀 **How to Use Database Integration**")
     print("\n1. **Start Database Services:**")
     print("   docker-compose -f docker-compose-db.yml up -d")
-    
+
     print("\n2. **Initialize Sample Data:**")
     print("   python init_sample_data.py")
-    
+
     print("\n3. **Test Database Connection:**")
     print("   python test_db_connection.py")
-    
+
     print("\n4. **Start Web Portal:**")
     print("   python -m uvicorn src.main:app --host 0.0.0.0 --port 8006 --reload")
-    
+
     print("\n5. **Test API Endpoints:**")
     print("   curl http://localhost:8006/api/portfolio/?user_id=1")
     print("   curl http://localhost:8006/api/dashboard/?user_id=1")
-    
+
     print("\n📊 **Sample API Response Structure**")
-    print("""
+    print(
+        """
     {
         "portfolio_summary": {
             "portfolio_id": 1,
@@ -114,8 +117,9 @@ def demo_database_integration():
             }
         ]
     }
-    """)
-    
+    """
+    )
+
     print("\n🎯 **Key Benefits of Database Integration**")
     print("   ✅ Real-time portfolio data instead of mock data")
     print("   ✅ Accurate performance calculations from actual trades")
@@ -123,14 +127,14 @@ def demo_database_integration():
     print("   ✅ Complete trading history and analysis")
     print("   ✅ Scalable multi-user support")
     print("   ✅ Integration with other microservices")
-    
+
     print("\n🛠️ **Technical Implementation**")
     print("   - SQLAlchemy models for database operations")
     print("   - Connection pooling and error handling")
     print("   - Async database operations")
     print("   - TimescaleDB for time-series optimization")
     print("   - Service-specific database users and permissions")
-    
+
     print("\n🎉 **Database Integration Complete!**")
     print("\nThe Bifrost Trader Web Portal now:")
     print("   📊 Renders real portfolio data from PostgreSQL")
@@ -139,11 +143,12 @@ def demo_database_integration():
     print("   📋 Shows complete trading history")
     print("   🔄 Supports real-time data updates")
     print("   👥 Handles multiple users and portfolios")
-    
+
     print("\n" + "=" * 70)
     print("🌐 Ready to test at: http://localhost:8006")
     print("📚 Documentation: DATABASE_INTEGRATION.md")
     print("=" * 70)
+
 
 if __name__ == "__main__":
     demo_database_integration()

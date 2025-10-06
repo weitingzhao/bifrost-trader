@@ -138,9 +138,11 @@ nav:
     - System Overview: architecture/overview.md
     - Database Design: architecture/database.md
     - Database Folder Structure: architecture/database-folder-structure.md
+    - Services Dependency Map: architecture/services-dependency-map.md
   - Services:
     - Overview: services/index.md
     - Web Portal: services/web-portal.md
+    - Data Service: services/data-service.md
   - Development:
     - Overview: development/index.md
     - Migration Guide: development/migration-guide.md

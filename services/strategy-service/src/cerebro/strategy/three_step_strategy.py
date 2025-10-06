@@ -3,10 +3,10 @@ import backtrader as bt
 
 class ThreeStepStrategy(bt.Strategy):
     params = (
-        ('trend_period', 20),  # 趋势判定周期
-        ('entry_period', 10),  # 入场均线周期
-        ('atr_period', 14),  # ATR周期
-        ('risk_ratio', 3),  # 风险回报比
+        ("trend_period", 20),  # 趋势判定周期
+        ("entry_period", 10),  # 入场均线周期
+        ("atr_period", 14),  # ATR周期
+        ("risk_ratio", 3),  # 风险回报比
     )
 
     def __init__(self):
@@ -16,11 +16,15 @@ class ThreeStepStrategy(bt.Strategy):
 
         # 第一步：有序行为指标（日线级别）
         self.daily_sma = bt.indicators.SMA(self.daily.close, period=self.p.trend_period)
-        self.daily_boll = bt.indicators.BollingerBands(self.daily.close, period=self.p.trend_period)
+        self.daily_boll = bt.indicators.BollingerBands(
+            self.daily.close, period=self.p.trend_period
+        )
         self.daily_rsi = bt.indicators.RSI(self.daily.close, period=14)
 
         # 第二步：关键动作指标（小时线级别）
-        self.hourly_ema = bt.indicators.EMA(self.hourly.close, period=self.p.entry_period)
+        self.hourly_ema = bt.indicators.EMA(
+            self.hourly.close, period=self.p.entry_period
+        )
         self.hourly_atr = bt.indicators.ATR(self.hourly, period=self.p.atr_period)
 
         # 第三步：入场信号指标
@@ -54,25 +58,31 @@ class ThreeStepStrategy(bt.Strategy):
 
         # 判断突破
         if price_above_sma and price_in_upper:
-            return 'breakout'
+            return "breakout"
         # 判断整理
-        elif self.daily_boll.lines.top[0] - self.daily_boll.lines.bot[0] < \
-                self.daily_boll.lines.top[-1] - self.daily_boll.lines.bot[-1]:
-            return 'consolidation'
+        elif (
+            self.daily_boll.lines.top[0] - self.daily_boll.lines.bot[0]
+            < self.daily_boll.lines.top[-1] - self.daily_boll.lines.bot[-1]
+        ):
+            return "consolidation"
         # 判断反转
         elif (price_in_lower and rsi_oversold) or (price_in_upper and rsi_overbought):
-            return 'reversal'
+            return "reversal"
         return None
 
     def check_hourly_signal(self, trend_type):
         # 验证小时线级别信号
-        if trend_type == 'breakout':
-            return self.hourly.close[0] > self.hourly_ema[0] and \
-                self.hourly.volume[0] > self.hourly.volume[-1] * 1.2
-        elif trend_type == 'consolidation':
-            return abs(self.hourly.close[0] - self.hourly.open[0]) < \
-                self.hourly_atr[0] * 0.3  # 窄幅波动
-        elif trend_type == 'reversal':
+        if trend_type == "breakout":
+            return (
+                self.hourly.close[0] > self.hourly_ema[0]
+                and self.hourly.volume[0] > self.hourly.volume[-1] * 1.2
+            )
+        elif trend_type == "consolidation":
+            return (
+                abs(self.hourly.close[0] - self.hourly.open[0])
+                < self.hourly_atr[0] * 0.3
+            )  # 窄幅波动
+        elif trend_type == "reversal":
             return self.crossover[0] != 0  # 出现交叉信号
         return False
 
@@ -81,33 +91,41 @@ class ThreeStepStrategy(bt.Strategy):
         size = self.broker.getcash() * 0.98 / self.hourly.close[0]
 
         # 根据趋势类型设置订单
-        if trend_type == 'breakout':
+        if trend_type == "breakout":
             price = self.hourly.low[0] + self.hourly_atr[0] * 0.2
             self.stop_loss = self.hourly.low[0] - self.hourly_atr[0] * 0.5
             self.take_profit = price + (price - self.stop_loss) * self.p.risk_ratio
-            self.buy_bracket(price=price, size=size,
-                             stopprice=self.stop_loss,
-                             limitprice=self.take_profit)
+            self.buy_bracket(
+                price=price,
+                size=size,
+                stopprice=self.stop_loss,
+                limitprice=self.take_profit,
+            )
 
-        elif trend_type == 'reversal':
+        elif trend_type == "reversal":
             price = self.hourly.close[0]
             self.stop_loss = price - self.hourly_atr[0] * 1.5
             self.take_profit = price + (price - self.stop_loss) * self.p.risk_ratio
-            self.buy_bracket(price=price, size=size,
-                             stopprice=self.stop_loss,
-                             limitprice=self.take_profit)
+            self.buy_bracket(
+                price=price,
+                size=size,
+                stopprice=self.stop_loss,
+                limitprice=self.take_profit,
+            )
 
-        elif trend_type == 'consolidation':
+        elif trend_type == "consolidation":
             price = (self.hourly.high[0] + self.hourly.low[0]) / 2
             self.stop_loss = self.hourly.low[0] - self.hourly_atr[0] * 0.3
             self.take_profit = self.hourly_boll.top[0]
-            self.buy_bracket(price=price, size=size,
-                             stopprice=self.stop_loss,
-                             limitprice=self.take_profit)
+            self.buy_bracket(
+                price=price,
+                size=size,
+                stopprice=self.stop_loss,
+                limitprice=self.take_profit,
+            )
 
     def monitor_exit(self):
         # 动态跟踪止损（示例）
         if self.position.size > 0:
             trail_price = self.hourly.close[0] - self.hourly_atr[0] * 0.5
             self.stop_loss = max(self.stop_loss, trail_price)
-
