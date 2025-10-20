@@ -70,7 +70,7 @@
         <div class="card">
             <div class="card-header">
                 <h5 class="card-title mb-0">
-                    <i class="{{ category_info.icon }} me-2" style="color: {{ category_info.color }}"></i>
+                    <i class="{{ category_info.icon }} me-2"></i>
                     {{ category_info.name }}
                     <small class="text-muted">({{ category_info.description }})</small>
                 </h5>
@@ -171,6 +171,219 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block head %}
+<style>
+/* Bright and vibrant dashboard theme */
+body {
+    background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 50%, #fff3e0 100%);
+    min-height: 100vh;
+}
+
+/* Bright card styling */
+.card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%) !important;
+    border: 2px solid rgba(0, 188, 212, 0.3) !important;
+    box-shadow: 0 8px 25px rgba(0, 188, 212, 0.2) !important;
+    transition: all 0.3s ease !important;
+}
+
+.card:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 12px 35px rgba(0, 188, 212, 0.3) !important;
+    border-color: rgba(0, 188, 212, 0.6) !important;
+}
+
+.card-header {
+    background: linear-gradient(135deg, #00bcd4 0%, #03a9f4 50%, #9c27b0 100%) !important;
+    color: white !important;
+    font-weight: 700 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+    border-bottom: 3px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Bright text colors */
+h1, h2, h3, h4, h5, h6 {
+    color: #00bcd4 !important;
+    font-weight: 700 !important;
+    text-shadow: 0 2px 4px rgba(0, 188, 212, 0.3) !important;
+}
+
+.text-primary {
+    color: #00bcd4 !important;
+    font-weight: 700 !important;
+}
+
+.text-success {
+    color: #4caf50 !important;
+    font-weight: 700 !important;
+}
+
+.text-warning {
+    color: #ff9800 !important;
+    font-weight: 700 !important;
+}
+
+.text-danger {
+    color: #f44336 !important;
+    font-weight: 700 !important;
+}
+
+.text-info {
+    color: #03a9f4 !important;
+    font-weight: 700 !important;
+}
+
+.text-muted {
+    color: #6c757d !important;
+    font-weight: 600 !important;
+}
+
+/* Bright buttons */
+.btn-primary {
+    background: linear-gradient(45deg, #00bcd4, #03a9f4, #9c27b0) !important;
+    border: 0 !important;
+    color: white !important;
+    font-weight: 700 !important;
+    box-shadow: 0 4px 15px rgba(0, 188, 212, 0.3) !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(45deg, #00acc1, #0288d1, #7b1fa2) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(0, 188, 212, 0.4) !important;
+    color: white !important;
+}
+
+.btn-success {
+    background: linear-gradient(45deg, #4caf50, #8bc34a, #cddc39) !important;
+    border: 0 !important;
+    color: white !important;
+    font-weight: 700 !important;
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3) !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn-success:hover {
+    background: linear-gradient(45deg, #388e3c, #689f38, #afb42b) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4) !important;
+    color: white !important;
+}
+
+.btn-warning {
+    background: linear-gradient(45deg, #ffeb3b, #ffc107, #ff9800) !important;
+    border: 0 !important;
+    color: #333 !important;
+    font-weight: 700 !important;
+    box-shadow: 0 4px 15px rgba(255, 235, 59, 0.3) !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn-warning:hover {
+    background: linear-gradient(45deg, #f9a825, #f57c00, #ef6c00) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(255, 235, 59, 0.4) !important;
+    color: #333 !important;
+}
+
+.btn-info {
+    background: linear-gradient(45deg, #00bcd4, #03a9f4, #2196f3) !important;
+    border: 0 !important;
+    color: white !important;
+    font-weight: 700 !important;
+    box-shadow: 0 4px 15px rgba(0, 188, 212, 0.3) !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn-info:hover {
+    background: linear-gradient(45deg, #00acc1, #0288d1, #1976d2) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(0, 188, 212, 0.4) !important;
+    color: white !important;
+}
+
+.btn-outline-primary {
+    border: 2px solid #00bcd4 !important;
+    color: #00bcd4 !important;
+    font-weight: 700 !important;
+    background: transparent !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn-outline-primary:hover {
+    background: #00bcd4 !important;
+    color: white !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 15px rgba(0, 188, 212, 0.3) !important;
+}
+
+/* Bright service cards */
+.service-card {
+    background: linear-gradient(135deg, #ffffff 0%, #e1f5fe 50%, #f3e5f5 100%) !important;
+    border: 2px solid rgba(0, 188, 212, 0.4) !important;
+    box-shadow: 0 6px 20px rgba(0, 188, 212, 0.2) !important;
+    transition: all 0.3s ease !important;
+}
+
+.service-card:hover {
+    transform: translateY(-5px) !important;
+    box-shadow: 0 10px 30px rgba(0, 188, 212, 0.3) !important;
+    border-color: rgba(0, 188, 212, 0.8) !important;
+}
+
+/* Bright statistics */
+.stat-number {
+    background: linear-gradient(45deg, #00bcd4, #03a9f4, #9c27b0) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    font-weight: 900 !important;
+    font-size: 2.5rem !important;
+    text-shadow: 0 3px 6px rgba(0, 188, 212, 0.3) !important;
+}
+
+/* Enhanced shadows */
+.shadow-sm {
+    box-shadow: 0 4px 15px rgba(0, 188, 212, 0.1) !important;
+}
+
+.shadow-lg {
+    box-shadow: 0 8px 30px rgba(0, 188, 212, 0.2) !important;
+}
+
+/* Bright badges */
+.badge {
+    font-weight: 700 !important;
+    font-size: 0.9rem !important;
+    padding: 0.5rem 0.8rem !important;
+    border-radius: 20px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+.badge.bg-primary {
+    background: linear-gradient(45deg, #00bcd4, #03a9f4) !important;
+}
+
+.badge.bg-success {
+    background: linear-gradient(45deg, #4caf50, #8bc34a) !important;
+}
+
+.badge.bg-warning {
+    background: linear-gradient(45deg, #ffeb3b, #ffc107) !important;
+    color: #333 !important;
+}
+
+.badge.bg-danger {
+    background: linear-gradient(45deg, #f44336, #e91e63) !important;
+}
+
+.badge.bg-info {
+    background: linear-gradient(45deg, #00bcd4, #17a2b8) !important;
+}
+</style>
 {% endblock %}
 
 {% block extra_scripts %}
