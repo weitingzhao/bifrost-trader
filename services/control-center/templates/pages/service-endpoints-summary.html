@@ -582,70 +582,88 @@
     color: white;
 }
 
-/* Bright and vibrant color scheme - NO DARK COLORS */
+/* Ultra bright and vibrant color scheme - NO DARK COLORS */
 body {
-    background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+    background: linear-gradient(135deg, #e1f5fe 0%, #f3e5f5 50%, #fff3e0 100%);
     min-height: 100vh;
 }
 
-/* Bright gradient backgrounds */
+/* Ultra bright gradient backgrounds */
 .bg-gradient-primary {
-    background: linear-gradient(135deg, #0d6efd 0%, #0dcaf0 50%, #6f42c1 100%) !important;
-    box-shadow: 0 4px 20px rgba(13, 110, 253, 0.3);
+    background: linear-gradient(135deg, #00bcd4 0%, #03a9f4 25%, #2196f3 50%, #9c27b0 75%, #e91e63 100%) !important;
+    box-shadow: 0 6px 25px rgba(0, 188, 212, 0.4);
 }
 
 .bg-gradient-success {
-    background: linear-gradient(135deg, #198754 0%, #20c997 50%, #0dcaf0 100%) !important;
-    box-shadow: 0 4px 20px rgba(25, 135, 84, 0.3);
+    background: linear-gradient(135deg, #4caf50 0%, #8bc34a 25%, #cddc39 50%, #ffeb3b 75%, #ffc107 100%) !important;
+    box-shadow: 0 6px 25px rgba(76, 175, 80, 0.4);
 }
 
 .bg-gradient-warning {
-    background: linear-gradient(135deg, #ffc107 0%, #ffeb3b 50%, #fd7e14 100%) !important;
-    box-shadow: 0 4px 20px rgba(255, 193, 7, 0.3);
+    background: linear-gradient(135deg, #ffeb3b 0%, #ffc107 25%, #ff9800 50%, #ff5722 75%, #f44336 100%) !important;
+    box-shadow: 0 6px 25px rgba(255, 235, 59, 0.4);
 }
 
 .bg-gradient-info {
-    background: linear-gradient(135deg, #0dcaf0 0%, #6f42c1 50%, #e91e63 100%) !important;
-    box-shadow: 0 4px 20px rgba(13, 202, 240, 0.3);
+    background: linear-gradient(135deg, #00bcd4 0%, #03a9f4 25%, #2196f3 50%, #3f51b5 75%, #9c27b0 100%) !important;
+    box-shadow: 0 6px 25px rgba(0, 188, 212, 0.4);
 }
 
 .bg-gradient-light {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e3f2fd 50%, #f3e5f5 100%) !important;
-    box-shadow: 0 4px 20px rgba(248, 249, 250, 0.3);
+    background: linear-gradient(135deg, #ffffff 0%, #e1f5fe 25%, #f3e5f5 50%, #fff3e0 75%, #f1f8e9 100%) !important;
+    box-shadow: 0 6px 25px rgba(255, 255, 255, 0.4);
 }
 
-/* Bright buttons */
+/* Ultra bright buttons with rainbow effects */
 .btn-bright-primary {
-    background: linear-gradient(45deg, #0d6efd, #0dcaf0, #6f42c1) !important;
+    background: linear-gradient(45deg, #00bcd4, #03a9f4, #2196f3, #9c27b0, #e91e63) !important;
     border: 0 !important;
     color: white !important;
     font-weight: 700;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 6px 20px rgba(0, 188, 212, 0.4);
+    transition: all 0.3s ease !important;
 }
 
 .btn-bright-primary:hover {
-    background: linear-gradient(45deg, #0dcaf0, #6f42c1, #e91e63) !important;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(13, 110, 253, 0.4);
+    background: linear-gradient(45deg, #00acc1, #0288d1, #1976d2, #7b1fa2, #c2185b) !important;
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(0, 188, 212, 0.6);
+    color: white !important;
 }
 
 .btn-bright-success {
-    background: linear-gradient(45deg, #198754, #20c997, #0dcaf0) !important;
+    background: linear-gradient(45deg, #4caf50, #8bc34a, #cddc39, #ffeb3b, #ffc107) !important;
     border: 0 !important;
     color: white !important;
     font-weight: 700;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    box-shadow: 0 4px 15px rgba(25, 135, 84, 0.3);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+    transition: all 0.3s ease !important;
+}
+
+.btn-bright-success:hover {
+    background: linear-gradient(45deg, #388e3c, #689f38, #afb42b, #f9a825, #f57c00) !important;
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(76, 175, 80, 0.6);
+    color: white !important;
 }
 
 .btn-bright-warning {
-    background: linear-gradient(45deg, #ffc107, #ffeb3b, #fd7e14) !important;
+    background: linear-gradient(45deg, #ffeb3b, #ffc107, #ff9800, #ff5722, #f44336) !important;
     border: 0 !important;
-    color: #000 !important;
+    color: white !important;
     font-weight: 700;
-    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
-    box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 6px 20px rgba(255, 235, 59, 0.4);
+    transition: all 0.3s ease !important;
+}
+
+.btn-bright-warning:hover {
+    background: linear-gradient(45deg, #f9a825, #f57c00, #ef6c00, #d84315, #d32f2f) !important;
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(255, 235, 59, 0.6);
+    color: white !important;
 }
 
 /* Enhanced shadows */
@@ -667,23 +685,91 @@ body {
     box-shadow: 0 2px 8px rgba(255, 193, 7, 0.3);
 }
 
-/* Remove all dark colors */
+/* Ultra bright text colors - NO DARK COLORS */
 .text-muted {
-    color: #0dcaf0 !important;
-    font-weight: 500;
+    color: #00bcd4 !important;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0, 188, 212, 0.3);
 }
 
 .text-dark {
-    color: #0d6efd !important;
+    color: #03a9f4 !important;
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(3, 169, 244, 0.3);
 }
 
 .bg-dark {
-    background: linear-gradient(135deg, #0d6efd 0%, #0dcaf0 100%) !important;
+    background: linear-gradient(135deg, #00bcd4 0%, #03a9f4 50%, #9c27b0 100%) !important;
+    box-shadow: 0 6px 25px rgba(0, 188, 212, 0.4);
 }
 
 .bg-secondary {
-    background: linear-gradient(45deg, #ffc107, #ffeb3b) !important;
-    color: #000 !important;
+    background: linear-gradient(45deg, #ffeb3b, #ffc107, #ff9800) !important;
+    color: white !important;
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 15px rgba(255, 235, 59, 0.3);
+}
+
+/* Ultra bright enhancements */
+.card {
+    background: linear-gradient(135deg, #ffffff 0%, #e1f5fe 50%, #f3e5f5 100%) !important;
+    border: 2px solid rgba(0, 188, 212, 0.3) !important;
+    box-shadow: 0 8px 30px rgba(0, 188, 212, 0.2) !important;
+    transition: all 0.3s ease !important;
+}
+
+.card:hover {
+    transform: translateY(-5px) !important;
+    box-shadow: 0 12px 40px rgba(0, 188, 212, 0.3) !important;
+    border-color: rgba(0, 188, 212, 0.6) !important;
+}
+
+.card-header {
+    background: linear-gradient(135deg, #00bcd4 0%, #03a9f4 25%, #2196f3 50%, #9c27b0 75%, #e91e63 100%) !important;
+    color: white !important;
+    font-weight: 700 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+    border-bottom: 3px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+.card-body {
+    background: linear-gradient(135deg, #ffffff 0%, #e1f5fe 25%, #f3e5f5 50%, #fff3e0 75%, #f1f8e9 100%) !important;
+}
+
+/* Rainbow text effects */
+h1, h2, h3, h4, h5, h6 {
+    background: linear-gradient(45deg, #00bcd4, #03a9f4, #2196f3, #9c27b0, #e91e63) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    font-weight: 800 !important;
+    text-shadow: 0 2px 4px rgba(0, 188, 212, 0.3) !important;
+}
+
+/* Ultra bright service cards */
+.service-endpoint-card {
+    background: linear-gradient(135deg, #ffffff 0%, #e1f5fe 25%, #f3e5f5 50%, #fff3e0 75%, #f1f8e9 100%) !important;
+    border: 3px solid rgba(0, 188, 212, 0.4) !important;
+    box-shadow: 0 10px 35px rgba(0, 188, 212, 0.25) !important;
+    transition: all 0.4s ease !important;
+}
+
+.service-endpoint-card:hover {
+    transform: translateY(-8px) scale(1.02) !important;
+    box-shadow: 0 15px 50px rgba(0, 188, 212, 0.4) !important;
+    border-color: rgba(0, 188, 212, 0.8) !important;
+}
+
+/* Ultra bright statistics */
+.stat-number {
+    background: linear-gradient(45deg, #00bcd4, #03a9f4, #2196f3, #9c27b0, #e91e63) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    font-weight: 900 !important;
+    font-size: 2.5rem !important;
+    text-shadow: 0 3px 6px rgba(0, 188, 212, 0.4) !important;
 }
 </style>
 {% endblock %}
