@@ -1,0 +1,389 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}{{ service.name }} - Service Details{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Service Information -->
+    <div class="col-12 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-info-circle me-2"></i>
+                        {{ service.name }} - Service Information
+                    </h5>
+                    <div>
+                        <span class="badge bg-{{ 'success' if status == 'running' else 'danger' if status == 'error' else 'warning' }} me-2">
+                            {{ status }}
+                        </span>
+                        <a href="/" class="btn btn-sm btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-1"></i>
+                            Back to Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <table class="table table-sm">
+                            <tr>
+                                <td><strong>Name:</strong></td>
+                                <td>{{ service.name }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Port:</strong></td>
+                                <td>{{ service.port }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Category:</strong></td>
+                                <td>
+                                    <span class="badge bg-primary">{{ service.category }}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Description:</strong></td>
+                                <td>{{ service.description }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <table class="table table-sm">
+                            <tr>
+                                <td><strong>URL:</strong></td>
+                                <td>
+                                    <a href="{{ service.url }}" target="_blank" class="text-decoration-none">
+                                        {{ service.url }}
+                                        <i class="fas fa-external-link-alt ms-1"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Has UI:</strong></td>
+                                <td>
+                                    <i class="fas fa-{{ 'check' if service.has_ui else 'times' }} text-{{ 'success' if service.has_ui else 'muted' }}"></i>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Management:</strong></td>
+                                <td>{{ service.management }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Health Endpoint:</strong></td>
+                                <td>
+                                    <a href="{{ service.health_url }}" target="_blank" class="text-decoration-none">
+                                        {{ service.health_url }}
+                                        <i class="fas fa-external-link-alt ms-1"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Service Management -->
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-cogs me-2"></i>
+                    Service Management
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <button class="btn btn-success" onclick="startService('{{ service.name }}')" id="start-btn">
+                        <i class="fas fa-play me-2"></i>
+                        Start Service
+                    </button>
+                    <button class="btn btn-warning" onclick="stopService('{{ service.name }}')" id="stop-btn">
+                        <i class="fas fa-stop me-2"></i>
+                        Stop Service
+                    </button>
+                    <button class="btn btn-info" onclick="restartService('{{ service.name }}')" id="restart-btn">
+                        <i class="fas fa-redo me-2"></i>
+                        Restart Service
+                    </button>
+                </div>
+                
+                <hr>
+                
+                <div class="d-grid gap-2">
+                    <a href="{{ service.url }}" target="_blank" class="btn btn-outline-primary">
+                        <i class="fas fa-external-link-alt me-2"></i>
+                        Open Service
+                    </a>
+                    <a href="{{ service.docs_url }}" target="_blank" class="btn btn-outline-info">
+                        <i class="fas fa-book me-2"></i>
+                        View API Documentation
+                    </a>
+                    <a href="{{ service.health_url }}" target="_blank" class="btn btn-outline-secondary">
+                        <i class="fas fa-heartbeat me-2"></i>
+                        Check Health Status
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Health Status -->
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-heartbeat me-2"></i>
+                    Health Status
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if health %}
+                <div class="row">
+                    <div class="col-6">
+                        <strong>Status:</strong><br>
+                        <span class="badge bg-{{ 'success' if health.status == 'running' else 'danger' if health.status == 'error' else 'warning' }}">
+                            {{ health.status }}
+                        </span>
+                    </div>
+                    <div class="col-6">
+                        <strong>Response Time:</strong><br>
+                        <span id="response-time">
+                            {% if health.response_time %}
+                                {{ "%.2f"|format(health.response_time) }}s
+                            {% else %}
+                                N/A
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+                
+                <hr>
+                
+                <div class="row">
+                    <div class="col-6">
+                        <strong>Last Check:</strong><br>
+                        <small class="text-muted" id="last-check">
+                            {{ health.last_check.strftime('%Y-%m-%d %H:%M:%S') if health.last_check else 'Never' }}
+                        </small>
+                    </div>
+                    <div class="col-6">
+                        <strong>Uptime:</strong><br>
+                        <small class="text-muted" id="uptime">
+                            {% if health.uptime %}
+                                {{ "%.1f"|format(health.uptime) }}s
+                            {% else %}
+                                N/A
+                            {% endif %}
+                        </small>
+                    </div>
+                </div>
+                
+                {% if health.error_message %}
+                <div class="alert alert-danger mt-3">
+                    <strong>Error:</strong> {{ health.error_message }}
+                </div>
+                {% endif %}
+                {% else %}
+                <div class="text-center text-muted">
+                    <i class="fas fa-question-circle fa-2x mb-2"></i>
+                    <p>No health data available</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Service Metrics -->
+    {% if metrics %}
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-chart-line me-2"></i>
+                    Service Metrics
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <strong>PID:</strong><br>
+                        <code>{{ metrics.pid }}</code>
+                    </div>
+                    <div class="col-6">
+                        <strong>Status:</strong><br>
+                        <span class="badge bg-{{ 'success' if metrics.status == 'running' else 'danger' }}">
+                            {{ metrics.status }}
+                        </span>
+                    </div>
+                </div>
+                
+                <hr>
+                
+                <div class="row">
+                    <div class="col-6">
+                        <strong>CPU Usage:</strong><br>
+                        <span id="cpu-usage">
+                            {% if metrics.cpu_percent %}
+                                {{ "%.1f"|format(metrics.cpu_percent) }}%
+                            {% else %}
+                                N/A
+                            {% endif %}
+                        </span>
+                    </div>
+                    <div class="col-6">
+                        <strong>Memory Usage:</strong><br>
+                        <span id="memory-usage">
+                            {% if metrics.memory_mb %}
+                                {{ "%.1f"|format(metrics.memory_mb) }} MB
+                            {% else %}
+                                N/A
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- Service Logs -->
+    <div class="col-12 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-file-alt me-2"></i>
+                        Recent Logs
+                    </h5>
+                    <button class="btn btn-sm btn-outline-primary" onclick="refreshLogs()">
+                        <i class="fas fa-sync-alt me-1"></i>
+                        Refresh
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="log-container" style="max-height: 400px; overflow-y: auto;">
+                    {% if logs %}
+                        {% for log in logs %}
+                        <div class="log-entry mb-2 p-2 border rounded">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <span class="badge bg-{{ 'success' if log.level == 'INFO' else 'warning' if log.level == 'WARNING' else 'danger' if log.level == 'ERROR' else 'secondary' }} me-2">
+                                        {{ log.level }}
+                                    </span>
+                                    <small class="text-muted">{{ log.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</small>
+                                </div>
+                                <small class="text-muted">{{ log.source }}</small>
+                            </div>
+                            <div class="mt-1">
+                                <code>{{ log.message }}</code>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center text-muted">
+                            <i class="fas fa-file-alt fa-2x mb-2"></i>
+                            <p>No logs available</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="toast" class="toast" role="alert">
+        <div class="toast-header">
+            <i class="fas fa-info-circle me-2"></i>
+            <strong class="me-auto">Control Center</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+        </div>
+        <div class="toast-body" id="toast-message">
+            <!-- Toast message will be set here -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// Service management functions
+async function startService(serviceName) {
+    try {
+        const response = await fetch(`/api/services/${serviceName}/start`, {
+            method: 'POST'
+        });
+        const result = await response.json();
+        
+        if (result.success) {
+            showToast('success', result.message);
+            setTimeout(() => location.reload(), 2000);
+        } else {
+            showToast('error', result.message);
+        }
+    } catch (error) {
+        showToast('error', `Failed to start service: ${error.message}`);
+    }
+}
+
+async function stopService(serviceName) {
+    try {
+        const response = await fetch(`/api/services/${serviceName}/stop`, {
+            method: 'POST'
+        });
+        const result = await response.json();
+        
+        if (result.success) {
+            showToast('success', result.message);
+            setTimeout(() => location.reload(), 2000);
+        } else {
+            showToast('error', result.message);
+        }
+    } catch (error) {
+        showToast('error', `Failed to stop service: ${error.message}`);
+    }
+}
+
+async function restartService(serviceName) {
+    try {
+        const response = await fetch(`/api/services/${serviceName}/restart`, {
+            method: 'POST'
+        });
+        const result = await response.json();
+        
+        if (result.success) {
+            showToast('success', result.message);
+            setTimeout(() => location.reload(), 2000);
+        } else {
+            showToast('error', result.message);
+        }
+    } catch (error) {
+        showToast('error', `Failed to restart service: ${error.message}`);
+    }
+}
+
+function refreshLogs() {
+    location.reload();
+}
+
+function showToast(type, message) {
+    const toast = document.getElementById('toast');
+    const toastMessage = document.getElementById('toast-message');
+    
+    toastMessage.textContent = message;
+    
+    const toastInstance = new bootstrap.Toast(toast);
+    toastInstance.show();
+}
+
+// Auto-refresh health status every 30 seconds
+setInterval(() => {
+    location.reload();
+}, 30000);
+</script>
+{% endblock %}

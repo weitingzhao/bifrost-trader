@@ -18,7 +18,7 @@ sys.path.append(
 )
 
 from database.connection import get_db_connection
-from services.portfolio_service import PortfolioService
+# from services.portfolio_service import PortfolioService
 
 
 class DashboardService:
@@ -29,7 +29,7 @@ class DashboardService:
         self.execution_service_url = "http://execution-service:8004"
         self.risk_service_url = "http://risk-service:8005"
         self.db = get_db_connection()
-        self.portfolio_service = PortfolioService()
+        # self.portfolio_service = PortfolioService()
 
     async def get_dashboard_data(self, user_id: str = "1") -> Dict[str, Any]:
         """Get comprehensive dashboard data."""

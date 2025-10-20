@@ -59,6 +59,21 @@ Risk management and compliance:
 - Position limits
 - Compliance checking
 
+### **🎛️ [Control Center](control-center.md)**
+Centralized service management:
+- Service monitoring and health checks
+- Service lifecycle management
+- Unified API access
+- Real-time status updates
+- Individual service endpoints
+
+### **🔗 [Control Center Endpoints](control-center-endpoints.md)**
+Individual service access points:
+- Dedicated endpoints for each service
+- Service-specific management interfaces
+- Quick access to service documentation
+- Health monitoring and metrics
+
 ## 🔄 **Service Communication**
 
 ### **API Gateway**

@@ -4,21 +4,67 @@ This document provides a comprehensive overview of the microservices architectur
 
 ## 🎯 **Services Overview**
 
-### **Core Services**
-1. **API Gateway** (Port 8000) - ✅ **COMPLETE**
-2. **Data Service** (Port 8001) - 🚧 **IN PROGRESS**
-3. **Portfolio Service** (Port 8002) - 🚧 **IN PROGRESS**
-4. **Strategy Service** (Port 8003) - 🚧 **IN PROGRESS**
-5. **Execution Service** (Port 8004) - ❌ **PLANNED**
-6. **Risk Service** (Port 8005) - ❌ **PLANNED**
-7. **Web Portal** (Port 8006) - ✅ **COMPLETE**
+### **Core Services (Direct Database Access)**
+1. **API Gateway** (Port 8000) - ✅ **COMPLETE** - 🟢 No DB Access
+2. **Market Data Service** (Port 8001) - 🚧 **IN PROGRESS** - 🔴 Direct DB Access
+3. **Portfolio Service** (Port 8002) - 🚧 **IN PROGRESS** - 🔴 Direct DB Access
+4. **Strategy Service** (Port 8003) - 🚧 **IN PROGRESS** - 🔴 Direct DB Access
+5. **Execution Service** (Port 8004) - ❌ **PLANNED** - 🔴 Direct DB Access
+6. **Risk Service** (Port 8005) - ❌ **PLANNED** - 🔴 Direct DB Access
+7. **Web Portal** (Port 8006) - ✅ **COMPLETE** - 🟡 Limited DB Access
+8. **Control Center** (Port 8007) - ✅ **COMPLETE** - 🟢 No DB Access
 
-### **Supporting Services**
-8. **Analytics Service** (Port 8007) - ❌ **PLANNED**
-9. **ML Service** (Port 8008) - ❌ **PLANNED**
-10. **News Service** (Port 8009) - ❌ **PLANNED**
-11. **Compliance Service** (Port 8010) - ❌ **PLANNED**
-12. **Microstructure Service** (Port 8011) - ❌ **PLANNED**
+### **Supporting Services (API-Only or Limited DB Access)**
+9. **Analytics Service** (Port 8008) - ❌ **PLANNED** - 🟡 Limited DB Access
+9. **ML Service** (Port 8008) - ❌ **PLANNED** - 🟢 No DB Access (API Only)
+10. **News Service** (Port 8009) - ❌ **PLANNED** - 🟢 No DB Access (API Only)
+11. **Compliance Service** (Port 8010) - ❌ **PLANNED** - 🟢 No DB Access (API Only)
+12. **Microstructure Service** (Port 8011) - ❌ **PLANNED** - 🟢 No DB Access (API Only)
+
+## 🗄️ **Database Access Patterns**
+
+### **Service Tier Classification**
+
+**🔴 Tier 1: Direct Database Access**
+- Market Data Service (Port 8001)
+- Portfolio Service (Port 8002)
+- Strategy Service (Port 8003)
+- Execution Service (Port 8004)
+- Risk Service (Port 8005)
+
+These services have primary ownership of specific database tables and can perform read/write operations.
+
+**🟡 Tier 2: Limited Database Access**
+- Web Portal (Port 8006)
+- Analytics Service (Port 8007)
+
+These services primarily read data with minimal writes (user preferences, cache, etc.).
+
+**🟢 Tier 3: No Direct Database Access**
+- API Gateway (Port 8000)
+- Control Center (Port 8007)
+- ML Service (Port 8008)
+- News Service (Port 8009)
+- Compliance Service (Port 8010)
+- Microstructure Service (Port 8011)
+
+These services communicate only through APIs and have no direct database connections.
+
+### **Database Table Ownership**
+
+| Service | Primary Tables | Read-Only Tables |
+|---------|---------------|------------------|
+| Market Data | market_symbol, market_stock, hist_bars_*, snapshot_* | All (for queries) |
+| Portfolio | portfolio, holding, transaction, cash_balance | market_symbol, hist_bars_* |
+| Strategy | strategy, screening, rating | market_*, portfolio, holding, snapshot_* |
+| Execution | order, trade | market_symbol, portfolio, strategy |
+| Risk | risk_metrics | All (for risk analysis) |
+| Web Portal | user_settings, wishlist | All (for display) |
+| Analytics | analytics_* | All (for reporting) |
+
+**See:** [Data Access Architecture Documentation](./data-access-architecture.md) for complete details.
+
+---
 
 ## 🏗️ **Dependency Architecture**
 

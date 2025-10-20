@@ -1,0 +1,177 @@
+services:
+  - name: api-gateway
+    port: 8000
+    category: core
+    description: Central API Gateway for all microservices
+    has_ui: false
+    management: uvicorn
+    health_endpoint: /health
+    docs_endpoint: /docs
+    url: http://localhost:8000
+    
+  - name: data-service
+    port: 8001
+    category: core
+    description: Market Data Service with TimescaleDB integration
+    has_ui: false
+    management: uvicorn
+    health_endpoint: /health
+    docs_endpoint: /docs
+    url: http://localhost:8001
+    
+  - name: portfolio-service
+    port: 8002
+    category: core
+    description: Portfolio Management Service
+    has_ui: false
+    management: uvicorn
+    health_endpoint: /health
+    docs_endpoint: /docs
+    url: http://localhost:8002
+    
+  - name: strategy-service
+    port: 8003
+    category: core
+    description: Strategy and Backtesting Service with Backtrader
+    has_ui: false
+    management: uvicorn
+    health_endpoint: /health
+    docs_endpoint: /docs
+    url: http://localhost:8003
+    
+  - name: execution-service
+    port: 8004
+    category: trading
+    description: Trade Execution Service
+    has_ui: false
+    management: uvicorn
+    health_endpoint: /health
+    docs_endpoint: /docs
+    url: http://localhost:8004
+    
+  - name: risk-service
+    port: 8005
+    category: trading
+    description: Risk Management Service with VaR calculations
+    has_ui: false
+    management: uvicorn
+    health_endpoint: /health
+    docs_endpoint: /docs
+    url: http://localhost:8005
+    
+  - name: web-portal
+    port: 8006
+    category: ui
+    description: Web Portal Dashboard
+    has_ui: true
+    management: uvicorn
+    health_endpoint: /health
+    docs_endpoint: /docs
+    url: http://localhost:8006
+    
+  - name: control-center
+    port: 8007
+    category: management
+    description: Service Control Center
+    has_ui: true
+    management: uvicorn
+    health_endpoint: /health
+    docs_endpoint: /docs
+    url: http://localhost:8007
+    
+  - name: ml-service
+    port: 8008
+    category: analytics
+    description: Machine Learning Service
+    has_ui: false
+    management: uvicorn
+    health_endpoint: /health
+    docs_endpoint: /docs
+    url: http://localhost:8008
+    
+  - name: analytics-service
+    port: 8009
+    category: analytics
+    description: Analytics and Reporting Service
+    has_ui: false
+    management: uvicorn
+    health_endpoint: /health
+    docs_endpoint: /docs
+    url: http://localhost:8009
+    
+  - name: compliance-service
+    port: 8010
+    category: supporting
+    description: Compliance and Regulatory Service
+    has_ui: false
+    management: uvicorn
+    health_endpoint: /health
+    docs_endpoint: /docs
+    url: http://localhost:8010
+    
+  - name: news-service
+    port: 8011
+    category: supporting
+    description: News and Market Information Service
+    has_ui: false
+    management: uvicorn
+    health_endpoint: /health
+    docs_endpoint: /docs
+    url: http://localhost:8011
+    
+  - name: microstructure-service
+    port: 8012
+    category: supporting
+    description: Market Microstructure Analysis Service
+    has_ui: false
+    management: uvicorn
+    health_endpoint: /health
+    docs_endpoint: /docs
+    url: http://localhost:8012
+
+  - name: analytics-service
+    port: 8013
+    category: analytics
+    description: Analytics and Reporting Service
+    has_ui: false
+    management: uvicorn
+    health_endpoint: /health
+    docs_endpoint: /docs
+    url: http://localhost:8013
+
+categories:
+  core:
+    name: Core Services
+    description: Essential trading platform services
+    color: "#007bff"
+    icon: "fas fa-cogs"
+    
+  trading:
+    name: Trading Services
+    description: Trade execution and risk management
+    color: "#28a745"
+    icon: "fas fa-chart-line"
+    
+  analytics:
+    name: Analytics Services
+    description: ML and data analysis services
+    color: "#ffc107"
+    icon: "fas fa-brain"
+    
+  supporting:
+    name: Supporting Services
+    description: Compliance, news, and market data
+    color: "#6c757d"
+    icon: "fas fa-tools"
+    
+  ui:
+    name: User Interface
+    description: Web portals and dashboards
+    color: "#17a2b8"
+    icon: "fas fa-desktop"
+    
+  management:
+    name: Management
+    description: Service management and monitoring
+    color: "#dc3545"
+    icon: "fas fa-cog"

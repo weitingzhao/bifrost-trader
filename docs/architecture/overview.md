@@ -25,12 +25,13 @@ Database architecture and implementation:
 - Performance optimization strategies
 - Backup and recovery procedures
 
-### **🔧 Microservices Design** (Planned)
+### **🔧 Microservices Design**
 Detailed microservices architecture:
 - Service boundaries and responsibilities
 - Inter-service communication
 - Data consistency patterns
 - Service discovery and routing
+- **Service Control Center**: Centralized management interface
 
 ### **🔌 API Design** (Planned)
 API design patterns and standards:
@@ -44,6 +45,7 @@ API design patterns and standards:
 ### **Microservices Architecture**
 - **Independent Services**: Each service can be developed, deployed, and scaled independently
 - **API Gateway**: Central routing and service discovery
+- **Service Control Center**: Centralized management and monitoring
 - **Event-Driven**: Asynchronous communication between services
 - **Database per Service**: Each service owns its data
 

@@ -1,0 +1,705 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Service Endpoints Summary - Bifrost Trader Control Center{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Page Header -->
+    <div class="col-12 mb-4">
+        <div class="card border-0 shadow-lg bg-gradient-primary text-white">
+            <div class="card-body">
+                <h2 class="card-title mb-0 fw-bold">
+                    <i class="fas fa-list-alt me-3"></i>
+                    Service Endpoints Summary
+                </h2>
+                <p class="mb-0 mt-2 fw-semibold">Complete overview of all available service endpoints in the Bifrost Trader platform</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Quick Stats -->
+    <div class="col-12 mb-4">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card text-center border-0 shadow-sm bg-gradient-light">
+                    <div class="card-body">
+                        <i class="fas fa-server fa-2x text-primary mb-2"></i>
+                        <h4 class="text-primary fw-bold">13</h4>
+                        <p class="text-primary fw-semibold mb-0">Total Services</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center border-0 shadow-sm bg-gradient-light">
+                    <div class="card-body">
+                        <i class="fas fa-cogs fa-2x text-success mb-2"></i>
+                        <h4 class="text-success fw-bold">4</h4>
+                        <p class="text-success fw-semibold mb-0">Core Services</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center border-0 shadow-sm bg-gradient-light">
+                    <div class="card-body">
+                        <i class="fas fa-chart-line fa-2x text-warning mb-2"></i>
+                        <h4 class="text-warning fw-bold">2</h4>
+                        <p class="text-warning fw-semibold mb-0">Trading Services</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center border-0 shadow-sm bg-gradient-light">
+                    <div class="card-body">
+                        <i class="fas fa-brain fa-2x text-info mb-2"></i>
+                        <h4 class="text-info fw-bold">7</h4>
+                        <p class="text-info fw-semibold mb-0">Supporting Services</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Core Services -->
+    <div class="col-12 mb-4">
+        <div class="card border-0 shadow-lg">
+            <div class="card-header bg-gradient-primary text-white">
+                <h5 class="card-title mb-0 fw-bold">
+                    <i class="fas fa-cogs me-2"></i>
+                    Core Services
+                </h5>
+                <small class="fw-semibold">Essential trading platform services</small>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 col-lg-3 mb-3">
+                        <div class="card service-endpoint-card h-100 border-0 shadow-sm bg-gradient-light">
+                            <div class="card-body text-center">
+                                <i class="fas fa-network-wired fa-2x text-primary mb-3"></i>
+                                <h6 class="card-title text-primary fw-bold">API Gateway</h6>
+                                <p class="card-text small text-info fw-semibold">Central API routing and service discovery</p>
+                                <div class="mb-2">
+                                    <span class="badge bg-warning text-dark fw-bold">Port 8000</span>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <a href="/api-gateway" class="btn btn-bright-primary btn-sm fw-bold">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Service Details
+                                    </a>
+                                    <a href="http://localhost:8000" target="_blank" class="btn btn-bright-success btn-sm fw-bold">
+                                        <i class="fas fa-external-link-alt me-1"></i>
+                                        Open Service
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-lg-3 mb-3">
+                        <div class="card service-endpoint-card h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-database fa-2x text-success mb-3"></i>
+                                <h6 class="card-title">Data Service</h6>
+                                <p class="card-text small text-muted">Market data management with TimescaleDB</p>
+                                <div class="mb-2">
+                                    <span class="badge bg-secondary">Port 8001</span>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <a href="/data" class="btn btn-success btn-sm">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Service Details
+                                    </a>
+                                    <a href="http://localhost:8001" target="_blank" class="btn btn-outline-success btn-sm">
+                                        <i class="fas fa-external-link-alt me-1"></i>
+                                        Open Service
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-lg-3 mb-3">
+                        <div class="card service-endpoint-card h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-briefcase fa-2x text-warning mb-3"></i>
+                                <h6 class="card-title">Portfolio Service</h6>
+                                <p class="card-text small text-muted">Portfolio management and tracking</p>
+                                <div class="mb-2">
+                                    <span class="badge bg-secondary">Port 8002</span>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <a href="/portfolio" class="btn btn-warning btn-sm">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Service Details
+                                    </a>
+                                    <a href="http://localhost:8002" target="_blank" class="btn btn-outline-warning btn-sm">
+                                        <i class="fas fa-external-link-alt me-1"></i>
+                                        Open Service
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-lg-3 mb-3">
+                        <div class="card service-endpoint-card h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-chess fa-2x text-info mb-3"></i>
+                                <h6 class="card-title">Strategy Service</h6>
+                                <p class="card-text small text-muted">Trading strategies and backtesting</p>
+                                <div class="mb-2">
+                                    <span class="badge bg-secondary">Port 8003</span>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <a href="/strategy" class="btn btn-info btn-sm">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Service Details
+                                    </a>
+                                    <a href="http://localhost:8003" target="_blank" class="btn btn-outline-info btn-sm">
+                                        <i class="fas fa-external-link-alt me-1"></i>
+                                        Open Service
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Trading Services -->
+    <div class="col-12 mb-4">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-chart-line me-2"></i>
+                    Trading Services
+                </h5>
+                <small>Trade execution and risk management</small>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 col-lg-6 mb-3">
+                        <div class="card service-endpoint-card h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-bolt fa-2x text-danger mb-3"></i>
+                                <h6 class="card-title">Execution Service</h6>
+                                <p class="card-text small text-muted">Trade execution and order management</p>
+                                <div class="mb-2">
+                                    <span class="badge bg-secondary">Port 8004</span>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <a href="/execution" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Service Details
+                                    </a>
+                                    <a href="http://localhost:8004" target="_blank" class="btn btn-outline-danger btn-sm">
+                                        <i class="fas fa-external-link-alt me-1"></i>
+                                        Open Service
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-lg-6 mb-3">
+                        <div class="card service-endpoint-card h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-shield-alt fa-2x text-warning mb-3"></i>
+                                <h6 class="card-title">Risk Service</h6>
+                                <p class="card-text small text-muted">Risk management and VaR calculations</p>
+                                <div class="mb-2">
+                                    <span class="badge bg-secondary">Port 8005</span>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <a href="/risk" class="btn btn-warning btn-sm">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Service Details
+                                    </a>
+                                    <a href="http://localhost:8005" target="_blank" class="btn btn-outline-warning btn-sm">
+                                        <i class="fas fa-external-link-alt me-1"></i>
+                                        Open Service
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- User Interface -->
+    <div class="col-12 mb-4">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-desktop me-2"></i>
+                    User Interface
+                </h5>
+                <small>Web portals and dashboards</small>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 col-lg-6 mb-3">
+                        <div class="card service-endpoint-card h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-tachometer-alt fa-2x text-primary mb-3"></i>
+                                <h6 class="card-title">Web Portal</h6>
+                                <p class="card-text small text-muted">Main trading dashboard and UI</p>
+                                <div class="mb-2">
+                                    <span class="badge bg-secondary">Port 8006</span>
+                                    <span class="badge bg-success ms-1">Has UI</span>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <a href="/web-portal" class="btn btn-primary btn-sm">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Service Details
+                                    </a>
+                                    <a href="http://localhost:8006" target="_blank" class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-external-link-alt me-1"></i>
+                                        Open Service
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-lg-6 mb-3">
+                        <div class="card service-endpoint-card h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-cog fa-2x text-secondary mb-3"></i>
+                                <h6 class="card-title">Control Center</h6>
+                                <p class="card-text small text-muted">Service management and monitoring</p>
+                                <div class="mb-2">
+                                    <span class="badge bg-secondary">Port 8007</span>
+                                    <span class="badge bg-success ms-1">Has UI</span>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <a href="/" class="btn btn-secondary btn-sm">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Service Details
+                                    </a>
+                                    <a href="http://localhost:8007" target="_blank" class="btn btn-outline-secondary btn-sm">
+                                        <i class="fas fa-external-link-alt me-1"></i>
+                                        Open Service
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Analytics Services -->
+    <div class="col-12 mb-4">
+        <div class="card">
+            <div class="card-header bg-warning text-dark">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-brain me-2"></i>
+                    Analytics Services
+                </h5>
+                <small>ML and data analysis services</small>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 col-lg-6 mb-3">
+                        <div class="card service-endpoint-card h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-robot fa-2x text-purple mb-3"></i>
+                                <h6 class="card-title">ML Service</h6>
+                                <p class="card-text small text-muted">Machine learning and AI models</p>
+                                <div class="mb-2">
+                                    <span class="badge bg-secondary">Port 8008</span>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <a href="/ml" class="btn btn-purple btn-sm">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Service Details
+                                    </a>
+                                    <a href="http://localhost:8008" target="_blank" class="btn btn-outline-purple btn-sm">
+                                        <i class="fas fa-external-link-alt me-1"></i>
+                                        Open Service
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-lg-6 mb-3">
+                        <div class="card service-endpoint-card h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-chart-bar fa-2x text-orange mb-3"></i>
+                                <h6 class="card-title">Analytics Service</h6>
+                                <p class="card-text small text-muted">Analytics and reporting service</p>
+                                <div class="mb-2">
+                                    <span class="badge bg-secondary">Port 8013</span>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <a href="/analytics" class="btn btn-orange btn-sm">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Service Details
+                                    </a>
+                                    <a href="http://localhost:8013" target="_blank" class="btn btn-outline-orange btn-sm">
+                                        <i class="fas fa-external-link-alt me-1"></i>
+                                        Open Service
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Supporting Services -->
+    <div class="col-12 mb-4">
+        <div class="card">
+            <div class="card-header bg-secondary text-white">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-tools me-2"></i>
+                    Supporting Services
+                </h5>
+                <small>Compliance, news, and market data</small>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="card service-endpoint-card h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-gavel fa-2x text-dark mb-3"></i>
+                                <h6 class="card-title">Compliance Service</h6>
+                                <p class="card-text small text-muted">Regulatory compliance and risk management</p>
+                                <div class="mb-2">
+                                    <span class="badge bg-secondary">Port 8010</span>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <a href="/compliance" class="btn btn-dark btn-sm">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Service Details
+                                    </a>
+                                    <a href="http://localhost:8010" target="_blank" class="btn btn-outline-dark btn-sm">
+                                        <i class="fas fa-external-link-alt me-1"></i>
+                                        Open Service
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="card service-endpoint-card h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-newspaper fa-2x text-info mb-3"></i>
+                                <h6 class="card-title">News Service</h6>
+                                <p class="card-text small text-muted">Market news and information service</p>
+                                <div class="mb-2">
+                                    <span class="badge bg-secondary">Port 8011</span>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <a href="/news" class="btn btn-info btn-sm">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Service Details
+                                    </a>
+                                    <a href="http://localhost:8011" target="_blank" class="btn btn-outline-info btn-sm">
+                                        <i class="fas fa-external-link-alt me-1"></i>
+                                        Open Service
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="card service-endpoint-card h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-microscope fa-2x text-success mb-3"></i>
+                                <h6 class="card-title">Microstructure Service</h6>
+                                <p class="card-text small text-muted">Market microstructure analysis</p>
+                                <div class="mb-2">
+                                    <span class="badge bg-secondary">Port 8012</span>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <a href="/microstructure" class="btn btn-success btn-sm">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Service Details
+                                    </a>
+                                    <a href="http://localhost:8012" target="_blank" class="btn btn-outline-success btn-sm">
+                                        <i class="fas fa-external-link-alt me-1"></i>
+                                        Open Service
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- API Endpoints Summary -->
+    <div class="col-12 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-code me-2"></i>
+                    API Endpoints Summary
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Service Management</h6>
+                        <ul class="list-unstyled">
+                            <li><code>GET /api/services/</code> - List all services</li>
+                            <li><code>GET /api/services/{name}</code> - Service details</li>
+                            <li><code>POST /api/services/{name}/start</code> - Start service</li>
+                            <li><code>POST /api/services/{name}/stop</code> - Stop service</li>
+                            <li><code>POST /api/services/{name}/restart</code> - Restart service</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Health & Monitoring</h6>
+                        <ul class="list-unstyled">
+                            <li><code>GET /api/health/</code> - System health</li>
+                            <li><code>GET /api/health/services/{name}</code> - Service health</li>
+                            <li><code>GET /api/proxy/{name}/health</code> - Proxy health check</li>
+                            <li><code>ALL /api/proxy/{name}/{path}</code> - Proxy to any service</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Quick Actions -->
+    <div class="col-12 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-bolt me-2"></i>
+                    Quick Actions
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-md-3 mb-3">
+                        <a href="/" class="btn btn-primary btn-lg w-100">
+                            <i class="fas fa-tachometer-alt me-2"></i>
+                            Control Center Dashboard
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <a href="/services" class="btn btn-info btn-lg w-100">
+                            <i class="fas fa-list me-2"></i>
+                            All Services List
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <a href="/api/health/" class="btn btn-success btn-lg w-100">
+                            <i class="fas fa-heartbeat me-2"></i>
+                            Health Status
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <a href="/docs" class="btn btn-warning btn-lg w-100">
+                            <i class="fas fa-book me-2"></i>
+                            API Documentation
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Styles -->
+<style>
+.service-endpoint-card {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    border: 1px solid #dee2e6;
+}
+
+.service-endpoint-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.text-purple {
+    color: #6f42c1 !important;
+}
+
+.btn-purple {
+    background-color: #6f42c1;
+    border-color: #6f42c1;
+    color: white;
+}
+
+.btn-purple:hover {
+    background-color: #5a2d91;
+    border-color: #5a2d91;
+    color: white;
+}
+
+.btn-outline-purple {
+    color: #6f42c1;
+    border-color: #6f42c1;
+}
+
+.btn-outline-purple:hover {
+    background-color: #6f42c1;
+    border-color: #6f42c1;
+    color: white;
+}
+
+.text-orange {
+    color: #fd7e14 !important;
+}
+
+.btn-orange {
+    background-color: #fd7e14;
+    border-color: #fd7e14;
+    color: white;
+}
+
+.btn-orange:hover {
+    background-color: #e8650e;
+    border-color: #e8650e;
+    color: white;
+}
+
+.btn-outline-orange {
+    color: #fd7e14;
+    border-color: #fd7e14;
+}
+
+.btn-outline-orange:hover {
+    background-color: #fd7e14;
+    border-color: #fd7e14;
+    color: white;
+}
+
+/* Bright and vibrant color scheme - NO DARK COLORS */
+body {
+    background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+    min-height: 100vh;
+}
+
+/* Bright gradient backgrounds */
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #0d6efd 0%, #0dcaf0 50%, #6f42c1 100%) !important;
+    box-shadow: 0 4px 20px rgba(13, 110, 253, 0.3);
+}
+
+.bg-gradient-success {
+    background: linear-gradient(135deg, #198754 0%, #20c997 50%, #0dcaf0 100%) !important;
+    box-shadow: 0 4px 20px rgba(25, 135, 84, 0.3);
+}
+
+.bg-gradient-warning {
+    background: linear-gradient(135deg, #ffc107 0%, #ffeb3b 50%, #fd7e14 100%) !important;
+    box-shadow: 0 4px 20px rgba(255, 193, 7, 0.3);
+}
+
+.bg-gradient-info {
+    background: linear-gradient(135deg, #0dcaf0 0%, #6f42c1 50%, #e91e63 100%) !important;
+    box-shadow: 0 4px 20px rgba(13, 202, 240, 0.3);
+}
+
+.bg-gradient-light {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e3f2fd 50%, #f3e5f5 100%) !important;
+    box-shadow: 0 4px 20px rgba(248, 249, 250, 0.3);
+}
+
+/* Bright buttons */
+.btn-bright-primary {
+    background: linear-gradient(45deg, #0d6efd, #0dcaf0, #6f42c1) !important;
+    border: 0 !important;
+    color: white !important;
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+}
+
+.btn-bright-primary:hover {
+    background: linear-gradient(45deg, #0dcaf0, #6f42c1, #e91e63) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(13, 110, 253, 0.4);
+}
+
+.btn-bright-success {
+    background: linear-gradient(45deg, #198754, #20c997, #0dcaf0) !important;
+    border: 0 !important;
+    color: white !important;
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 15px rgba(25, 135, 84, 0.3);
+}
+
+.btn-bright-warning {
+    background: linear-gradient(45deg, #ffc107, #ffeb3b, #fd7e14) !important;
+    border: 0 !important;
+    color: #000 !important;
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+}
+
+/* Enhanced shadows */
+.shadow-sm {
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.1) !important;
+}
+
+.shadow-lg {
+    box-shadow: 0 8px 30px rgba(0, 123, 255, 0.2) !important;
+}
+
+/* Bright badges */
+.badge {
+    font-weight: 600;
+    font-size: 0.8rem;
+    background: linear-gradient(45deg, #ffc107, #ffeb3b) !important;
+    color: #000 !important;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 8px rgba(255, 193, 7, 0.3);
+}
+
+/* Remove all dark colors */
+.text-muted {
+    color: #0dcaf0 !important;
+    font-weight: 500;
+}
+
+.text-dark {
+    color: #0d6efd !important;
+}
+
+.bg-dark {
+    background: linear-gradient(135deg, #0d6efd 0%, #0dcaf0 100%) !important;
+}
+
+.bg-secondary {
+    background: linear-gradient(45deg, #ffc107, #ffeb3b) !important;
+    color: #000 !important;
+}
+</style>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// Add any additional JavaScript for the summary page
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Service endpoints summary page loaded');
+    
+    // Add click tracking for analytics
+    document.querySelectorAll('a[href^="/"]').forEach(link => {
+        link.addEventListener('click', function() {
+            console.log('Navigating to:', this.href);
+        });
+    });
+});
+</script>
+{% endblock %}

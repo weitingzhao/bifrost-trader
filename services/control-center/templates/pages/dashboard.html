@@ -1,0 +1,332 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Dashboard - Bifrost Trader Control Center{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Navigation -->
+    <div class="col-12 mb-4">
+        <div class="d-flex justify-content-between align-items-center">
+            <h1 class="mb-0">
+                <i class="fas fa-tachometer-alt me-2"></i>
+                Control Center Dashboard
+            </h1>
+            <div>
+                <a href="/endpoints" class="btn btn-info me-2">
+                    <i class="fas fa-list-alt me-1"></i>
+                    Endpoints Summary
+                </a>
+                <a href="/services" class="btn btn-outline-primary">
+                    <i class="fas fa-list me-1"></i>
+                    All Services
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- System Overview -->
+    <div class="col-12 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-tachometer-alt me-2"></i>
+                    System Overview
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <h3 class="text-primary">{{ overview.total_services }}</h3>
+                            <p class="text-muted">Total Services</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <h3 class="text-success">{{ overview.running_services }}</h3>
+                            <p class="text-muted">Running</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <h3 class="text-warning">{{ overview.stopped_services }}</h3>
+                            <p class="text-muted">Stopped</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <h3 class="text-danger">{{ overview.error_services }}</h3>
+                            <p class="text-muted">Errors</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Service Categories -->
+    {% for category_key, category_info in categories.items() %}
+    <div class="col-12 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="{{ category_info.icon }} me-2" style="color: {{ category_info.color }}"></i>
+                    {{ category_info.name }}
+                    <small class="text-muted">({{ category_info.description }})</small>
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    {% for service in services %}
+                        {% if service.category == category_key %}
+                        <div class="col-md-6 col-lg-4 mb-3">
+                            <div class="card service-card" data-service="{{ service.name }}">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <h6 class="card-title mb-0">{{ service.name }}</h6>
+                                        <span class="badge bg-{{ 'success' if service.status == 'running' else 'danger' if service.status == 'error' else 'warning' }}" id="status-{{ service.name }}">
+                                            {{ service.status }}
+                                        </span>
+                                    </div>
+                                    
+                                    <p class="card-text text-muted small">{{ service.description }}</p>
+                                    
+                                    <div class="row text-center mb-2">
+                                        <div class="col-6">
+                                            <small class="text-muted">Port</small><br>
+                                            <strong>{{ service.port }}</strong>
+                                        </div>
+                                        <div class="col-6">
+                                            <small class="text-muted">UI</small><br>
+                                            <i class="fas fa-{{ 'check' if service.has_ui else 'times' }} text-{{ 'success' if service.has_ui else 'muted' }}"></i>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="btn-group w-100" role="group">
+                                        <button class="btn btn-sm btn-outline-primary" onclick="openService('{{ service.url }}')">
+                                            <i class="fas fa-external-link-alt me-1"></i>
+                                            Open
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-info" onclick="openDocs('{{ service.docs_url }}')">
+                                            <i class="fas fa-book me-1"></i>
+                                            Docs
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-secondary" onclick="viewServiceDetails('{{ service.name }}')">
+                                            <i class="fas fa-info-circle me-1"></i>
+                                            Details
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="btn-group w-100 mt-2" role="group">
+                                        <button class="btn btn-sm btn-success" onclick="startService('{{ service.name }}')" id="start-{{ service.name }}">
+                                            <i class="fas fa-play me-1"></i>
+                                            Start
+                                        </button>
+                                        <button class="btn btn-sm btn-warning" onclick="stopService('{{ service.name }}')" id="stop-{{ service.name }}">
+                                            <i class="fas fa-stop me-1"></i>
+                                            Stop
+                                        </button>
+                                        <button class="btn btn-sm btn-info" onclick="restartService('{{ service.name }}')" id="restart-{{ service.name }}">
+                                            <i class="fas fa-redo me-1"></i>
+                                            Restart
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Service Details Modal -->
+<div class="modal fade" id="serviceModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="serviceModalTitle">Service Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="serviceModalBody">
+                <!-- Service details will be loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="toast" class="toast" role="alert">
+        <div class="toast-header">
+            <i class="fas fa-info-circle me-2"></i>
+            <strong class="me-auto">Control Center</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+        </div>
+        <div class="toast-body" id="toast-message">
+            <!-- Toast message will be set here -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// WebSocket connection for real-time updates
+let ws = null;
+let reconnectInterval = null;
+
+function connectWebSocket() {
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const wsUrl = `${protocol}//${window.location.host}/ws`;
+    
+    ws = new WebSocket(wsUrl);
+    
+    ws.onopen = function() {
+        console.log('WebSocket connected');
+        updateConnectionStatus(true);
+        if (reconnectInterval) {
+            clearInterval(reconnectInterval);
+            reconnectInterval = null;
+        }
+    };
+    
+    ws.onmessage = function(event) {
+        const data = JSON.parse(event.data);
+        if (data.type === 'health_update') {
+            updateServiceStatuses(data.services);
+        }
+    };
+    
+    ws.onclose = function() {
+        console.log('WebSocket disconnected');
+        updateConnectionStatus(false);
+        if (!reconnectInterval) {
+            reconnectInterval = setInterval(connectWebSocket, 5000);
+        }
+    };
+    
+    ws.onerror = function(error) {
+        console.error('WebSocket error:', error);
+        updateConnectionStatus(false);
+    };
+}
+
+function updateConnectionStatus(connected) {
+    const statusElement = document.getElementById('connection-status');
+    const textElement = document.getElementById('connection-text');
+    
+    if (connected) {
+        statusElement.className = 'fas fa-circle text-success me-1';
+        textElement.textContent = 'Connected';
+    } else {
+        statusElement.className = 'fas fa-circle text-danger me-1';
+        textElement.textContent = 'Disconnected';
+    }
+}
+
+function updateServiceStatuses(services) {
+    for (const [serviceName, health] of Object.entries(services)) {
+        const statusElement = document.getElementById(`status-${serviceName}`);
+        if (statusElement) {
+            let badgeClass = 'warning';
+            if (health.status === 'running') badgeClass = 'success';
+            else if (health.status === 'error') badgeClass = 'danger';
+            
+            statusElement.className = `badge bg-${badgeClass}`;
+            statusElement.textContent = health.status;
+        }
+    }
+}
+
+// Service management functions
+function openService(url) {
+    window.open(url, '_blank');
+}
+
+function openDocs(url) {
+    window.open(url, '_blank');
+}
+
+function viewServiceDetails(serviceName) {
+    window.location.href = `/service/${serviceName}`;
+}
+
+async function startService(serviceName) {
+    try {
+        const response = await fetch(`/api/services/${serviceName}/start`, {
+            method: 'POST'
+        });
+        const result = await response.json();
+        
+        if (result.success) {
+            showToast('success', result.message);
+        } else {
+            showToast('error', result.message);
+        }
+    } catch (error) {
+        showToast('error', `Failed to start service: ${error.message}`);
+    }
+}
+
+async function stopService(serviceName) {
+    try {
+        const response = await fetch(`/api/services/${serviceName}/stop`, {
+            method: 'POST'
+        });
+        const result = await response.json();
+        
+        if (result.success) {
+            showToast('success', result.message);
+        } else {
+            showToast('error', result.message);
+        }
+    } catch (error) {
+        showToast('error', `Failed to stop service: ${error.message}`);
+    }
+}
+
+async function restartService(serviceName) {
+    try {
+        const response = await fetch(`/api/services/${serviceName}/restart`, {
+            method: 'POST'
+        });
+        const result = await response.json();
+        
+        if (result.success) {
+            showToast('success', result.message);
+        } else {
+            showToast('error', result.message);
+        }
+    } catch (error) {
+        showToast('error', `Failed to restart service: ${error.message}`);
+    }
+}
+
+function showToast(type, message) {
+    const toast = document.getElementById('toast');
+    const toastMessage = document.getElementById('toast-message');
+    
+    toastMessage.textContent = message;
+    
+    const toastInstance = new bootstrap.Toast(toast);
+    toastInstance.show();
+}
+
+// Update current time
+function updateCurrentTime() {
+    const now = new Date();
+    document.getElementById('current-time').textContent = now.toLocaleString();
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', function() {
+    connectWebSocket();
+    updateCurrentTime();
+    setInterval(updateCurrentTime, 1000);
+});
+</script>
+{% endblock %}
