@@ -7,8 +7,8 @@
     <!-- Services Overview -->
     <div class="col-12 mb-4">
         <div class="card border-0 shadow-lg">
-            <div class="card-header bg-gradient-primary text-white">
-                <h5 class="card-title mb-0 fw-bold">
+            <div class="card-header bg-gradient-primary">
+                <h5 class="card-title mb-0 fw-bold text-white">
                     <i class="fas fa-list me-2"></i>
                     All Bifrost Trader Services
                 </h5>
@@ -23,12 +23,12 @@
     {% for category_key, category_info in categories.items() %}
     <div class="col-12 mb-4">
         <div class="card">
-            <div class="card-header bg-gradient-primary text-white">
-                <h5 class="card-title mb-0 fw-bold">
+            <div class="card-header bg-gradient-primary">
+                <h5 class="card-title mb-0 fw-bold text-white">
                     <i class="{{ category_info.icon }} me-2"></i>
                     {{ category_info.name }}
                 </h5>
-                <small class="fw-semibold">{{ category_info.description }}</small>
+                <small class="fw-semibold text-white">{{ category_info.description }}</small>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -205,111 +205,110 @@ body {
     font-weight: 600 !important;
 }
 
-/* Bright card headers */
+/* Simple and clean card headers */
 .card-header {
-    background: linear-gradient(135deg, #ffffff 0%, #e3f2fd 100%) !important;
-    border: 0 !important;
-    box-shadow: 0 2px 10px rgba(0, 123, 255, 0.1);
+    background: #f8f9fa !important;
+    border: 1px solid #dee2e6 !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .card-header .card-title {
-    color: #0d6efd !important;
-    font-weight: 700;
+    color: #495057 !important;
+    font-weight: 600;
     font-size: 1.2rem;
 }
 
 .card-header small {
-    color: #0dcaf0 !important;
-    font-weight: 600;
+    color: #6c757d !important;
+    font-weight: 500;
 }
 
-/* Enhanced buttons */
+/* Simple and clean buttons */
 .btn {
     font-weight: 600;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    border-width: 2px;
+    border-width: 1px;
+    transition: all 0.2s ease;
 }
 
 .btn-warning {
-    background: linear-gradient(45deg, #ffc107, #ffeb3b) !important;
+    background: #ffc107 !important;
     border-color: #ffc107 !important;
-    color: #000 !important;
-    font-weight: 700;
+    color: #212529 !important;
+    font-weight: 600;
 }
 
 .btn-warning:hover {
-    background: linear-gradient(45deg, #ffeb3b, #ffc107) !important;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(255, 193, 7, 0.4);
+    background: #e0a800 !important;
+    border-color: #e0a800 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(255, 193, 7, 0.3);
 }
 
 .btn-primary {
-    background: linear-gradient(45deg, #0d6efd, #0dcaf0) !important;
-    border-color: #0d6efd !important;
-    font-weight: 700;
+    background: #007bff !important;
+    border-color: #007bff !important;
+    font-weight: 600;
 }
 
 .btn-success {
-    background: linear-gradient(45deg, #198754, #20c997) !important;
-    border-color: #198754 !important;
-    font-weight: 700;
+    background: #28a745 !important;
+    border-color: #28a745 !important;
+    font-weight: 600;
 }
 
 .btn-info {
-    background: linear-gradient(45deg, #0dcaf0, #6f42c1) !important;
-    border-color: #0dcaf0 !important;
-    font-weight: 700;
+    background: #17a2b8 !important;
+    border-color: #17a2b8 !important;
+    font-weight: 600;
 }
 
-/* Enhanced icons */
+/* Simple and clean icons */
 .fas, .far, .fab {
-    font-weight: 700;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    font-weight: 600;
 }
 
-/* Quick Access section */
+/* Simple backgrounds */
 .bg-warning {
-    background: linear-gradient(135deg, #ffc107 0%, #ffeb3b 100%) !important;
+    background: #ffc107 !important;
 }
 
 .bg-light {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e3f2fd 100%) !important;
+    background: #f8f9fa !important;
 }
 
-/* Shadow enhancements */
+/* Simple shadows */
 .shadow-sm {
-    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.1) !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
 }
 
 .shadow-lg {
-    box-shadow: 0 8px 30px rgba(0, 123, 255, 0.2) !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
 }
 
-/* Bright gradient backgrounds */
+/* Simple and clean backgrounds */
 .bg-gradient-primary {
-    background: linear-gradient(135deg, #0d6efd 0%, #0dcaf0 50%, #6f42c1 100%) !important;
-    box-shadow: 0 4px 20px rgba(13, 110, 253, 0.3);
+    background: #007bff !important;
+    box-shadow: 0 2px 4px rgba(0, 123, 255, 0.1);
 }
 
 .bg-gradient-success {
-    background: linear-gradient(135deg, #198754 0%, #20c997 50%, #0dcaf0 100%) !important;
-    box-shadow: 0 4px 20px rgba(25, 135, 84, 0.3);
+    background: #28a745 !important;
+    box-shadow: 0 2px 4px rgba(40, 167, 69, 0.1);
 }
 
 .bg-gradient-warning {
-    background: linear-gradient(135deg, #ffc107 0%, #ffeb3b 50%, #fd7e14 100%) !important;
-    box-shadow: 0 4px 20px rgba(255, 193, 7, 0.3);
+    background: #ffc107 !important;
+    box-shadow: 0 2px 4px rgba(255, 193, 7, 0.1);
 }
 
 .bg-gradient-info {
-    background: linear-gradient(135deg, #0dcaf0 0%, #6f42c1 50%, #e91e63 100%) !important;
-    box-shadow: 0 4px 20px rgba(13, 202, 240, 0.3);
+    background: #17a2b8 !important;
+    box-shadow: 0 2px 4px rgba(23, 162, 184, 0.1);
 }
 
 .bg-gradient-light {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e3f2fd 50%, #f3e5f5 100%) !important;
-    box-shadow: 0 4px 20px rgba(248, 249, 250, 0.3);
+    background: #ffffff !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Bright text on light backgrounds */
